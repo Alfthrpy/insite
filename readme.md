@@ -2,7 +2,6 @@
 
 # **Insite - Invitation Site**
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## 📜 **Deskripsi**
 **[Nama Aplikasi]** adalah aplikasi web pembuatan undangan online yang mudah, cepat, dan modern. Dirancang khusus untuk generasi digital, aplikasi ini memungkinkan pengguna membuat dan membagikan undangan untuk berbagai acara seperti pesta ulang tahun, pernikahan, gathering, atau acara spesial lainnya dengan tampilan yang menarik dan interaktif.
@@ -11,7 +10,6 @@
 - **Template Kustomisasi**: Pilihan template undangan yang beragam, dari yang kasual hingga formal, yang bisa disesuaikan dengan acara pengguna.
 - **Editor Visual**: Editor drag-and-drop yang intuitif untuk menambahkan teks, gambar, ikon, dan elemen desain lainnya.
 - **Undangan Digital**: Bagikan undangan dalam bentuk digital melalui tautan atau media sosial.
-- **Manajemen RSVP**: Pantau siapa yang akan hadir dengan fitur RSVP yang mudah digunakan.
 - **Responsive Design**: Tampilan undangan yang responsif di berbagai perangkat, termasuk desktop, tablet, dan ponsel.
 - **Undangan dengan Animasi**: Tambahkan animasi sederhana agar undangan tampak lebih hidup dan interaktif.
 
