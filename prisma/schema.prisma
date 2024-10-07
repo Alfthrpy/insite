@@ -1,0 +1,269 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Music {
+  id           String   @id @default(uuid()) @db.Uuid
+  invitationId String   @db.VarChar(255)
+  musicUrl     String   @db.VarChar(255)
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("musics")
+}
+
+model Comment {
+  id           String   @id @default(uuid()) @db.Uuid
+  invitationId String   @db.VarChar(255)
+  text         String   @db.Text
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    BigInt
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("comentars")
+}
+
+model BrideGroom {
+  id                 String   @id @default(uuid()) @db.Uuid
+  invitationId       String   @db.VarChar(255)
+  nameGroom          String   @db.VarChar(255)
+  imageGroom         String   @db.VarChar(255)
+  parentGroom        String   @db.VarChar(255)
+  linkInstagramGroom String?  @db.VarChar(255)
+  linkFbGroom        String?  @db.VarChar(255)
+  linkTwitterGroom   String?  @db.VarChar(255)
+  linkYtbGroom       String?  @db.VarChar(255)
+  nameBride          String   @db.VarChar(255)
+  imageBride         String   @db.VarChar(255)
+  parentBride        String   @db.VarChar(255)
+  linkInstagramBride String?  @db.VarChar(255)
+  linkFbBride        String?  @db.VarChar(255)
+  linkTwitterBride   String?  @db.VarChar(255)
+  linkYtbBride       String?  @db.VarChar(255)
+  createdAt          DateTime @db.Timestamp(0)
+  updatedAt          DateTime @db.Timestamp(0)
+  deletedAt          DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("brides and grooms")
+}
+
+model Event {
+  id                String   @id @default(uuid()) @db.Uuid
+  invitationId      String   @db.VarChar(255)
+  nameEvent         String   @db.VarChar(255)
+  location          String   @db.VarChar(255)
+  address           String   @db.VarChar(255)
+  dateEvent         DateTime @db.Date
+  startTime         DateTime @db.Time
+  endTime           DateTime @db.Time
+  linkNavigationMap String   @db.VarChar(255)
+  createdAt         DateTime @db.Timestamp(0)
+  updatedAt         DateTime @db.Timestamp(0)
+  deletedAt         DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("events")
+}
+
+model PaymentTransaction {
+  id              String   @id @default(uuid()) @db.Uuid
+  invitationId    String   @db.VarChar(255)
+  paymentMethod   String   @db.Enum("payment_method")
+  amount          Decimal  @db.Decimal(8, 2)
+  paymentStatus   String   @db.Enum("payment_status")
+  transactionDate DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("payment_transactions")
+}
+
+model Rsvp {
+  id                 String   @id @default(uuid()) @db.Uuid
+  invitationId       String   @db.VarChar(255)
+  guestName          String   @db.VarChar(255)
+  numberOfPeople     BigInt
+  confirmationStatus String   @db.Enum("confirmation_status")
+  createdAt          DateTime @db.Timestamp(0)
+  updatedAt          DateTime @db.Timestamp(0)
+  deletedAt          DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("rsvps")
+}
+
+model Invitation {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.VarChar(255)
+  designId  String   @db.VarChar(255)
+  link      String   @db.VarChar(255)
+  createdAt DateTime @db.Timestamp(0)
+  updatedAt DateTime @db.Timestamp(0)
+  deletedAt DateTime @db.Timestamp(0)
+
+  User               User                 @relation(fields: [userId], references: [id])
+  Design             Design               @relation(fields: [designId], references: [id])
+  Music              Music[]
+  Comment            Comment[]
+  BrideGroom         BrideGroom[]
+  Event              Event[]
+  PaymentTransaction PaymentTransaction[]
+  Rsvp               Rsvp[]
+  Quote              Quote[]
+  Gift               Gift[]
+  LoveStory          LoveStory[]
+  Setting            Setting[]
+  Gallery            Gallery[]
+  Review             Review[]
+
+  @@map("invitations")
+}
+
+model Quote {
+  id           String   @id @default(uuid()) @db.Uuid
+  invitationId String   @db.VarChar(255)
+  content      String   @db.Text
+  author       String   @db.VarChar(255)
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("Quotes")
+}
+
+model Design {
+  id           String       @id @default(uuid()) @db.Uuid
+  name         String       @db.VarChar(255)
+  price        Float
+  imageUrl     String       @db.VarChar(255)
+  templateFile String       @db.VarChar(255)
+  category     String       @db.VarChar(255)
+  createdAt    DateTime     @db.Timestamp(0)
+  updatedAt    DateTime     @db.Timestamp(0)
+  deletedAt    DateTime     @db.Timestamp(0)
+  Invitation   Invitation[]
+
+  @@map("designs")
+}
+
+model Gift {
+  id           String   @id @default(uuid()) @db.Uuid
+  invitationId String   @db.VarChar(255)
+  nameAccount  String   @db.VarChar(255)
+  noAccount    String   @db.VarChar(255)
+  imgAccount   String?  @db.VarChar(255)
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("gifts")
+}
+
+model LoveStory {
+  id           String   @id @default(uuid()) @db.Uuid
+  invitationId String   @db.VarChar(255)
+  title        String   @db.VarChar(255)
+  story        String   @db.Text
+  imageUrl     String?  @db.VarChar(255)
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("love_storys")
+}
+
+model Setting {
+  id           BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  invitationId String   @db.VarChar(255)
+  title        String   @db.VarChar(255)
+  textPembuka  String   @db.Text
+  textAcara    String   @db.Text
+  textPenutup  String   @db.Text
+  broadcast    String   @db.Text
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("settings")
+}
+
+model Gallery {
+  id           String   @id @default(uuid()) @db.Uuid
+  invitationId String   @db.VarChar(255)
+  imageUrl     String   @db.VarChar(255)
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("galerys")
+}
+
+model User {
+  id         String       @id @default(uuid()) @db.Uuid
+  username   String       @db.VarChar(255)
+  email      String       @db.VarChar(255)
+  password   String       @db.VarChar(255)
+  role       String       @db.VarChar(255)
+  createdAt  DateTime     @db.Timestamp(0)
+  updatedAt  DateTime     @db.Timestamp(0)
+  deletedAt  DateTime     @db.Timestamp(0)
+  Invitation Invitation[]
+
+  @@map("Users")
+}
+
+model Review {
+  id           String   @id @default(uuid()) @db.Uuid
+  invitationId String   @db.VarChar(255)
+  rate         BigInt
+  comment      String   @db.Text
+  createdAt    DateTime @db.Timestamp(0)
+  updatedAt    DateTime @db.Timestamp(0)
+  deletedAt    DateTime @db.Timestamp(0)
+
+  Invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@map("reviews")
+}
+
+enum payment_method {
+  cash
+  credit_card
+  transfer
+}
+
+enum payment_status {
+  pending
+  completed
+  failed
+}
+
+enum confirmation_status {
+  pending
+  confirmed
+  declined
+}
