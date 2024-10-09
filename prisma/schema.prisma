@@ -16,7 +16,7 @@ model Music {
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("musics")
 }
@@ -29,7 +29,7 @@ model Comment {
   updatedAt    DateTime
   deletedAt    BigInt
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("comentars")
 }
@@ -55,7 +55,7 @@ model BrideGroom {
   updatedAt          DateTime
   deletedAt          DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("brides and grooms")
 }
@@ -74,7 +74,7 @@ model Event {
   updatedAt         DateTime
   deletedAt         DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("events")
 }
@@ -82,12 +82,12 @@ model Event {
 model PaymentTransaction {
   id              String   @id @default(uuid())
   invitationId    String
-  paymentMethod   String
+  paymentMethod   String   @default("dana")
   amount          Decimal
   paymentStatus   String   @default("pending")
   transactionDate DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("payment_transactions")
 }
@@ -97,12 +97,12 @@ model Rsvp {
   invitationId       String
   guestName          String
   numberOfPeople     BigInt
-  confirmationStatus String
+  confirmationStatus String   @default("pending")
   createdAt          DateTime
   updatedAt          DateTime
   deletedAt          DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("rsvps")
 }
@@ -143,7 +143,7 @@ model Quote {
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("Quotes")
 }
@@ -173,7 +173,7 @@ model Gift {
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("gifts")
 }
@@ -188,7 +188,7 @@ model LoveStory {
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("love_storys")
 }
@@ -205,7 +205,7 @@ model Setting {
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("settings")
 }
@@ -218,7 +218,7 @@ model Gallery {
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("galerys")
 }
@@ -226,12 +226,12 @@ model Gallery {
 model User {
   id         String       @id @default(uuid())
   username   String
-  email      String
+  email      String       @unique
   password   String
-  role       String
-  createdAt  DateTime
-  updatedAt  DateTime
-  deletedAt  DateTime
+  role       String       @default("USER")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  deletedAt DateTime?
   Invitation Invitation[]
 
   @@map("Users")
@@ -246,7 +246,7 @@ model Review {
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id])
+  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
   @@map("reviews")
 }
