@@ -97,24 +97,15 @@ export async function GET(
 ) {
   const id = params.id;
   try {
-    const user = await prisma.user.findMany({
+    const user = await prisma.user.findUnique({
       where: { id },
     });
 
     return NextResponse.json(user, { status: 200 });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      const formattedErrors = error.errors.map((err) => ({
-        field: err.path[0],
-        message: err.message,
-      }));
-
-      return NextResponse.json({ errors: formattedErrors }, { status: 400 });
-    }
-
     return NextResponse.json(
-      { error: "Internal server error", ror: error },
+      { error: "Internal server error", details: error.message },
       { status: 500 }
     );
   }
