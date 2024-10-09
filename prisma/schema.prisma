@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model Music {
@@ -81,9 +82,9 @@ model Event {
 model PaymentTransaction {
   id              String   @id @default(uuid()) @db.Uuid
   invitationId    String   @db.VarChar(255)
-  paymentMethod   String   @db.Enum("payment_method")
+  paymentMethod   String   @db.VarChar(255)
   amount          Decimal  @db.Decimal(8, 2)
-  paymentStatus   String   @db.Enum("payment_status")
+  paymentStatus   String   @default("pending") @db.VarChar(255)
   transactionDate DateTime @db.Timestamp(0)
 
   Invitation Invitation @relation(fields: [invitationId], references: [id])
@@ -96,7 +97,7 @@ model Rsvp {
   invitationId       String   @db.VarChar(255)
   guestName          String   @db.VarChar(255)
   numberOfPeople     BigInt
-  confirmationStatus String   @db.Enum("confirmation_status")
+  confirmationStatus String   @db.VarChar(255)
   createdAt          DateTime @db.Timestamp(0)
   updatedAt          DateTime @db.Timestamp(0)
   deletedAt          DateTime @db.Timestamp(0)
@@ -193,7 +194,7 @@ model LoveStory {
 }
 
 model Setting {
-  id           BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  id           String   @id @default(uuid()) @db.Uuid
   invitationId String   @db.VarChar(255)
   title        String   @db.VarChar(255)
   textPembuka  String   @db.Text
