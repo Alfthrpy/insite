@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.7.0",
     "@prisma/client": "^5.20.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
