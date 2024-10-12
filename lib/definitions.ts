@@ -171,6 +171,34 @@ const UserSchema = z.object({
   role: z.string().min(1).optional(),
 });
 
+const LoginFormSchema = z.object({
+  email: z
+    .string()
+    .email({ message: "Email tidak valid" })
+    .min(1, { message: "Email wajib diisi" }),
+  password: z.string().min(6, { message: "Password minimal 6 karakter" }),
+});
+
+const RegisterFormSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, { message: "Username minimal 2 karakter" })
+      .max(50, { message: "Username maksimal 50 karakter" }),
+    email: z
+      .string()
+      .email({ message: "Email tidak valid" })
+      .min(1, { message: "Email wajib diisi" }),
+    password: z.string().min(6, { message: "Password minimal 6 karakter" }),
+    confirmPassword: z
+      .string()
+      .min(6, { message: "Password minimal 6 karakter" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords tidak sama",
+    path: ["confirmPassword"],
+  });
+
 const UpdateUserSchema = z.object({
   username: z
     .string()
@@ -206,5 +234,7 @@ export {
   GallerySchema,
   UserSchema,
   ReviewSchema,
-  UpdateUserSchema
+  UpdateUserSchema,
+  LoginFormSchema,
+  RegisterFormSchema,
 };
