@@ -21,7 +21,7 @@ export default function LoginFormComponents() {
       const response = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        redirect: true,
+        redirect: false,
         callbackUrl: `${window.location.origin}/dashboard`,
       });
 
