@@ -13,7 +13,7 @@ if(status === "unauthenticated"){
     <section className="flex flex-col justify-center items-center min-h-screen">
       <Image
         alt={session?.user?.name || "Profile"} // 
-        src={session?.user?.image} 
+        src={session?.user?.image || "/images/profile_default.jpeg"} 
         width={100} 
         height={100} 
         style={{ borderRadius: "50%" }} 
