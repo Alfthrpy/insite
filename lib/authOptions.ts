@@ -19,7 +19,7 @@
           email: {},
           password: {},
         },
-        async authorize(credentials, req) {
+        async authorize(credentials) {
           // Cek apakah email dan password disediakan
           if (!credentials?.email || !credentials?.password) {
             throw new Error("Email and password are required.");
@@ -62,6 +62,7 @@
       },
       jwt: ({ token, user }) => {
         if (user) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const u = user as unknown as any;
           return {
             ...token,
