@@ -1,6 +1,6 @@
-import { UpdateUserSchema} from "@/app/lib/definitions";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+
+import { UpdateUserSchema } from "@/lib/definitions";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -39,7 +39,7 @@ export async function PATCH( req: Request,
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        username: username || existingUser.username, // Update jika ada
+        name: username || existingUser.name, // Update jika ada
         email: email || existingUser.email, // Update jika ada
       },
     });
