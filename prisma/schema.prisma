@@ -51,9 +51,9 @@ model BrideGroom {
   linkFbBride        String?
   linkTwitterBride   String?
   linkYtbBride       String?
-  createdAt          DateTime
-  updatedAt          DateTime
-  deletedAt          DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?               
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -70,9 +70,9 @@ model Event {
   startTime         DateTime
   endTime           DateTime
   linkNavigationMap String
-  createdAt         DateTime
-  updatedAt         DateTime
-  deletedAt         DateTime
+  createdAt         DateTime @default(now())    
+  updatedAt         DateTime @updatedAt         
+  deletedAt         DateTime?      
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -98,9 +98,9 @@ model Rsvp {
   guestName          String
   numberOfPeople     BigInt
   confirmationStatus String   @default("pending")
-  createdAt          DateTime
-  updatedAt          DateTime
-  deletedAt          DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -112,9 +112,9 @@ model Invitation {
   userId    String
   designId  String
   link      String
-  createdAt DateTime
-  updatedAt DateTime
-  deletedAt DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   User               User                 @relation(fields: [userId], references: [id])
   Design             Design               @relation(fields: [designId], references: [id])
@@ -139,9 +139,9 @@ model Quote {
   invitationId String
   content      String
   author       String
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -155,9 +155,9 @@ model Design {
   imageUrl     String
   templateFile String
   category     String
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
   Invitation   Invitation[]
 
   @@map("designs")
@@ -169,9 +169,9 @@ model Gift {
   nameAccount  String
   noAccount    String
   imgAccount   String?
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -184,9 +184,9 @@ model LoveStory {
   title        String
   story        String
   imageUrl     String?
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -201,9 +201,9 @@ model Setting {
   textAcara    String
   textPenutup  String
   broadcast    String
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -214,9 +214,9 @@ model Gallery {
   id           String   @id @default(uuid())
   invitationId String
   imageUrl     String
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
@@ -284,9 +284,9 @@ model Review {
   invitationId String
   rate         BigInt
   comment      String
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  createdAt          DateTime @default(now())    
+  updatedAt          DateTime @updatedAt         
+  deletedAt          DateTime?   
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
 
