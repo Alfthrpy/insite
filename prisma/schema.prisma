@@ -10,14 +10,12 @@ datasource db {
 
 model Music {
   id           String   @id @default(uuid())
-  invitationId String
   musicUrl     String
   createdAt    DateTime
   updatedAt    DateTime
   deletedAt    DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
-
+  Invitation Invitation[]
   @@map("musics")
 }
 
@@ -52,7 +50,7 @@ model BrideGroom {
   linkTwitterBride   String?
   linkYtbBride       String?
   createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
+  updatedAt          DateTime? @updatedAt         
   deletedAt          DateTime?               
 
   Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
@@ -111,20 +109,21 @@ model Invitation {
   id        String   @id @default(uuid())
   userId    String
   designId  String
+  qouteId   String
+  musicId   String
   link      String
   createdAt          DateTime @default(now())    
   updatedAt          DateTime @updatedAt         
   deletedAt          DateTime?   
-
   User               User                 @relation(fields: [userId], references: [id])
   Design             Design               @relation(fields: [designId], references: [id])
-  Music              Music[]
+  Music              Music                @relation(fields: [musicId],references: [id])
+  Quote              Quote                @relation(fields: [qouteId],references: [id])
   Comment            Comment[]
   BrideGroom         BrideGroom[]
   Event              Event[]
   PaymentTransaction PaymentTransaction[]
   Rsvp               Rsvp[]
-  Quote              Quote[]
   Gift               Gift[]
   LoveStory          LoveStory[]
   Setting            Setting[]
@@ -136,15 +135,13 @@ model Invitation {
 
 model Quote {
   id           String   @id @default(uuid())
-  invitationId String
   content      String
   author       String
   createdAt          DateTime @default(now())    
   updatedAt          DateTime @updatedAt         
   deletedAt          DateTime?   
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
-
+  Invitation Invitation[]
   @@map("Quotes")
 }
 

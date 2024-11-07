@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 
-export default async function POST(req : Request){
+export async function POST(req : Request){
     try {
         const {
             invitationId,
@@ -45,6 +45,7 @@ export default async function POST(req : Request){
 
           return NextResponse.json(response,{status:201})
     } catch (error) {
+        console.log(error)
         return NextResponse.json(error,{status:500})
     }
 }
