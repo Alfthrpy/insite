@@ -32,12 +32,21 @@ export async function POST(req: Request) {
     }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
-        const response = await prisma.event.findMany();
-        return NextResponse.json(response, { status: 200 });
+      const url = new URL(req.url);
+      const invitationId = url.searchParams.get("invitationId");
+  
+      const whereCondition = invitationId ? { invitationId } : undefined;
+  
+      const response = await prisma.event.findMany({
+        where: whereCondition,
+      });
+  
+      return NextResponse.json(response, { status: 200 });
     } catch (error) {
-        return NextResponse.json(error, { status: 500 });
+      console.log(error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
-}
+  }
 

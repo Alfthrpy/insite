@@ -29,7 +29,7 @@ export async function PATCH(
         data : parsedData.data
     })
 
-    return NextResponse.json(response,{status:500})
+    return NextResponse.json(response,{status:200})
 
   } catch (error) {
     console.log(error);
@@ -40,7 +40,7 @@ export async function PATCH(
   }
 }
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(req : Request,{ params }: { params: { id: string } }) {
     try {
         const id = params.id
         const response = await prisma.gallery.findUnique({

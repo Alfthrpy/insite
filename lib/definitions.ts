@@ -36,11 +36,12 @@ const EventSchema = z.object({
   nameEvent: z.string().min(1, { message: "Nama acara tidak boleh kosong" }),
   location: z.string().min(1, { message: "Lokasi acara tidak boleh kosong" }),
   address: z.string().min(1, { message: "Alamat acara tidak boleh kosong" }),
-  dateEvent: z.date({ message: "Tanggal acara tidak valid" }),
-  startTime: z.date({ message: "Waktu mulai acara tidak valid" }),
-  endTime: z.date({ message: "Waktu selesai acara tidak valid" }),
+  dateEvent: z.string().datetime({ message: "Tanggal acara tidak valid" }),
+  startTime: z.string().datetime({ message: "Waktu mulai acara tidak valid" }),
+  endTime: z.string().datetime({ message: "Waktu selesai acara tidak valid" }),
   linkNavigationMap: z.string().url({ message: "URL peta tidak valid" }),
 });
+
 
 // Validation schema for PaymentTransaction
 const PaymentTransactionSchema = z.object({

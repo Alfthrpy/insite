@@ -32,3 +32,21 @@ export async function POST(req : Request){
         return NextResponse.json(error,{status:500})
     }
 }
+
+export async function GET(req: Request) {
+    try {
+      const url = new URL(req.url);
+      const invitationId = url.searchParams.get("invitationId");
+  
+      const whereCondition = invitationId ? { invitationId } : undefined;
+  
+      const response = await prisma.gift.findMany({
+        where: whereCondition,
+      });
+  
+      return NextResponse.json(response, { status: 200 });
+    } catch (error) {
+      console.log(error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+  }
