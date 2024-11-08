@@ -1,3 +1,4 @@
+import { EventSchema } from "@/lib/definitions";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -7,14 +8,25 @@ export async function PATCH(req: Request,
         const id = params.id
         const {...data } = await req.json();
 
+        // Validasi data menggunakan zod
+        const parsedData = EventSchema.safeParse(data);
+
+        if (!parsedData.success) {
+        // Ambil pesan error dari zod dan kirimkan sebagai respons
+        const errorMessages = parsedData.error.errors.map((err) => err.message);
+
+        return NextResponse.json(
+            {
+            error: "Validation failed",
+            messages: errorMessages,
+            },
+            { status: 400 }
+        );
+        }
+
         const response = await prisma.event.update({
             where: { id },
-            data: {
-                ...data,
-                dateEvent: data.dateEvent ? new Date(data.dateEvent) : undefined,
-                startTime: data.startTime ? new Date(data.startTime) : undefined,
-                endTime: data.endTime ? new Date(data.endTime) : undefined,
-            },
+            data: parsedData.data,
         });
 
         return NextResponse.json(response, { status: 200 });
