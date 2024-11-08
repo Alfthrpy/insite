@@ -9,22 +9,23 @@ datasource db {
 }
 
 model Music {
-  id           String   @id @default(uuid())
-  musicUrl     String
-  createdAt    DateTime
-  updatedAt    DateTime
-  deletedAt    DateTime
+  id        String    @id @default(uuid())
+  musicUrl  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   Invitation Invitation[]
+
   @@map("musics")
 }
 
 model Comment {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   invitationId String
   text         String
-  createdAt    DateTime
-  updatedAt    DateTime
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
   deletedAt    BigInt
 
   Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
@@ -33,7 +34,7 @@ model Comment {
 }
 
 model BrideGroom {
-  id                 String   @id @default(uuid())
+  id                 String    @id @default(uuid())
   invitationId       String
   nameGroom          String
   imageGroom         String
@@ -49,17 +50,17 @@ model BrideGroom {
   linkFbBride        String?
   linkTwitterBride   String?
   linkYtbBride       String?
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime? @updatedAt         
-  deletedAt          DateTime?               
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime? @updatedAt
+  deletedAt          DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("brides and grooms")
 }
 
 model Event {
-  id                String   @id @default(uuid())
+  id                String    @id @default(uuid())
   invitationId      String
   nameEvent         String
   location          String
@@ -68,11 +69,11 @@ model Event {
   startTime         DateTime
   endTime           DateTime
   linkNavigationMap String
-  createdAt         DateTime @default(now())    
-  updatedAt         DateTime @updatedAt         
-  deletedAt         DateTime?      
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("events")
 }
@@ -83,42 +84,43 @@ model PaymentTransaction {
   paymentMethod   String   @default("dana")
   amount          Decimal
   paymentStatus   String   @default("pending")
+  gross_amount    Decimal  
   transactionDate DateTime
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("payment_transactions")
 }
 
 model Rsvp {
-  id                 String   @id @default(uuid())
+  id                 String    @id @default(uuid())
   invitationId       String
   guestName          String
   numberOfPeople     BigInt
-  confirmationStatus String   @default("pending")
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  confirmationStatus String    @default("pending")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  deletedAt          DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("rsvps")
 }
 
 model Invitation {
-  id        String   @id @default(uuid())
-  userId    String
-  designId  String
-  qouteId   String
-  musicId   String
-  link      String
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  id                 String               @id @default(uuid())
+  userId             String
+  designId           String?
+  qouteId            String?
+  musicId            String?
+  link               String
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  deletedAt          DateTime?
   User               User                 @relation(fields: [userId], references: [id])
-  Design             Design               @relation(fields: [designId], references: [id])
-  Music              Music                @relation(fields: [musicId],references: [id])
-  Quote              Quote                @relation(fields: [qouteId],references: [id])
+  Design             Design?               @relation(fields: [designId], references: [id])
+  Music              Music?                @relation(fields: [musicId], references: [id])
+  Quote              Quote?                @relation(fields: [qouteId], references: [id])
   Comment            Comment[]
   BrideGroom         BrideGroom[]
   Event              Event[]
@@ -134,14 +136,15 @@ model Invitation {
 }
 
 model Quote {
-  id           String   @id @default(uuid())
-  content      String
-  author       String
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  id        String    @id @default(uuid())
+  content   String
+  author    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   Invitation Invitation[]
+
   @@map("Quotes")
 }
 
@@ -152,91 +155,92 @@ model Design {
   imageUrl     String
   templateFile String
   category     String
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  deletedAt    DateTime?
   Invitation   Invitation[]
 
   @@map("designs")
 }
 
 model Gift {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   invitationId String
   nameAccount  String
   noAccount    String
   imgAccount   String?
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("gifts")
 }
 
 model LoveStory {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   invitationId String
   title        String
   story        String
   imageUrl     String?
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("love_storys")
 }
 
 model Setting {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   invitationId String
   title        String
   textPembuka  String
   textAcara    String
   textPenutup  String
   broadcast    String
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("settings")
 }
 
 model Gallery {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   invitationId String
   imageUrl     String
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("galerys")
 }
 
 model User {
-  id         String       @id @default(uuid())
-  name   String
-  email      String       @unique
+  id            String       @id @default(uuid())
+  name          String
+  email         String       @unique
   emailVerified DateTime?
   image         String?
-  password   String?
-  role       String       @default("USER")
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  deletedAt DateTime?
-  Invitation Invitation[]
+  password      String?
+  role          String       @default("USER")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
+  Invitation    Invitation[]
   accounts      Account[]
   sessions      Session[]
 
   @@map("Users")
 }
+
 model Account {
   userId            String
   type              String
@@ -249,43 +253,43 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
 }
- 
+
 model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
 }
 
 model Review {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   invitationId String
   rate         BigInt
   comment      String
-  createdAt          DateTime @default(now())    
-  updatedAt          DateTime @updatedAt         
-  deletedAt          DateTime?   
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id],onDelete: Cascade)
+  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
 }

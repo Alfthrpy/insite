@@ -12,3 +12,4 @@ export async function GET({ params }: { params: { id: string } }){
         return NextResponse.json(error,{status:500})
     }
 }
+

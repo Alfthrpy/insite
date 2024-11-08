@@ -1,166 +1,123 @@
 import { z } from "zod";
 
-// Validation schema for Music
 const MusicSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  musicUrl: z.string().url(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date().nullable(),
+  musicUrl: z.string().url({ message: "URL musik tidak valid" }),
 });
 
 // Validation schema for Comment
 const CommentSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  text: z.string().min(1),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.bigint(),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  text: z.string().min(1, { message: "Komentar tidak boleh kosong" }),
 });
 
 // Validation schema for BrideGroom
 const BrideGroomSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  nameGroom: z.string().min(1),
-  imageGroom: z.string().url(),
-  parentGroom: z.string().min(1),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  nameGroom: z.string().min(1, { message: "Nama pengantin pria tidak boleh kosong" }),
+  imageGroom: z.string().url({ message: "URL gambar pengantin pria tidak valid" }),
+  parentGroom: z.string().min(1, { message: "Nama orang tua pengantin pria tidak boleh kosong" }),
+  nameBride: z.string().min(1, { message: "Nama pengantin wanita tidak boleh kosong" }),
+  imageBride: z.string().url({ message: "URL gambar pengantin wanita tidak valid" }),
+  parentBride: z.string().min(1, { message: "Nama orang tua pengantin wanita tidak boleh kosong" }),
   linkInstagramGroom: z.string().url().optional(),
   linkFbGroom: z.string().url().optional(),
   linkTwitterGroom: z.string().url().optional(),
   linkYtbGroom: z.string().url().optional(),
-  nameBride: z.string().min(1),
-  imageBride: z.string().url(),
-  parentBride: z.string().min(1),
   linkInstagramBride: z.string().url().optional(),
   linkFbBride: z.string().url().optional(),
   linkTwitterBride: z.string().url().optional(),
   linkYtbBride: z.string().url().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
 });
 
 // Validation schema for Event
 const EventSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  nameEvent: z.string().min(1),
-  location: z.string().min(1),
-  address: z.string().min(1),
-  dateEvent: z.date(),
-  startTime: z.date(),
-  endTime: z.date(),
-  linkNavigationMap: z.string().url(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  nameEvent: z.string().min(1, { message: "Nama acara tidak boleh kosong" }),
+  location: z.string().min(1, { message: "Lokasi acara tidak boleh kosong" }),
+  address: z.string().min(1, { message: "Alamat acara tidak boleh kosong" }),
+  dateEvent: z.date({ message: "Tanggal acara tidak valid" }),
+  startTime: z.date({ message: "Waktu mulai acara tidak valid" }),
+  endTime: z.date({ message: "Waktu selesai acara tidak valid" }),
+  linkNavigationMap: z.string().url({ message: "URL peta tidak valid" }),
 });
 
 // Validation schema for PaymentTransaction
 const PaymentTransactionSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  paymentMethod: z.enum(["cash", "credit_card", "transfer"]).default("cash"),
-  amount: z.number().positive(),
-  paymentStatus: z.enum(["pending", "completed", "failed"]).default("pending"),
-  transactionDate: z.date(),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  paymentMethod: z.enum(["cash", "credit_card", "transfer"], {
+    message: "Metode pembayaran harus salah satu dari: cash, credit_card, transfer"
+  }).default("cash"),
+  amount: z.number().positive({ message: "Jumlah pembayaran harus lebih besar dari 0" }),
+  paymentStatus: z.enum(["pending", "completed", "failed"], {
+    message: "Status pembayaran harus salah satu dari: pending, completed, failed"
+  }).default("pending"),
+  transactionDate: z.date({ message: "Tanggal transaksi tidak valid" }),
 });
 
 // Validation schema for Rsvp
 const RsvpSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  guestName: z.string().min(1),
-  numberOfPeople: z.bigint().nonnegative(),
-  confirmationStatus: z.enum(["pending", "confirmed", "declined"]).default("pending"),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  guestName: z.string().min(1, { message: "Nama tamu tidak boleh kosong" }),
+  numberOfPeople: z.bigint().nonnegative({ message: "Jumlah orang tidak boleh negatif" }),
+  confirmationStatus: z.enum(["pending", "confirmed", "declined"], {
+    message: "Status konfirmasi harus salah satu dari: pending, confirmed, declined"
+  }).default("pending"),
 });
 
 // Validation schema for Invitation
 const InvitationSchema = z.object({
-  id: z.string().uuid(),
-  userId: z.string().uuid(),
-  designId: z.string().uuid(),
-  link: z.string().url(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  userId: z.string().uuid({ message: "User ID harus berupa UUID yang valid" }),
+  designId: z.string().uuid().optional(),
+  qouteId: z.string().uuid().optional(),
+  musicId: z.string().uuid().optional(),
+  link: z.string().url({ message: "URL undangan tidak valid" }),
 });
 
 // Validation schema for Quote
 const QuoteSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  content: z.string().min(1),
-  author: z.string().min(1),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  content: z.string().min(1, { message: "Konten kutipan tidak boleh kosong" }),
+  author: z.string().min(1, { message: "Nama penulis kutipan tidak boleh kosong" }),
 });
 
 // Validation schema for Design
 const DesignSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(1),
-  price: z.number().positive(),
-  imageUrl: z.string().url(),
-  templateFile: z.string().min(1),
-  category: z.string().min(1),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  name: z.string().min(1, { message: "Nama desain tidak boleh kosong" }),
+  price: z.number().positive({ message: "Harga desain harus lebih besar dari 0" }),
+  imageUrl: z.string().url({ message: "URL gambar desain tidak valid" }),
+  templateFile: z.string().min(1, { message: "File template desain tidak boleh kosong" }),
+  category: z.string().min(1, { message: "Kategori desain tidak boleh kosong" }),
 });
 
 // Validation schema for Gift
 const GiftSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  nameAccount: z.string().min(1),
-  noAccount: z.string().min(1),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  nameAccount: z.string().min(1, { message: "Nama akun tidak boleh kosong" }),
+  noAccount: z.string().min(1, { message: "Nomor akun tidak boleh kosong" }),
   imgAccount: z.string().url().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
 });
 
 // Validation schema for LoveStory
 const LoveStorySchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  title: z.string().min(1),
-  story: z.string().min(1),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  title: z.string().min(1, { message: "Judul cerita cinta tidak boleh kosong" }),
+  story: z.string().min(1, { message: "Cerita cinta tidak boleh kosong" }),
   imageUrl: z.string().url().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
 });
 
 // Validation schema for Setting
 const SettingSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  title: z.string().min(1),
-  textPembuka: z.string().min(1),
-  textAcara: z.string().min(1),
-  textPenutup: z.string().min(1),
-  broadcast: z.string().min(1),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  title: z.string().min(1, { message: "Judul pengaturan tidak boleh kosong" }),
+  textPembuka: z.string().min(1, { message: "Teks pembuka tidak boleh kosong" }),
+  textAcara: z.string().min(1, { message: "Teks acara tidak boleh kosong" }),
+  textPenutup: z.string().min(1, { message: "Teks penutup tidak boleh kosong" }),
+  broadcast: z.string().min(1, { message: "Broadcast tidak boleh kosong" }),
 });
 
 // Validation schema for Gallery
 const GallerySchema = z.object({
-  invitationId: z.string().uuid(),
-  imageUrl: z.string().url(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  imageUrl: z.string().url({ message: "URL gambar tidak valid" }),
 });
 
 // Validation schema for User
@@ -209,13 +166,9 @@ const UpdateUserSchema = z.object({
 
 // Validation schema for Review
 const ReviewSchema = z.object({
-  id: z.string().uuid(),
-  invitationId: z.string().uuid(),
-  rate: z.bigint().nonnegative(),
-  comment: z.string().min(1),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date(),
+  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  rate: z.bigint().nonnegative({ message: "Rating tidak boleh negatif" }),
+  comment: z.string().min(1, { message: "Komentar tidak boleh kosong" }),
 });
 
 export {
