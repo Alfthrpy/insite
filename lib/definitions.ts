@@ -7,6 +7,7 @@ const MusicSchema = z.object({
 // Validation schema for Comment
 const CommentSchema = z.object({
   invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  name : z.string().min(1, {message:"Nama tidak boleh kosong"}),
   text: z.string().min(1, { message: "Komentar tidak boleh kosong" }),
 });
 
