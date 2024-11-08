@@ -9,7 +9,6 @@ export async function POST(req: Request) {
 
     // Validasi data menggunakan zod
     const parsedData = LoveStorySchema.safeParse(data);
-
     if (!parsedData.success) {
       // Ambil pesan error dari zod dan kirimkan sebagai respons
       const errorMessages = parsedData.error.errors.map((err) => err.message);

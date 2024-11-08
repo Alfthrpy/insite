@@ -23,10 +23,11 @@ model Music {
 model Comment {
   id           String    @id @default(uuid())
   invitationId String
+  name         String
   text         String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime? @updatedAt
-  deletedAt    BigInt
+  deletedAt    DateTime?
 
   Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
