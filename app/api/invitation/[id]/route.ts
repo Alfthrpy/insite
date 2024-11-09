@@ -3,35 +3,27 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 
-export async function GET(req : Request,{ params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
       const id = params.id;
-      const response = await prisma.invitation.findUnique({
-        where: { id },
-        include: {
-          User: true,
-          Design: true,
-          Music: true,
-          Quote: true,
-          Comment: true,
-          BrideGroom: true,
-          Event: true,
-          PaymentTransaction: true,
-          Rsvp: true,
-          Gift: true,
-          LoveStory: true,
-          Setting: true,
-          Gallery: true,
-          Review: true,
-        },
+  
+      // Ambil hanya ID dari invitation dan ID dari relasi terkait
+      const invitation = await prisma.invitation.findUnique({
+        where: { id }
       });
   
-      return NextResponse.json(response, { status: 200 });
+      // Pastikan data ditemukan
+      if (!invitation) {
+        return NextResponse.json({ error: "Invitation not found" }, { status: 404 });
+      }
+  
+      return NextResponse.json(invitation, { status: 200 });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
   }
+  
   
 
 export async function PATCH(req : Request,{ params }: { params: { id: string } }){

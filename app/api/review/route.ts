@@ -2,16 +2,27 @@ import { ReviewSchema } from "@/lib/definitions";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const response = await prisma.review.findMany();
+    const url = new URL(req.url);
+    const designId = url.searchParams.get("designId");
+
+    if (!designId) {
+      return NextResponse.json({ error: "designId is required" }, { status: 400 });
+    }
+
+    const response = await prisma.review.findMany({
+      where: { designId: designId },
+    });
+
+    if (!response) {
+      return NextResponse.json({ error: "BrideGroom not found" }, { status: 404 });
+    }
+
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

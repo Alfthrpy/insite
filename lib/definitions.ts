@@ -53,14 +53,14 @@ const PaymentTransactionSchema = z.object({
   paymentStatus: z.enum(["pending", "completed", "failed"], {
     message: "Status pembayaran harus salah satu dari: pending, completed, failed"
   }).default("pending"),
-  transactionDate: z.date({ message: "Tanggal transaksi tidak valid" }),
+  transactionDate: z.string().datetime({ message: "Tanggal transaksi tidak valid" }),
 });
 
 // Validation schema for Rsvp
 const RsvpSchema = z.object({
   invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
   guestName: z.string().min(1, { message: "Nama tamu tidak boleh kosong" }),
-  numberOfPeople: z.bigint().nonnegative({ message: "Jumlah orang tidak boleh negatif" }),
+  numberOfPeople: z.number().nonnegative({ message: "Jumlah orang tidak boleh negatif" }),
   confirmationStatus: z.enum(["pending", "confirmed", "declined"], {
     message: "Status konfirmasi harus salah satu dari: pending, confirmed, declined"
   }).default("pending"),
@@ -86,7 +86,7 @@ const DesignSchema = z.object({
   name: z.string().min(1, { message: "Nama desain tidak boleh kosong" }),
   price: z.number().positive({ message: "Harga desain harus lebih besar dari 0" }),
   imageUrl: z.string().url({ message: "URL gambar desain tidak valid" }),
-  templateFile: z.string().min(1, { message: "File template desain tidak boleh kosong" }),
+  templateName: z.string().min(1, { message: "File template desain tidak boleh kosong" }),
   category: z.string().min(1, { message: "Kategori desain tidak boleh kosong" }),
 });
 
@@ -121,6 +121,13 @@ const GallerySchema = z.object({
   invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
   imageUrl: z.string().url({ message: "URL gambar tidak valid" }),
 });
+
+const ReviewSchema = z.object({
+  designId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
+  rate: z.number().nonnegative({ message: "Rating tidak boleh negatif" }),
+  comment: z.string().min(1, { message: "Komentar tidak boleh kosong" }),
+});
+
 
 // Validation schema for User
 const UserSchema = z.object({
@@ -167,11 +174,6 @@ const UpdateUserSchema = z.object({
 });
 
 // Validation schema for Review
-const ReviewSchema = z.object({
-  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
-  rate: z.bigint().nonnegative({ message: "Rating tidak boleh negatif" }),
-  comment: z.string().min(1, { message: "Komentar tidak boleh kosong" }),
-});
 
 export {
   MusicSchema,

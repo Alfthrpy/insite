@@ -33,20 +33,26 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-    try {
-      const url = new URL(req.url);
-      const invitationId = url.searchParams.get("invitationId");
-  
-      const whereCondition = invitationId ? { invitationId } : undefined;
-  
-      const response = await prisma.event.findMany({
-        where: whereCondition,
-      });
-  
-      return NextResponse.json(response, { status: 200 });
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  try {
+    const url = new URL(req.url);
+    const invitationId = url.searchParams.get("invitationId");
+
+    if (!invitationId) {
+      return NextResponse.json({ error: "invitationId is required" }, { status: 400 });
     }
+
+    const response = await prisma.event.findFirst({
+      where: { invitationId: invitationId },
+    });
+
+    if (!response) {
+      return NextResponse.json({ error: "event not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(response, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
+}
 

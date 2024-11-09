@@ -18,6 +18,7 @@ model Music {
   Invitation Invitation[]
 
   @@map("musics")
+  @@index([musicUrl]) // Indeks pada musicUrl untuk pencarian lebih cepat
 }
 
 model Comment {
@@ -32,7 +33,9 @@ model Comment {
   Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("comentars")
+  @@index([invitationId]) // Indeks pada invitationId untuk mempercepat join dan pencarian berdasarkan invitationId
 }
+
 
 model BrideGroom {
   id                 String    @id @default(uuid())
@@ -58,6 +61,7 @@ model BrideGroom {
   Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("brides and grooms")
+  @@index([invitationId]) // Indeks pada invitationId untuk mempercepat join dengan tabel Invitation
 }
 
 model Event {
@@ -77,7 +81,9 @@ model Event {
   Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("events")
+  @@index([invitationId]) // Indeks pada invitationId untuk mempercepat pencarian berdasarkan invitationId
 }
+
 
 model PaymentTransaction {
   id              String   @id @default(uuid())
@@ -85,20 +91,20 @@ model PaymentTransaction {
   paymentMethod   String   @default("dana")
   amount          Decimal
   paymentStatus   String   @default("pending")
-  gross_amount    Decimal  
   transactionDate DateTime
 
   Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("payment_transactions")
+  @@index([invitationId, paymentStatus]) // Indeks pada invitationId dan paymentStatus untuk mempercepat pencarian transaksi berdasarkan keduanya
 }
 
 model Rsvp {
   id                 String    @id @default(uuid())
   invitationId       String
   guestName          String
-  numberOfPeople     BigInt
-  confirmationStatus String    @default("pending")
+  numberOfPeople     Int       @default(1)
+  confirmationStatus String    @default("belum konfirmasi")
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   deletedAt          DateTime?
@@ -106,6 +112,7 @@ model Rsvp {
   Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
 
   @@map("rsvps")
+  @@index([invitationId]) // Indeks pada invitationId untuk mempercepat pencarian RSVP berdasarkan invitationId
 }
 
 model Invitation {
@@ -131,8 +138,9 @@ model Invitation {
   LoveStory          LoveStory[]
   Setting            Setting[]
   Gallery            Gallery[]
-  Review             Review[]
 
+  @@index([userId]) // Indeks pada userId untuk mempercepat pencarian berdasarkan user
+  @@index([link]) // Indeks pada link untuk mempercepat pencarian berdasarkan link
   @@map("invitations")
 }
 
@@ -154,12 +162,13 @@ model Design {
   name         String
   price        Float
   imageUrl     String
-  templateFile String
+  templateName String
   category     String
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   deletedAt    DateTime?
   Invitation   Invitation[]
+  Review       Review[]
 
   @@map("designs")
 }
@@ -197,11 +206,11 @@ model LoveStory {
 model Setting {
   id           String    @id @default(uuid())
   invitationId String
-  title        String
-  textPembuka  String
-  textAcara    String
-  textPenutup  String
-  broadcast    String
+  title        String    @default("Pernikahan")
+  textPembuka  String    @default("Assalamualaikum")
+  textAcara    String    @default("Pernikahan Awal")
+  textPenutup  String    @default("Pernikahan Akhir")
+  broadcast    String    @default("Halo semuanya...")
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
@@ -240,6 +249,7 @@ model User {
   sessions      Session[]
 
   @@map("Users")
+  @@index([email]) // Indeks pada email untuk mempercepat pencarian berdasarkan email
 }
 
 model Account {
@@ -283,18 +293,18 @@ model VerificationToken {
 
 model Review {
   id           String    @id @default(uuid())
-  invitationId String
-  rate         BigInt
+  designId String
+  rate         Int
   comment      String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
 
-  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  Design Design @relation(fields: [designId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
+  @@index([designId]) // Indeks pada invitationId untuk mempercepat pencarian review berdasarkan invitationId
 }
-
 enum payment_method {
   cash
   credit_card

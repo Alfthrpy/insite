@@ -31,11 +31,27 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const response = await prisma.brideGroom.findMany();
+    const url = new URL(req.url);
+    const invitationId = url.searchParams.get("invitationId");
+
+    if (!invitationId) {
+      return NextResponse.json({ error: "invitationId is required" }, { status: 400 });
+    }
+
+    const response = await prisma.brideGroom.findFirst({
+      where: { invitationId: invitationId },
+    });
+
+    if (!response) {
+      return NextResponse.json({ error: "BrideGroom not found" }, { status: 404 });
+    }
+
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
-    return NextResponse.json(error, { status: 500 });
+    console.log(error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
