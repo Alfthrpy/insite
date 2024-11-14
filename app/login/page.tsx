@@ -1,5 +1,5 @@
 import LoginFormComponents from "./form";
-
+import '../globals.css'
 
 export default function Login(){
     return(
