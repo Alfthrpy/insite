@@ -87,16 +87,17 @@ model Event {
 
 model PaymentTransaction {
   id              String   @id @default(uuid())
-  invitationId    String
+  userId          String
+  designId        String
   paymentMethod   String   @default("dana")
   amount          Decimal
   paymentStatus   String   @default("pending")
-  transactionDate DateTime
-
-  Invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  transactionDate DateTime @default(now())
+  Design          Design    @relation(fields: [designId], references: [id], onDelete: Cascade) // Buat relasi opsional
+  User         User    @relation(fields: [userId], references: [id], onDelete: Cascade) // Buat relasi opsional
 
   @@map("payment_transactions")
-  @@index([invitationId, paymentStatus]) // Indeks pada invitationId dan paymentStatus untuk mempercepat pencarian transaksi berdasarkan keduanya
+  @@index([paymentStatus]) 
 }
 
 model Rsvp {
@@ -118,7 +119,7 @@ model Rsvp {
 model Invitation {
   id                 String               @id @default(uuid())
   userId             String
-  designId           String?
+  designId           String               @unique
   qouteId            String?
   musicId            String?
   link               String
@@ -132,7 +133,6 @@ model Invitation {
   Comment            Comment[]
   BrideGroom         BrideGroom[]
   Event              Event[]
-  PaymentTransaction PaymentTransaction[]
   Rsvp               Rsvp[]
   Gift               Gift[]
   LoveStory          LoveStory[]
@@ -169,6 +169,7 @@ model Design {
   deletedAt    DateTime?
   Invitation   Invitation[]
   Review       Review[]
+  PaymentTransaction PaymentTransaction[]
 
   @@map("designs")
 }
@@ -244,6 +245,7 @@ model User {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   deletedAt     DateTime?
+  PaymentTransaction PaymentTransaction[]
   Invitation    Invitation[]
   accounts      Account[]
   sessions      Session[]
@@ -305,20 +307,4 @@ model Review {
   @@map("reviews")
   @@index([designId]) // Indeks pada invitationId untuk mempercepat pencarian review berdasarkan invitationId
 }
-enum payment_method {
-  cash
-  credit_card
-  transfer
-}
 
-enum payment_status {
-  pending
-  completed
-  failed
-}
-
-enum confirmation_status {
-  pending
-  confirmed
-  declined
-}
