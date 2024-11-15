@@ -14,12 +14,16 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        purple : '#b19cd9'
       },
     },
   },
   plugins: [
     daisyui,
   ],
+  daisyui: {
+    themes: ["light", "dark", "valentine"],
+  },
 };
 export default config;
 
