@@ -16,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "insite": "file:",
     "jsonwebtoken": "^9.0.2",
+    "midtrans-client": "^1.4.2",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
     "nodemailer": "^6.9.15",

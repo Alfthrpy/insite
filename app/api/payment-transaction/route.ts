@@ -2,17 +2,25 @@ import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
 
-export async function POST(req : Request){
+export async function POST(req: Request) {
     try {
-        const  {...data} = await req.json()
-        const response = await prisma.paymentTransaction.create({
-            data : {...data}
-        })
+        const { designId,userId , amount} = await req.json();
 
-        return NextResponse.json(response,{status:201})
+        // Tentukan data transaksi berdasarkan jenis transaksi
+        const transactionData = {
+            designId,
+            userId,
+            amount
+        };
+
+        const response = await prisma.paymentTransaction.create({
+            data: transactionData,
+        });
+
+        return NextResponse.json(response, { status: 201 });
     } catch (error) {
-        console.log(error)
-        return NextResponse.json({error : "Internal Server Error"},{status:500})
+        console.error("Error creating transaction:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
 
