@@ -13,87 +13,37 @@
 - **Responsive Design**: Tampilan undangan yang responsif di berbagai perangkat, termasuk desktop, tablet, dan ponsel.
 - **Undangan dengan Animasi**: Tambahkan animasi sederhana agar undangan tampak lebih hidup dan interaktif.
 
-## 🚀 **Instalasi**
+## Getting Started
 
-### 1. **Clone Repository**
-```bash
-git clone https://github.com/username/nama-aplikasi.git
-```
+First, run the development server:
 
-### 2. **Masuk ke Direktori**
-```bash
-cd nama-aplikasi
-```
-
-### 3. **Instal Dependensi**
-Gunakan `npm` atau `yarn` untuk menginstal semua dependensi:
-```bash
-npm install
-```
-atau
-```bash
-yarn install
-```
-
-### 4. **Jalankan Aplikasi**
-Untuk menjalankan aplikasi secara lokal, gunakan:
 ```bash
 npm run dev
-```
-atau
-```bash
+# or
 yarn dev
-```
-Akses aplikasi di `http://localhost:3000`.
-
-## 🛠 **Teknologi yang Digunakan**
-- **Frontend**: 
-  - Tailwind CSS untuk styling yang cepat dan responsif.
-  - React.js untuk antarmuka pengguna interaktif.
-  
-- **Backend**: 
-  - Node.js dan Express.js untuk server-side logic.
-  - MongoDB sebagai database untuk menyimpan data RSVP dan undangan.
-
-- **Deploy**: 
-  - Vercel atau Netlify untuk deployment frontend.
-  - Heroku atau Render untuk backend deployment.
-
-## 📂 **Struktur Proyek**
-```
-nama-aplikasi/
-├── public/                 # File statis seperti gambar dan favicon
-├── src/
-│   ├── components/         # Komponen UI seperti form, tombol, header
-│   ├── pages/              # Halaman aplikasi seperti Home, Create Invite, RSVP
-│   ├── assets/             # Gambar, ikon, dan file media lainnya
-│   ├── services/           # API calls dan integrasi backend
-│   └── App.js              # Entry point React
-├── .gitignore              # File untuk mengabaikan file tertentu di Git
-├── package.json            # Informasi project dan dependensi
-├── README.md               # Dokumentasi aplikasi
-└── tailwind.config.js      # Konfigurasi Tailwind CSS
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## 🔧 **Konfigurasi**
-- **Environment Variables**: Pastikan untuk mengatur variabel lingkungan seperti API keys dan database connections.
-  Buat file `.env` di direktori utama dan tambahkan konfigurasi berikut:
-  ```bash
-  REACT_APP_API_URL=http://localhost:5000/api
-  MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/<dbname>
-  ```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🤝 **Kontribusi**
-Kami menerima kontribusi dari komunitas! Jika Anda menemukan bug atau ingin menambahkan fitur baru, silakan buka issue atau buat pull request di repository ini.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-1. Fork repository ini
-2. Buat branch fitur baru (`git checkout -b fitur-baru`)
-3. Commit perubahan Anda (`git commit -m 'Add fitur baru'`)
-4. Push ke branch (`git push origin fitur-baru`)
-5. Buat pull request
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## 📝 **Lisensi**
-Proyek ini dilisensikan di bawah lisensi MIT - lihat file [LICENSE](LICENSE) untuk lebih detail.
+## Learn More
 
-## 📧 **Kontak**
-Jika Anda memiliki pertanyaan atau saran, jangan ragu untuk menghubungi kami di [email@example.com].
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
