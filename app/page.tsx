@@ -1,6 +1,10 @@
 import './styles/style.css'
 
+
+
 export default function Home() {
+
+
   return (
     <section>
 
@@ -15,7 +19,7 @@ export default function Home() {
                         <a href="#"><img src="img/fitur.png" alt="Home Icon"/>FITUR</a>
                         <a href="#"><img src="img/kontak.png" alt="Home Icon"/>KONTAK</a>
                     </div>
-                  <a href="#" className="login-button">LOGIN</a>
+                  <a href="/login" className="login-button">LOGIN</a>
             </div>
 
       <div className="hero-section">
@@ -140,7 +144,7 @@ export default function Home() {
       <div className="contact">
         <h2>Kontak Kami</h2>
         <div className="contact-info">
-          <p>Insite Team's</p>
+          <p>Insite Team&apos;s</p>
           <p>Jl. A.H. Nasution No.105, Cipadung Wetan, Kec. Cibiru,</p>
           <p>Kota Bandung, Jawa Barat 40614</p>
           <div className="social-icons">

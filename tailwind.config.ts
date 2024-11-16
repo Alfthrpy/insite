@@ -14,7 +14,10 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        purple : '#b19cd9'
+        purple: '#A594F9',
+        purpleSecondary: '#CDC1FF',
+        purpleHover: '#bca2ea',
+        purpleNeutral: '#7c759c'
       },
     },
   },
