@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoginFormSchema } from "@/lib/definitions";
+import toast from 'react-hot-toast';
 
 const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
 
@@ -35,13 +36,14 @@ const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
       console.log(response);
 
       if (response?.error) {
-        // Tangkap dan set error jika ada
-        alert("Login gagal");
+        toast.error('Login Gagal!');
       } else {
-        // Redirect ke halaman lain atau lakukan sesuatu saat login sukses
-        alert("Login berhasil");
-        router.push("/dashboard");
+        toast.success('Login Berhasil!', { duration: 2000 }); // Toast akan tampil selama 3 detik
+        setTimeout(() => {
+          router.push('/dashboard'); // Pindah ke halaman dashboard setelah 3 detik
+        }, 3000);
       }
+      
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

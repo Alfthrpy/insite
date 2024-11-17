@@ -3,7 +3,7 @@
 'use client'
 
 import './auth.css'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormLogin from './loginForm';
 import FormSignUp from './registerForm';
 
@@ -13,6 +13,14 @@ const AuthPage = () => {
   const handleToggleMode = () => {
     setIsSignUpMode((prevMode) => !prevMode);
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      // Operasi Anda
+    }, 2000);
+  
+    return () => clearTimeout(timeout); // Cleanup
+  }, []);
 
   return (
     <main className={isSignUpMode ? 'sign-up-mode' : ''}>

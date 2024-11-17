@@ -7,6 +7,7 @@ import { RegisterFormSchema } from "@/lib/definitions";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import toast from "react-hot-toast";
 
 const FormSignUp = ({ onToggleMode }: { onToggleMode: () => void }) => {
   const router = useRouter();
@@ -37,13 +38,15 @@ const FormSignUp = ({ onToggleMode }: { onToggleMode: () => void }) => {
 
       const result = await response.json();
       console.log("Registration successful:", result);
-      alert("Registration successful");
-      router.push("login");
+      toast.success('Register Berhasil, Silahkan Login!', { duration: 2000 }); // Toast akan tampil selama 3 detik
+        setTimeout(() => {
+          router.push('/login'); // Pindah ke halaman dashboard setelah 3 detik
+        }, 3000);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error during registration:", error);
-      alert(error.message);
+      toast.error(error.message);
     }
   }
 
