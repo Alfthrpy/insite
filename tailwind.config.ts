@@ -17,7 +17,8 @@ const config: Config = {
         purple: '#A594F9',
         purpleSecondary: '#CDC1FF',
         purpleHover: '#bca2ea',
-        purpleNeutral: '#7c759c'
+        purpleNeutral: '#7c759c',
+        purpleDrawer:'#605a7a'
       },
     },
   },
