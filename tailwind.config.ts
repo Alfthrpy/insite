@@ -21,9 +21,15 @@ const config: Config = {
         purpleDrawer:'#605a7a'
       },
     },
+    fontFamily: {
+      'alex': ["Alex Brush", 'cursive'],
+      'alegreya': ['Alegreya', 'serif'],
+      'alegreyaSans': ['"Alegreya Sans"', 'sans-serif'],
+    },
+    
   },
   plugins: [
-    daisyui,
+    daisyui, require('tailwindcss-motion')
   ],
   daisyui: {
     themes: ["light", "dark", "valentine"],

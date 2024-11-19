@@ -19,16 +19,22 @@ export default function DashboardLayout({
   const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
+  
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
+    if (status === "authenticated") {
+      // After login, trigger a refresh to ensure all session data is updated.
+      router.replace(pathname); // Force reloading the current page
+    } else if (status === "unauthenticated") {
+      router.push("/login"); // Redirect to login if unauthenticated
     }
   }, [status, router]);
+
+  
 
   useEffect(() => {
     switch (pathname) {
@@ -49,6 +55,7 @@ export default function DashboardLayout({
     }
   }, [pathname]);
 
+
   const handleLogout = () => {
     toast.success("Logout successful!",{duration:2000}); // Toast muncul setelah logout
     setTimeout(() => {
@@ -60,7 +67,10 @@ export default function DashboardLayout({
   if (!isClient || status === "loading") {
     return <div>Loading...</div>;
   }
-
+  
+  if (!session) {
+    return null;
+  }
 
   return (
     <SessionWrapper>
