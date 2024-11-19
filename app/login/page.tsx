@@ -23,6 +23,7 @@ const AuthPage = () => {
   }, []);
 
   return (
+    <div className='login-page'>
     <main className={isSignUpMode ? 'sign-up-mode' : ''}>
       <div className="box">
         <div className="inner-box">
@@ -54,6 +55,7 @@ const AuthPage = () => {
         </div>
       </div>
     </main>
+    </div>
   );
 };
 
