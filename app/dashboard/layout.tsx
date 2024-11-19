@@ -57,6 +57,7 @@ export default function DashboardLayout({
     }, 2000);
     
   };
+  
 
   if (!isClient || status === "loading") {
     return <DashboardSkeleton />
