@@ -127,7 +127,7 @@ model Invitation {
   updatedAt          DateTime             @updatedAt
   deletedAt          DateTime?
   User               User                 @relation(fields: [userId], references: [id])
-  Design             Design?               @relation(fields: [designId], references: [id])
+  Design             Design               @relation(fields: [designId], references: [id])
   Music              Music?                @relation(fields: [musicId], references: [id])
   Quote              Quote?                @relation(fields: [qouteId], references: [id])
   Comment            Comment[]

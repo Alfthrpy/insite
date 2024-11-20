@@ -66,7 +66,8 @@ async function main() {
   // Seeder untuk PaymentTransaction
   await prisma.paymentTransaction.create({
     data: {
-      invitationId: invitation.id,
+      userId : user.id,
+      designId : invitation.designId,
       paymentMethod: "cash",
       amount: 500000,
       paymentStatus: "completed",
@@ -84,16 +85,6 @@ async function main() {
     },
   });
 
-  // Seeder untuk Invitation
-  await prisma.invitation.create({
-    data: {
-      userId: user.id,
-      designId: invitation.designId, // gunakan ID desain yang sudah ada
-      qouteId: invitation.qouteId, // gunakan ID quote yang sudah ada
-      musicId: invitation.musicId, // gunakan ID musik yang sudah ada
-      link: "https://example.com/invitation",
-    },
-  });
 
   // Seeder untuk Quote
   await prisma.quote.create({
