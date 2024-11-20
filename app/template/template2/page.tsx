@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import Cover from '@/components/template1/Cover';
-import '../globals.css'
+import '@/app/globals.css'
 import Couple from '@/components/template1/Couple';
 import Story from '@/components/template1/Story';
 import Event from '@/components/template1/Event';
@@ -23,11 +23,7 @@ const Home: React.FC = () => {
       ) : (
           <div key="cover">
             <Showcase/>
-            <Couple/>
-            <Story/>
-            <Event />
-            <Gallery />
-            <RSVP></RSVP>
+            
           </div>
       )}
     </section>

@@ -1,7 +1,7 @@
 
 "use client";
-import { TypewriterEffectSmooth } from "./ui/typewritter-effect";
-import { TextEffect } from './ui/text-effect';
+import { TypewriterEffectSmooth } from "../ui/typewritter-effect";
+import { TextEffect } from '../ui/text-effect';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
