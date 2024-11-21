@@ -13,35 +13,13 @@
 - **Responsive Design**: Tampilan undangan yang responsif di berbagai perangkat, termasuk desktop, tablet, dan ponsel.
 - **Undangan dengan Animasi**: Tambahkan animasi sederhana agar undangan tampak lebih hidup dan interaktif.
 
-## 🚀 **Instalasi**
+## Getting Started
 
-### 1. **Clone Repository**
-```bash
-git clone https://github.com/username/nama-aplikasi.git
-```
+First, run the development server:
 
-### 2. **Masuk ke Direktori**
-```bash
-cd nama-aplikasi
-```
-
-### 3. **Instal Dependensi**
-Gunakan `npm` atau `yarn` untuk menginstal semua dependensi:
-```bash
-npm install
-```
-atau
-```bash
-yarn install
-```
-
-### 4. **Jalankan Aplikasi**
-Untuk menjalankan aplikasi secara lokal, gunakan:
 ```bash
 npm run dev
-```
-atau
-```bash
+# or
 yarn dev
 ```
 Akses aplikasi di `http://localhost:3000`.
