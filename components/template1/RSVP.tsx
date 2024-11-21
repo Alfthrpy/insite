@@ -3,13 +3,13 @@ import Image from "next/image";
 export default function RSVP(){
 
    return (
-      <div className="flex w-full relative items-stretch justify-center h-auto bg-secondary-content">
+      <div id="rsvp" className="flex w-full relative items-stretch justify-center h-auto">
          <div className="flex flex-col self-end pb-10 text-center min-w-96 max-w-lg my-20 mb-32">
             <div className="font-alex text-4xl self-end text-end mx-4">
                Konfirmasi Kehadiran
             </div>
             <Image
-                  src=""
+                  src="/template-img/template1/gallery3.png"
                   alt="img"
                   className="border-2 border-neutral ml-4 self-center my-10"
                   width={260}

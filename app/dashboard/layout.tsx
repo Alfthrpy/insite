@@ -41,8 +41,8 @@ export default function DashboardLayout({
       case "/dashboard":
         setPageTitle("Dashboard");
         break;
-      case "/dashboard/undangan":
-        setPageTitle("Undangan");
+      case "/dashboard/invitation":
+        setPageTitle("Invitation");
         break;
       case "/dashboard/customer-service":
         setPageTitle("Customer Service");
@@ -221,10 +221,10 @@ export default function DashboardLayout({
                      </li>
                      <li
                         className={`${
-                           location.pathname === "/dashboard/undangan" ? "bg-purpleDrawer rounded-md" : ""
+                           location.pathname === "/dashboard/invitation" ? "bg-purpleDrawer rounded-md" : ""
                         }`}
                      >
-                        <a href="/dashboard/undangan">Undangan</a>
+                        <a href="/dashboard/invitation/1">Undangan</a>
                      </li>
                      <li
                         className={`${
