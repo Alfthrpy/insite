@@ -8,6 +8,9 @@ export default function BrideGroom() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+  
+
   useEffect(() => {
     if (id) {
       const fetchData = async () => {
