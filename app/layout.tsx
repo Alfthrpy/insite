@@ -33,6 +33,10 @@ export default function RootLayout({
       <html lang="en">
       <head>
           <link rel="icon" href="img/logo.png" />
+          <link
+          href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

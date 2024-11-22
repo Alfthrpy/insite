@@ -238,10 +238,11 @@ body {
 }
 
 .product img {
-  height: 100%;
+  height: 296px;
   transition: all 0.3s;
  object-fit: cover;
- width: 100%;
+ width: 200px;
+ border-radius: 2em;
 }
 
 .product a:link, .product a:visited{

@@ -47,33 +47,33 @@ export default function Home() {
         <h2>Template <span>Undangan</span></h2>
         <div className="all-products">
           <div className="product">
-            <img src="img/template1.png" alt="Template 1" />
+            <img src="img/template/prewed1.png" alt="Template 1" />
+            <div className="product-info">
+              <a className="product-btn" href="#">Beli</a>
+              <a className="button-demo" href="template">Lihat Demo</a>
+            </div>
+          </div>
+          <div className="product">
+            <img src="img/template/tmp2.png" alt="template 2" />
             <div className="product-info">
               <a className="product-btn" href="#">Beli</a>
               <a className="button-demo" href="#">Lihat Demo</a>
             </div>
           </div>
           <div className="product">
-            <img src="apple-watch-pcq.jpg" alt="Apple Watch" />
+            <img src="img/template/tmp3.png" alt="template 3" />
             <div className="product-info">
               <a className="product-btn" href="#">Beli</a>
-              <a className="button-demo" href="#">Lihat Demo</a>
+              <a className="button-demo" href="template/template3">Lihat Demo</a>
             </div>
           </div>
-          <div className="product">
-            <img src="iPhone-14.jpg" alt="iPhone 14" />
-            <div className="product-info">
-              <a className="product-btn" href="#">Beli</a>
-              <a className="button-demo" href="#">Lihat Demo</a>
-            </div>
-          </div>
-          <div className="product">
+          {/* <div className="product">
             <img src="ipad-pro.jpg" alt="iPad Pro" />
             <div className="product-info">
               <a className="product-btn" href="#">Beli</a>
               <a className="button-demo" href="#">Lihat Demo</a>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

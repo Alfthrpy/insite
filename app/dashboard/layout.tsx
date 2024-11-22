@@ -20,24 +20,30 @@ export default function DashboardLayout({
   const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
+  
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
+    if (status === "authenticated") {
+      // After login, trigger a refresh to ensure all session data is updated.
+      router.replace(pathname); // Force reloading the current page
+    } else if (status === "unauthenticated") {
+      router.push("/login"); // Redirect to login if unauthenticated
     }
   }, [status, router]);
+
+  
 
   useEffect(() => {
     switch (pathname) {
       case "/dashboard":
         setPageTitle("Dashboard");
         break;
-      case "/dashboard/undangan":
-        setPageTitle("Undangan");
+      case "/dashboard/invitation":
+        setPageTitle("Invitation");
         break;
       case "/dashboard/customer-service":
         setPageTitle("Customer Service");
@@ -49,6 +55,7 @@ export default function DashboardLayout({
         setPageTitle("Dashboard");
     }
   }, [pathname]);
+
 
   const handleLogout = () => {
     toast.success("Logout successful!",{duration:2000}); // Toast muncul setelah logout
@@ -62,7 +69,10 @@ export default function DashboardLayout({
   if (!isClient || status === "loading") {
     return <DashboardSkeleton />
   }
-
+  
+  if (!session) {
+    return null;
+  }
 
   return (
     <SessionWrapper>
@@ -211,10 +221,10 @@ export default function DashboardLayout({
                      </li>
                      <li
                         className={`${
-                           location.pathname === "/dashboard/undangan" ? "bg-purpleDrawer rounded-md" : ""
+                           location.pathname === "/dashboard/invitation" ? "bg-purpleDrawer rounded-md" : ""
                         }`}
                      >
-                        <a href="/dashboard/undangan">Undangan</a>
+                        <a href="/dashboard/invitation/1">Undangan</a>
                      </li>
                      <li
                         className={`${
