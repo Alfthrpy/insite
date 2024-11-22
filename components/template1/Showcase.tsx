@@ -1,9 +1,6 @@
 
 "use client";
-import { TypewriterEffectSmooth } from "../ui/typewritter-effect";
 import { TextEffect } from '../ui/text-effect';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 const blurSlideVariants = {
    container: {
@@ -114,7 +111,7 @@ export default function Showcase() {
 
             <div className="font-alegreyaSans">
                <TextEffect per='word' preset='fade' delay={2}>
-               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unnnn
+               Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unnnn
                </TextEffect>
                <h1 className="font-bold">
                   <TextEffect per='char' preset='blur' delay={2.5}>
