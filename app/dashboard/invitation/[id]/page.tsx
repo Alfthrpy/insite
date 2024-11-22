@@ -1,8 +1,23 @@
+
 "use client"
 import React, { useState } from "react";
 
-export default function Undangan() {
+export default async function Page({
+  params: { id },
+}: {
+  params: { id: string }
+}) {
    const [isActive, setIsActive] = useState(true); // State untuk toggle status
+    const token = process.env.SECRET_BEARER_TOKEN
+  await delay(5000);
+  const response = await fetch(`${process.env.NEXTAUTH_URL}/api/invitation/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
 
    const handleToggle = () => {
      setIsActive(!isActive); // Mengubah status toggle
@@ -95,3 +110,8 @@ export default function Undangan() {
      </>
   )
 }
+
+
+
+
+

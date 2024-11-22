@@ -44,7 +44,7 @@ export default function RootLayout({
           {children}
       <Toaster/>
       </body>
-    </html>
+    </html> 
   </SessionWrapper>
   );
 }
