@@ -19,7 +19,7 @@ export default function Home() {
                         <a href="#"><img src="img/fitur.png" alt="Home Icon"/>FITUR</a>
                         <a href="#"><img src="img/kontak.png" alt="Home Icon"/>KONTAK</a>
                     </div>
-                  <a href="/login" className="login-button">LOGIN</a>
+                  <a href="/login"></a>
             </div>
 
       <div className="hero-section">
