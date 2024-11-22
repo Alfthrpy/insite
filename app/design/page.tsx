@@ -1,8 +1,8 @@
-// pages/design.tsx
-
-'use client'
-import React, { useEffect, useState } from "react";
-import CheckoutPage from "@/components/checkout";
+// app/design/page.tsx
+import { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import CheckoutButton from "@/components/checkoutButon";
+import { authOptions } from "@/lib/authOptions";
 
 interface DesignData {
   id: string;
@@ -11,38 +11,89 @@ interface DesignData {
   price: number;
 }
 
-const Design = () => {
-  const [designDataList, setDesignDataList] = useState<DesignData[]>([]);
-
-  useEffect(() => {
-    const fetchDesignData = async () => {
-      try {
-        const response = await fetch("/api/design");
-        const data = await response.json();
-        setDesignDataList(data);
-      } catch (error) {
-        console.error("Error fetching design data:", error);
-      }
-    };
-
-    fetchDesignData();
-  }, []);
-
+export default async function Page() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center space-y-8">
-      {designDataList.length > 0 ? (
-        designDataList.map((design) => (
-          <div key={design.id} className="border p-4 rounded shadow-md w-80 text-center">
-            <h2 className="text-xl font-bold mb-2">{design.name}</h2>
-            <p className="text-gray-600 mb-4">Price: Rp{design.price.toLocaleString()}</p>
-            <CheckoutPage data={{ designId: design.id, name: design.name, price: design.price, category: design.category }} />
-          </div>
-        ))
-      ) : (
-        <p>Loading designs...</p>
-      )}
+      <Suspense fallback={<div>Loading...</div>}>
+        <DesignList />
+      </Suspense>
     </div>
   );
-};
+}
 
-export default Design;
+async function DesignList() {
+  const session = await getServerSession(authOptions);
+  console.log(session?.user.id)
+
+  try {
+    const token = process.env.SECRET_BEARER_TOKEN;
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/design`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const designs = await response.json();
+
+    if (!session) {
+      return (
+        <div className="text-center">
+          <p className="text-red-500">Please login to view and purchase designs</p>
+          <ul className="mt-4 space-y-4">
+            {designs.map((design: DesignData) => (
+              <li
+                key={design.id}
+                className="border p-4 rounded-lg shadow-sm w-96"
+              >
+                <h3 className="font-semibold text-lg">{design.name}</h3>
+                <p className="text-gray-600">Category: {design.category}</p>
+                <p className="text-gray-800 font-medium">
+                  Price: ${design.price.toFixed(2)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    return (
+      <ul className="space-y-4">
+        {designs.map((design: DesignData) => (
+          <li
+            key={design.id}
+            className="border p-4 rounded-lg shadow-sm w-96"
+          >
+            <h3 className="font-semibold text-lg">{design.name}</h3>
+            <p className="text-gray-600">Category: {design.category}</p>
+            <p className="text-gray-800 font-medium">
+              Price: ${design.price.toFixed(2)}
+            </p>
+            <div className="mt-4">
+              <CheckoutButton
+                data={{
+                  designId: design.id,
+                  name: design.name,
+                  category: design.category,
+                  price: design.price,
+                }}
+                user={{
+                  id: session.user.id || '',
+                  name: session.user.name || "",
+                  email: session.user.email || "",
+                }}
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
+  } catch (error) {
+    console.error("Error fetching design data:", error);
+    return (
+      <div className="text-red-500">
+        Error loading designs. Please try again later.
+      </div>
+    );
+  }
+}
