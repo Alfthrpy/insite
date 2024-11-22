@@ -21,10 +21,10 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.17",
     "insite": "file:",
-    "lucide-react": "^0.460.0",
-    "motion": "^11.11.17",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.460.0",
     "midtrans-client": "^1.4.2",
+    "motion": "^11.11.17",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
     "nodemailer": "^6.9.15",
@@ -42,7 +42,6 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.14",
-    "@types/node": "^20",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.17.6",
     "@types/nodemailer": "^6.4.16",
@@ -57,7 +56,6 @@
     "prisma": "^5.20.0",
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.2.5",
-    "typescript": "^5"
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   },

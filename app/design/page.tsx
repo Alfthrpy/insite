@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getServerSession } from "next-auth";
 import CheckoutButton from "@/components/checkoutButon";
 import { authOptions } from "@/lib/authOptions";
+import '../globals.css'
 
 interface DesignData {
   id: string;
