@@ -1,5 +1,5 @@
 import RegisterFormComponents from "./form";
-
+import '../globals.css'
 
 export default function Register(){
     return(
