@@ -1,5 +1,9 @@
 "use server";
 
+import { z } from "zod";
+import { BrideGroomSchema } from "./definitions";
+import { revalidatePath } from "next/cache";
+
 interface CreateTransactionParams {
   designId: string;
   amount: number;
@@ -89,4 +93,58 @@ export async function updatePaymentStatus(
       }),
     }
   );
+}
+
+export type UpdateBrideGroomFormState = {
+  message: string
+  errors?: {
+    [K in keyof z.infer<typeof BrideGroomSchema>]?: string[]
+  }
+}
+
+export async function updateBrideGroom(
+  id: string,
+  formData: z.infer<typeof BrideGroomSchema>
+): Promise<UpdateBrideGroomFormState> {
+  try {
+    // Validate the input data
+    const validatedFields = BrideGroomSchema.safeParse(formData)
+
+    // If validation fails, return the errors
+    if (!validatedFields.success) {
+      return {
+        message: 'Invalid fields',
+        errors: validatedFields.error.flatten().fieldErrors,
+      }
+    }
+
+    // Make the API request
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/bride-groom/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.SECRET_BEARER_TOKEN}`
+      },
+      body: JSON.stringify(validatedFields.data),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      return {
+        message: errorData.message || 'Failed to update bride and groom information',
+      }
+    }
+
+    // Revalidate the cache for this page
+    revalidatePath('/bride-groom')
+
+    return {
+      message: 'Successfully updated bride and groom information',
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      message: 'An unexpected error occurred',
+    }
+  }
 }
