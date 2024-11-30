@@ -133,11 +133,11 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
     const parentField = isGroom ? "parentGroom" : "parentBride";
 
     return (
-      <div className="card bg-purpleHover rounded-md grid h-auto w-full lg:w-96 place-items-center py-7">
+      <div className="card bg-purpleHover rounded-md grid h-auto w-full place-items-center py-7 jus">
         <div className="text-center self-start font-bold text-xl mb-4 text-base-100">
           {title}
         </div>
-        <div className="w-full max-w-72">
+        <div className="w-full max-w-96">
           <FormField
             label="Nama Lengkap"
             name={nameField}
@@ -182,7 +182,7 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="container w-full flex-col sm:w-4/5 m-4 p-5 rounded-box bg-white justify-items-center"
+      className="container w-full flex-col sm:w-4/5 m-4 px-12 rounded-box bg-white justify-items-center"
     >
       <div className="font-bold text-3xl my-7">Bride & Groom</div>
       <input type="hidden" {...register("invitationId")} />

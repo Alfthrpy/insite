@@ -105,7 +105,8 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
     },
     {
       icon: "../../img/fiturLightMode/fitur3.png",
-      title: "Galery"
+      title: "Gallery",
+      dynamicLink: true
     },
     {
       icon: "../../img/fiturLightMode/fitur2.png",
@@ -138,8 +139,10 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
   const features = BASE_FEATURES.map(feature => ({
     ...feature,
     link: feature.dynamicLink 
-      ? `/dashboard/invitation/${data.id}/bride-broom`
-      : undefined
+      ? `/dashboard/invitation/${data.id}/bride-groom`
+      : feature.title === "Gallery"
+        ? `/dashboard/invitation/${data.id}/gallery`
+        :undefined
   }));
 
   const handleFeatureClick = (feature: Feature): void => {
@@ -149,13 +152,13 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
   };
 
   return (
-    <div className="container mx-auto w-full sm:w-4/5 lg:w-3/5 p-4">
+    
       <div className="bg-white rounded-lg shadow-lg p-6">
         <HeaderCard isActive={isActive} setIsActive={setIsActive} />
 
         <div className="divider"></div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {features.map((feature, index) => (
             <div
               key={`feature-${index}`}
@@ -171,7 +174,7 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
           ))}
         </div>
       </div>
-    </div>
+
   );
 };
 
