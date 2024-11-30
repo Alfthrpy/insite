@@ -2,6 +2,7 @@
 const nextConfig = {
     images: {
         domains: ['lh3.googleusercontent.com'], // Domain gambar profil Google
+        domains: ['res.cloudinary.com'],
   },
   webpack(config) {
     config.module.rules.push({

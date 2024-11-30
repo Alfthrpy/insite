@@ -1,51 +1,34 @@
-'use client'
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+// app/bride-groom/[id]/page.tsx
 
-export default function BrideGroom() {
-  const { id } = useParams(); // Ambil 'id' dari URL path
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (id) {
-      const fetchData = async () => {
-        try {
-          setLoading(true);
-          const response = await fetch(`/api/bride-groom?invitationId=${id}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
-          const result = await response.json();
-          setData(result);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error:any) {
-          setError(error.message);
-        } finally {
-          setLoading(false);
-        }
-      };
+import BrideGroomForm from "../(component)/BrideGroomForm";
+async function getBrideGroom(id: string) {
+  try {
+   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/bride-groom?invitationId=${id}`, {
+      cache: "no-store",
+      headers:{
+         "Authorization": `Bearer ${process.env.SECRET_BEARER_TOKEN}`
+      }
+    });
+  
+    return res.json();
 
-      fetchData();
-    }
-  }, [id]); 
+  } catch (error) {
+      return error
+  }
+}
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-
+export default async function BrideGroomPage({ params }: { params: { id: string } }) {
+  const initialData = await getBrideGroom(params.id);
+  if(initialData.error){
+   return <div>Not Found</div>
+  }
   return (
-    <div>
-      <h1>Bride Groom Data </h1>
-      {data ? (
-        <div>
-          <h2>Invitation Details</h2>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </div>
-      ) : (
-        <p>Invitation not found</p>
-      )}
+    <div className="container w-full flex-col sm:w-4/5 m-4 p-5 rounded-box bg-white justify-items-center">
+      <BrideGroomForm
+      defaultValues={initialData}
+      id = {initialData.id}
+    />
     </div>
   );
-
 }
