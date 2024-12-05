@@ -46,6 +46,7 @@ const Home: React.FC = () => {
             <Ayat />
             <Couple />
             <Gallery />
+            <Story />
             <Event />
             <Gift/>
             <RSVP />
