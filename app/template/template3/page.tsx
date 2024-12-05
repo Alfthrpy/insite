@@ -44,8 +44,8 @@ const Home: React.FC = () => {
             <Navbar />
             <Showcase />
             <Ayat />
-            <Couple />
-            <Gallery />
+            <Couple invitationId = {'11bd6492-aae7-4276-8e77-93142770468f'}/>
+            <Gallery invitationId={'11bd6492-aae7-4276-8e77-93142770468f'}/>
             <Event />
             <Gift/>
             <RSVP />
