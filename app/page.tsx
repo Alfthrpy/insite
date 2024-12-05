@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react";
+import Image from "next/image";
 import "./styles/style.css";
 
 export default function Home() {
@@ -15,12 +16,26 @@ export default function Home() {
       sectionElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleWhatsAppClick = (data : any) => {
+    // Nomor WhatsApp tujuan (format internasional tanpa tanda "+")
+    const phoneNumber = '6289658504225'; 
+    // Pesan bawaan
+    const message = encodeURIComponent(`Halo, saya ingin membuat undangan digital dengan template berikut : ${data}`);
+
+    // URL WhatsApp dengan nomor dan pesan
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${message}`;
+
+    // Arahkan ke URL
+    window.open(whatsappURL, '_blank'); // Membuka di tab baru
+  };
   return (
     <section>
       <div className="container">
       <div className="navbar">
         <div className="logo">
-          <img src="img/logo.png" alt="Logo" />
+          <Image src={"/img/logo.png"} alt="Logo" width={100} height={100}/>
         </div>
         <div className="menu">
           <a
@@ -86,7 +101,8 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-image">
-            <img src="/img/hero-imagealt.png" alt="Undangan Digital" />
+            {/* <img src="/img/hero-imagealt.png" alt="Undangan Digital" /> */}
+            <Image src="/img/hero-imagealt.png" alt="Undangan Digital" width={500} height={500} />
           </div>
         </div>
       </div>
@@ -97,10 +113,11 @@ export default function Home() {
         </h2>
         <div className="all-products">
           <div className="product">
-            <img src="img/template/prewed1.png" alt="Template 1" />
+            {/* <img src="img/template/prewed1.png" alt="Template 1" /> */}
+            <Image src="/img/template/prewed1.png" alt="Template 1" width={200} height={200} />
             <div className="product-info">
-              <a className="product-btn" href="#">
-                Beli
+              <a className="product-btn" href="" onClick={()=>handleWhatsAppClick("Template 1")}>
+                Buat 
               </a>
               <a className="button-demo" href="template">
                 Lihat Demo
@@ -108,10 +125,11 @@ export default function Home() {
             </div>
           </div>
           <div className="product">
-            <img src="img/template/tmp2.png" alt="template 2" />
+            {/* <img src="img/template/tmp2.png" alt="template 2" /> */}
+            <Image src="/img/template/tmp2.png" alt="template 2" width={200} height={200} />
             <div className="product-info">
-              <a className="product-btn" href="#">
-                Beli
+              <a className="product-btn" href="" onClick={()=>handleWhatsAppClick("Template 2")}>
+                Buat 
               </a>
               <a className="button-demo" href="#">
                 Lihat Demo
@@ -119,10 +137,11 @@ export default function Home() {
             </div>
           </div>
           <div className="product">
-            <img src="img/template/tmp3.png" alt="template 3" />
+            {/* <img src="img/template/tmp3.png" alt="template 3" /> */}
+            <Image src="/img/template/tmp3.png" alt="template 3" width={200} height={200} />
             <div className="product-info">
-              <a className="product-btn" href="#">
-                Beli
+              <a className="product-btn" href="" onClick={()=>handleWhatsAppClick("Template 3")}>
+                Buat 
               </a>
               <a className="button-demo" href="template/template3">
                 Lihat Demo
@@ -132,7 +151,7 @@ export default function Home() {
           {/* <div className="product">
             <img src="ipad-pro.jpg" alt="iPad Pro" />
             <div className="product-info">
-              <a className="product-btn" href="#">Beli</a>
+              <a className="product-btn" href="#">Buat </a>
               <a className="button-demo" href="#">Lihat Demo</a>
             </div>
           </div> */}
