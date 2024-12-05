@@ -25,6 +25,7 @@ const config: Config = {
       'alex': ["Alex Brush", 'cursive'],
       'alegreya': ['Alegreya', 'serif'],
       'alegreyaSans': ['"Alegreya Sans"', 'sans-serif'],
+      
     },
     
   },
