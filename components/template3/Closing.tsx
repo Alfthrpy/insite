@@ -64,7 +64,7 @@ export default function Closing() {
                 </motion.div>
                 <Parallax inView={[0.8, 1]} position={[300, -700]}>
                     <motion.div
-                        variants={closingVariants.wiggle2}
+                        variants={closingVariants}
                         animate="animate"
                         style={{ top: '500px' }}
                         className="absolute left-3 flex"
@@ -89,7 +89,7 @@ export default function Closing() {
                 </Parallax>
                 <div style={{ top: '780px' }} className="absolute right-12 transform -scale-x-100">
                     <Parallax inView={[0.8, 1]} position={[200, -20]}>
-                        <motion.div variants={closingVariants.wiggle} animate="animate">
+                        <motion.div variants={closingVariants} animate="animate">
                             <Image
                                 className="drop-shadow-md"
                                 src="/webp/bird.webp"
