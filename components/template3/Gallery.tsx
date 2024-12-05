@@ -73,10 +73,6 @@ export default function CarouselWithThumbnails() {
                </div>
             </div>          
          </motion.div>
-         <div className='w-full z-10 h-48 absolute -bottom-24 left-0 transform rotate-180'>
-                <Image src='/svg/paper-rip.svg' alt="paper rip" layout='fill' />
-            </div>
-
       </div>
   );
 }

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { motion } from 'framer-motion';
 export default function Story(){
    return (
-      <div id="story" className="flex w-full relative items-stretch justify-center h-auto bg-base-300">
+      <div id="story" className="flex w-full relative items-stretch justify-center h-auto bg-lightGrey">
          <motion.div
                className="flex flex-col self-end pb-10 text-center mb-10 min-w-96 w-full max-w-lg mt-10"
                initial={{ opacity: 0, y: 50 }} // Mulai dengan opacity 0 dan geser ke bawah
@@ -37,7 +37,11 @@ export default function Story(){
                   <path d="M25 10L40 25L25 40" stroke="black" strokeWidth="4" fill="none" />
                </svg>
                </div>
-            </motion.div>
+         </motion.div>
+         <div className='w-full z-10 h-48 absolute -bottom-24 left-0 transform rotate-180'>
+                <Image src='/svg/paper-rip.svg' alt="paper rip" layout='fill' />
+            </div>
       </div>
+      
    )
 }
