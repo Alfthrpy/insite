@@ -1,6 +1,5 @@
 
 "use client";
-import { TypewriterEffectSmooth } from "../ui/typewritter-effect";
 import { TextEffect } from '../ui/text-effect';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -11,6 +10,7 @@ interface CoverProps {
 
 const Cover: React.FC<CoverProps> = ({ openHandler }) => {
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [trigger, setTrigger] = useState(true);
 
   useEffect(() => {
@@ -56,14 +56,14 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
     },
   };
 
-   const words = [
-      {
-        text: "Tamu",
-      },
-      {
-        text: "Undangan",
-      },
-    ];
+  //  const words = [
+  //     {
+  //       text: "Tamu",
+  //     },
+  //     {
+  //       text: "Undangan",
+  //     },
+  //   ];
 
    return (
     

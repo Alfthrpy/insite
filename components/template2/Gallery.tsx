@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+
 
 const ITEMS = [
   { id: 1, image: 'https://i.pinimg.com/550x/b4/33/65/b43365d4394cdcc9ec216769ccdb7106.jpg' },

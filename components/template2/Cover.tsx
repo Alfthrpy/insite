@@ -1,6 +1,4 @@
 "use client";
-import { TextEffect } from '../ui/text-effect';
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface CoverProps {
@@ -8,19 +6,19 @@ interface CoverProps {
 }
 
 const Cover: React.FC<CoverProps> = ({ openHandler }) => {
-  const blurSlideVariants = {
-    container: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.05 },
-      },
-    },
-    item: {
-      hidden: { opacity: 0, filter: 'blur(10px)', y: 30 },
-      visible: { opacity: 1, filter: 'blur(0px)', y: 0, transition: { duration: 0.6 } },
-    },
-  };
+  // const blurSlideVariants = {
+  //   container: {
+  //     hidden: { opacity: 0 },
+  //     visible: {
+  //       opacity: 1,
+  //       transition: { staggerChildren: 0.05 },
+  //     },
+  //   },
+  //   item: {
+  //     hidden: { opacity: 0, filter: 'blur(10px)', y: 30 },
+  //     visible: { opacity: 1, filter: 'blur(0px)', y: 0, transition: { duration: 0.6 } },
+  //   },
+  // };
 
   return (
     <div

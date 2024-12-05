@@ -8,7 +8,7 @@ import NightTexture from '../../public/webp/night-texture.webp'
 export default function Ayat() {
     const ayat = '"Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda kebesaran Allah bagi kaum yang berpikir."'
     const splitted = ayat.split(" ").map((word, index) => {
-        var split = word.split("")
+        const split = word.split("")
         split.push("\u00A0")
         return (
             // Using wrapper span with whitespace-nowrap

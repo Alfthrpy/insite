@@ -26,7 +26,7 @@ export default function Story(){
                </div>
                </div>
                <div className="indent-paragraph font-alegreyaSans self-center mt-4 w-96">
-               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unnnn dan apa alagi sok yaaa pkoknya mahh fgituu lah
+               Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unnnn dan apa alagi sok yaaa pkoknya mahh fgituu lah
                </div>
                <div className="flex justify-end mt-8 mr-3">
                <div className="font-bold ">

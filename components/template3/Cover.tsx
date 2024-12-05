@@ -1,7 +1,6 @@
 "use client"
 
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { coverVariants } from '../../helper/variants';

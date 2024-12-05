@@ -6,8 +6,6 @@ import {
 } from '@/components/ui/carousel';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Parallax from './Parallax';
-import Image from 'next/image';
 
 const ITEMS = [
   { id: 1, image: '/template-img/template1/gallery1.png' },

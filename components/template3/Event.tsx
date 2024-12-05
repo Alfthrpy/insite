@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { eventVariants, ayatVariants, coverVariants } from '../../helper/variants'
+import { eventVariants } from '../../helper/variants'
 import Countdown from './Countdown'
 import WallTexture from '../../public/webp/wall-texture.webp'
 import Window from '../../public/webp/window.webp'
@@ -9,7 +9,7 @@ import Window from '../../public/webp/window.webp'
 export default function Event() {
 
     const lokasi = "Lokasi Acara".split(" ").map((word, index) => {
-        var split = word.split("")
+        const split = word.split("")
         split.push("\u00A0")
         return (
             <span key={index} className="whitespace-nowrap">
