@@ -20,7 +20,8 @@ const config: Config = {
         purpleNeutral: '#7c759c',
         purpleDrawer: '#605a7a',
         lightGrey: '#EDEEED',
-        pink: '#E38F9C'
+        pink: '#E38F9C',
+        sky:'#7b8e9c'
       },
     },
     fontFamily: {

@@ -131,7 +131,7 @@ export default function Home() {
               <a className="product-btn" href="" onClick={()=>handleWhatsAppClick("Template 2")}>
                 Buat 
               </a>
-              <a className="button-demo" href="#">
+              <a className="button-demo" href="template/template2">
                 Lihat Demo
               </a>
             </div>
@@ -244,7 +244,7 @@ export default function Home() {
       <div className="contact" id="">
         <h2>Kontak Kami</h2>
         <div className="contact-info">
-          <p>Insite Team&apos;s</p>
+          <p>Lovenity Team&apos;s</p>
           <p>Jl. A.H. Nasution No.105, Cipadung Wetan, Kec. Cibiru,</p>
           <p>Kota Bandung, Jawa Barat 40614</p>
           <div className="social-icons">

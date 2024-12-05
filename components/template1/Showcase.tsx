@@ -36,15 +36,21 @@ const blurSlideVariants = {
        },
      },
    },
- };
+};
+ 
+
 
 export default function Showcase() { 
 
    return (
-      <div id="showcase" className="flex w-full justify-center h-screen text-neutral items-center bg-base-300" style={{
+      <div
+         id="showcase"
+         className="flex w-full justify-center h-screen text-neutral items-center bg-sky bg-cover md:bg-auto bg-center"
+         style={{
          backgroundImage: `url('/template-img/template1/showcase.png')`,
-           backgroundPosition: 'center',
-         backgroundRepeat:'no-repeat', 
+         backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+         
        }}> 
          <div className="flex flex-col pb-10 text-center mt-10 w-96 mb-28">
             <div className="ml-3 font-alex text-2xl self-start h-16">
