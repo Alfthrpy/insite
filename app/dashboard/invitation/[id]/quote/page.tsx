@@ -27,7 +27,7 @@ export default function Quote() {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div className="flex justify-center items-center w-full h-screen">Loading...</div>;
   if (error) return <p>Error: {error}</p>;
 
   return (

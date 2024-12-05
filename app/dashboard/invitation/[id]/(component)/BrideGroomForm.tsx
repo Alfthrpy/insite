@@ -1,24 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useState} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { BrideGroomSchema } from "@/lib/definitions";
 import { useRouter } from "next/navigation";
-import { updateBrideGroom, UpdateBrideGroomFormState } from "@/lib/actions";
-import { AlertCircle } from "lucide-react";
+import { updateBrideGroom } from "@/lib/actions";
+import { AlertCircle, Upload } from "lucide-react";
 import toast from "react-hot-toast";
+import { CldUploadButton } from "next-cloudinary";
+import folderIcon from '../../../../../public/webp/photo.png';
 
-type FormData = z.infer<typeof BrideGroomSchema>;
 
-interface BrideGroomProps {
-  defaultValues?: Partial<FormData>;
-  id: string;
-}
-
-const socialMediaFields = [
+// Social media configuration
+const SOCIAL_MEDIA_FIELDS = [
   {
     name: "Instagram",
     fieldGroom: "linkInstagramGroom",
@@ -33,7 +30,14 @@ const socialMediaFields = [
   { name: "Youtube", fieldGroom: "linkYtbGroom", fieldBride: "linkYtbBride" },
 ] as const;
 
-// Reusable form field component with error handling
+// Type definitions
+type FormData = z.infer<typeof BrideGroomSchema>;
+interface BrideGroomProps {
+  defaultValues?: Partial<FormData>;
+  id: string;
+}
+
+// Reusable form field component
 const FormField = ({
   label,
   name,
@@ -50,13 +54,13 @@ const FormField = ({
   placeholder?: string;
   optional?: boolean;
 }) => (
-  <label className="form-control w-full max-w-md mb-4">
-    <div className="label">
+  <div className="form-control w-full max-w-md mb-4">
+    <label className="label">
       <span className="label-text text-base-100">
         {label}{" "}
         {optional && <span className="text-sm opacity-70">(optional)</span>}
       </span>
-    </div>
+    </label>
     <div className="relative">
       <input
         type="text"
@@ -67,9 +71,7 @@ const FormField = ({
         }`}
       />
       {error && (
-        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-          <AlertCircle className="h-5 w-5 text-red-500" />
-        </div>
+        <AlertCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-red-500" />
       )}
     </div>
     {error && (
@@ -77,63 +79,130 @@ const FormField = ({
         {error.message}
       </div>
     )}
-  </label>
+  </div>
 );
+
+// Image upload component
+const ImageUploadField = ({
+  label,
+  onUploadSuccess,
+  currentImage,
+}: {
+  label: string;
+  onUploadSuccess: (url: string) => void;
+  currentImage?: string;
+}) => {
+  return (
+    <div className="mb-4">
+      <div className="label">
+        <span className="label-text text-base-100">{label}</span>
+      </div>
+      <div className="flex items-center gap-4">
+        {currentImage && (
+          <img 
+            src={typeof currentImage === 'string' ? currentImage : folderIcon.src}  
+            alt="Current upload" 
+            className="w-20 h-20 object-cover rounded-md"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = folderIcon.src;
+            }}
+          />
+        )}
+        <CldUploadButton
+          uploadPreset="insite"
+          onSuccess={(result: any) => {
+            if (result.info && result.event === "success") {
+              const secureUrl = result.info.secure_url;
+              onUploadSuccess(secureUrl);
+            }
+          }}
+          className="flex items-center bg-black hover:bg-gray-600 btn text-base-100"
+        >
+          <Upload className="mr-2 text-base-100" /> Upload Image
+        </CldUploadButton>
+      </div>
+    </div>
+  );
+};
 
 export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
   const router = useRouter();
-  const [state, setState] = React.useState<UpdateBrideGroomFormState>({
+  const [formState, setFormState] = useState({
     message: "",
     errors: {},
+    imageUrls: {
+      groom: defaultValues?.imageGroom || "",
+      bride: defaultValues?.imageBride || "",
+    },
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(BrideGroomSchema),
-    mode: "onChange", // Changed to onChange for real-time validation
-    defaultValues: {
-      ...defaultValues,
-    },
+    mode: "onChange",
+    defaultValues: defaultValues || {},
   });
 
+  // Handle form submission
   const onSubmit = async (data: FormData) => {
     try {
-      const result = await updateBrideGroom(id, data);
-      setState(result);
+      // Add image URLs to form data
+      const completeData = {
+        ...data,
+        imageGroom: formState.imageUrls.groom,
+        imageBride: formState.imageUrls.bride,
+      };
 
+      const result = await updateBrideGroom(id, completeData);
+      
       if (!result.errors) {
-        toast.success(result.message)
+        toast.success(result.message);
         router.refresh();
       } else {
-        toast.error("An error occurred while updating")
+        toast.error("An error occurred while updating");
       }
+
+      setFormState(prev => ({
+        ...prev,
+        message: result.message,
+        errors: result.errors || {},
+      }));
     } catch (error) {
-      console.log(error);
-      setState({
+      console.error(error);
+      setFormState(prev => ({
+        ...prev,
         message: "An unexpected error occurred",
-      });
+      }));
     }
   };
 
-  React.useEffect(() => {
-    if (defaultValues) {
-      reset(defaultValues);
-    }
-  }, [defaultValues, reset]);
+  // Handle image upload for a specific person
+  const handleImageUpload = (type: 'groom' | 'bride') => (url: string) => {
+    setFormState(prev => ({
+      ...prev,
+      imageUrls: {
+        ...prev.imageUrls,
+        [type]: url,
+      },
+    }));
+    
+    // Update form values
+    setValue(type === 'groom' ? 'imageGroom' : 'imageBride', url);
+  };
 
+  // Render person-specific section
   const PersonSection = ({ type }: { type: "Groom" | "Bride" }) => {
     const isGroom = type === "Groom";
-    const title = isGroom ? "Mempelai Pria" : "Mempelai Wanita";
     const nameField = isGroom ? "nameGroom" : "nameBride";
-    const imageField = isGroom ? "imageGroom" : "imageBride";
     const parentField = isGroom ? "parentGroom" : "parentBride";
+    const title = isGroom ? "Mempelai Pria" : "Mempelai Wanita";
 
     return (
-      <div className="card bg-purpleHover rounded-md grid h-auto w-full place-items-center py-7 jus">
+      <div className="card bg-purpleHover rounded-md grid h-auto w-full place-items-center py-7 px-2">
         <div className="text-center self-start font-bold text-xl mb-4 text-base-100">
           {title}
         </div>
@@ -145,12 +214,10 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
             error={errors[nameField]}
           />
 
-          <FormField
-            label="URL Foto"
-            name={imageField}
-            register={register}
-            error={errors[imageField]}
-            placeholder="Masukkan URL foto"
+          <ImageUploadField
+            label="Foto Profil"
+            onUploadSuccess={handleImageUpload(isGroom ? 'groom' : 'bride')}
+            currentImage={formState.imageUrls[isGroom ? 'groom' : 'bride']}
           />
 
           <FormField
@@ -160,7 +227,7 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
             error={errors[parentField]}
           />
 
-          {socialMediaFields.map(({ name, fieldGroom, fieldBride }) => {
+          {SOCIAL_MEDIA_FIELDS.map(({ name, fieldGroom, fieldBride }) => {
             const currentField = isGroom ? fieldGroom : fieldBride;
             return (
               <FormField
@@ -182,9 +249,9 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="container w-full flex-col sm:w-4/5 m-4 px-12 rounded-box bg-white justify-items-center"
+      className="container w-full flex-col sm:w-4/5 m-4 lg:px-12 rounded-box bg-white justify-items-center"
     >
-      <div className="font-bold text-3xl my-7">Bride & Groom</div>
+      <h2 className="font-bold text-3xl my-7">Bride & Groom</h2>
       <input type="hidden" {...register("invitationId")} />
 
       <div className="flex w-full flex-col lg:flex-row justify-center gap-6">
@@ -193,10 +260,10 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
         <PersonSection type="Bride" />
       </div>
 
-      {state.message && (
+      {formState.message && (
         <div className="alert alert-error mt-4">
           <AlertCircle className="h-5 w-5" />
-          <span>{state.message}</span>
+          <span>{formState.message}</span>
         </div>
       )}
 

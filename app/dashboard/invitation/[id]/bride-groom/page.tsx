@@ -16,7 +16,6 @@ async function getBrideGroom(id: string) {
   } catch (error) {
       return error
   }
-
 }
 
 export default async function BrideGroomPage({ params }: { params: { id: string } }) {

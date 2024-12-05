@@ -12,7 +12,8 @@ interface Feature {
   title: string;
   link?: string;
   special?: boolean;
-  dynamicLink?: boolean; // New property to indicate if link should use data.id
+  dynamicLink?: boolean;
+  endpoint?: string;
 }
 
 interface FeatureCardProps extends Feature {
@@ -97,53 +98,81 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
     {
       icon: "../../img/fiturLightMode/fitur1.png",
       title: "Nama Pengantin",
-      dynamicLink: true // This feature needs a dynamic link
+      dynamicLink: true,
+      endpoint: "bride-groom", // Endpoint dinamis
     },
     {
       icon: "../../img/fiturLightMode/layout.png",
-      title: "Pilih Template"
+      title: "Pilih Template",
+      dynamicLink: true,
+      endpoint: "design",
     },
     {
       icon: "../../img/fiturLightMode/fitur3.png",
-      title: "Gallery",
-      dynamicLink: true
+      title: "Galery",
+      dynamicLink: true,
+      endpoint: "gallery",
     },
     {
       icon: "../../img/fiturLightMode/fitur2.png",
-      title: "Tambahkan Musik"
+      title: "Tambahkan Musik",
+      dynamicLink: true,
+      endpoint: "music",
     },
     {
       icon: "../../img/fiturLightMode/fitur6.png",
-      title: "Kirim Hadiah"
+      title: "Kirim Hadiah",
+      dynamicLink: true,
+      endpoint: "gift",
     },
     {
       icon: "../../img/fiturLightMode/rsvp.png",
-      title: "RSVP"
+      title: "RSVP",
+      dynamicLink: true,
+      endpoint: "rsvp",
     },
     {
       icon: "../../img/fiturLightMode/fitur4.png",
-      title: "Kisah Cinta"
+      title: "Kisah Cinta",
+      dynamicLink: true,
+      endpoint: "love-story",
     },
     {
-      icon: "../../img/fiturLightMode/fitur7.png",
-      title: "Buat Siaran Undangan"
+      icon: "../../img/fiturLightMode/calendar.png",
+      title: "Event",
+      dynamicLink: true, // Misalnya dinamis
+      endpoint: "event",
+    },
+    {
+      icon: "../../img/fiturLightMode/calendar.png",
+      title: "Quote",
+      dynamicLink: true, // Misalnya dinamis
+      endpoint: "quote",
+    },
+    {
+      icon: "../../img/fiturLightMode/calendar.png",
+      title: "Setting",
+      dynamicLink: true, // Misalnya dinamis
+      endpoint: "setting",
     },
     {
       icon: "../../img/fiturLightMode/send.png",
       title: "Kirim",
-      special: true
-    }
+      dynamicLink: true,
+      special: true,
+    },
   ];
-
-  // Generate features with dynamic links
-  const features = BASE_FEATURES.map(feature => ({
+  
+  // Mapping fitur dengan link dinamis
+  const features = BASE_FEATURES.map((feature) => ({
     ...feature,
-    link: feature.dynamicLink 
-      ? `/dashboard/invitation/${data.id}/bride-groom`
-      : feature.title === "Gallery"
-        ? `/dashboard/invitation/${data.id}/gallery`
-        :undefined
+    link: feature.dynamicLink
+      ? `/dashboard/invitation/${data.id}/${feature.endpoint}` // Endpoint dinamis
+      : undefined, // Jika tidak ada dynamicLink
   }));
+  
+  
+
 
   const handleFeatureClick = (feature: Feature): void => {
     if (feature.link) {
