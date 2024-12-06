@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { BrideGroomSchema } from "./definitions";
+import { BrideGroomSchema, EventSchema } from "./definitions";
 import { revalidatePath } from "next/cache";
 
 interface CreateTransactionParams {
@@ -15,7 +15,7 @@ export async function createTransaction({
   amount,
   userId,
 }: CreateTransactionParams) {
-    console.log(userId)
+  console.log(userId);
   const response = await fetch(
     `${process.env.NEXTAUTH_URL}/api/payment-transaction`,
     {
@@ -96,11 +96,11 @@ export async function updatePaymentStatus(
 }
 
 export type UpdateBrideGroomFormState = {
-  message: string
+  message: string;
   errors?: {
-    [K in keyof z.infer<typeof BrideGroomSchema>]?: string[]
-  }
-}
+    [K in keyof z.infer<typeof BrideGroomSchema>]?: string[];
+  };
+};
 
 export async function updateBrideGroom(
   id: string,
@@ -108,43 +108,93 @@ export async function updateBrideGroom(
 ): Promise<UpdateBrideGroomFormState> {
   try {
     // Validate the input data
-    const validatedFields = BrideGroomSchema.safeParse(formData)
+    const validatedFields = BrideGroomSchema.safeParse(formData);
 
     // If validation fails, return the errors
     if (!validatedFields.success) {
       return {
-        message: 'Invalid fields',
+        message: "Invalid fields",
         errors: validatedFields.error.flatten().fieldErrors,
-      }
+      };
     }
 
     // Make the API request
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/bride-groom/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.SECRET_BEARER_TOKEN}`
-      },
-      body: JSON.stringify(validatedFields.data),
-    })
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/bride-groom/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.SECRET_BEARER_TOKEN}`,
+        },
+        body: JSON.stringify(validatedFields.data),
+      }
+    );
 
     if (!response.ok) {
-      const errorData = await response.json()
+      const errorData = await response.json();
       return {
-        message: errorData.message || 'Failed to update bride and groom information',
-      }
+        message: errorData.message || "Failed to update event data",
+      };
     }
 
     // Revalidate the cache for this page
-    revalidatePath('/bride-groom')
+    revalidatePath("/bride-groom");
 
     return {
-      message: 'Successfully updated bride and groom information',
-    }
+      message: "Successfully updated event data",
+    };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
-      message: 'An unexpected error occurred',
-    }
+      message: "An unexpected error occurred",
+    };
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updateEvent(id: string, formData: any) {
+  try {
+    const validatedFields = EventSchema.safeParse(formData);
+
+    if (!validatedFields.success) {
+      return {
+        message: "Invalid fields",
+        errors: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/event/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.SECRET_BEARER_TOKEN}`,
+        },
+        body: JSON.stringify(validatedFields.data),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      return {
+        message:
+          errorData.message || "Failed to update bride and groom information",
+      };
+    }
+
+    // Revalidate the cache for this page
+    revalidatePath("/bride-groom");
+
+    return {
+      message: "Successfully updated event data",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      message: "An unexpected error occurred",
+    };
+  }
+}
+

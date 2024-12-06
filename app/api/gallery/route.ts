@@ -5,10 +5,12 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const { ...data } = await req.json();
+    console.log(data);
     const parsedData = GallerySchema.safeParse(data);
-
+    console.log(parsedData);
     if (!parsedData.success) {
       const errorMessages = parsedData.error.errors.map((err) => err.message);
+      console.log(errorMessages);
 
       return NextResponse.json(
         {
