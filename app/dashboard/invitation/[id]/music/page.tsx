@@ -10,13 +10,21 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+interface Music {
+  id: string;
+  musicUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
 export default function Music() {
-  const [data, setData] = useState<string[] | null>(null);
+  const [data, setData] = useState<Music[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null); // State untuk melacak status play/stop
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +56,12 @@ export default function Music() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        Loading...
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   // Pagination logic
@@ -69,11 +82,11 @@ export default function Music() {
 
             {currentItems.map((music, index) => (
               <button
-                key={index}
+                key={music.id}
                 className="btn rounded-full bg-base-100 py-2 flex flex-row justify-between px-5 items-center w-full h-auto my-2"
                 onClick={() => (document.getElementById("my_modal_5") as HTMLDialogElement)?.showModal()}
               >
-                <div>{`${index + 1}. ${music}`}</div>
+                <div>{`${index + 1}. ${music.musicUrl}`}</div>
                 <span
                   className="btn btn-base-200 rounded-full bg-purpleHover hover:bg-purple"
                   onClick={(e) => {
@@ -151,14 +164,14 @@ export default function Music() {
               </div>
             </dialog>
           </div>
-          {data ? (
+          {/* {data ? (
             <div>
               <h2>Music List</h2>
               <pre>{JSON.stringify(data, null, 2)}</pre>
             </div>
           ) : (
             <p>No music data found</p>
-          )}
+          )} */}
         </div>
       </div>
     </div>

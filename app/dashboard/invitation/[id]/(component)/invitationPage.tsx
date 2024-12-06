@@ -144,22 +144,16 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
       endpoint: "event",
     },
     {
-      icon: "../../img/fiturLightMode/calendar.png",
+      icon: "../../img/fiturLightMode/quotes2.png",
       title: "Quote",
       dynamicLink: true, // Misalnya dinamis
       endpoint: "quote",
     },
     {
-      icon: "../../img/fiturLightMode/calendar.png",
-      title: "Setting",
-      dynamicLink: true, // Misalnya dinamis
-      endpoint: "setting",
-    },
-    {
       icon: "../../img/fiturLightMode/send.png",
-      title: "Kirim",
-      dynamicLink: true,
-      special: true,
+      title: "kirim",
+      dynamicLink: true, // Misalnya dinamis
+      endpoint: "",
     },
   ];
   

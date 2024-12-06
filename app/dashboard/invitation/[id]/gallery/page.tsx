@@ -112,7 +112,12 @@ const handleUpload = async (result: any) => {
     }
   };
 
-  if (loading) return <p className="text-center p-4">Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        Loading...
+      </div>
+    );
   if (error) return <p className="text-center text-red-500 p-4">Error: {error}</p>;
 
   return (
