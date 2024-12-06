@@ -92,10 +92,10 @@ export default function Home() {
             </h1>
             <p>Pilih tema sesuai keinginan</p>
             <div className="hero-buttons">
-              <a href="#" className="button-create">
+              <a href='' onClick={()=>handleWhatsAppClick("Template 1")} className="button-create">
                 Buat Sekarang
               </a>
-              <a href="#" className="button-demo">
+              <a href="template" className="button-demo">
                 Lihat Demo
               </a>
             </div>
@@ -248,21 +248,17 @@ export default function Home() {
           <p>Jl. A.H. Nasution No.105, Cipadung Wetan, Kec. Cibiru,</p>
           <p>Kota Bandung, Jawa Barat 40614</p>
           <div className="social-icons">
-            <a href="#" className="icon-link">
+            <a href="mailto:sc.titikoma03@gmail.com" className="icon-link">
               <img src="img/sms.png" alt="" />
               <i className="fas fa-envelope"></i>
             </a>
-            <a href="#" className="icon-link">
+            <a href=""  onClick={()=>handleWhatsAppClick('Template 1')} className="icon-link">
               <img src="img/whatsapp.png" alt="" />
               <i className="fab fa-whatsapp"></i>
             </a>
-            <a href="#" className="icon-link">
+            <a href="https://www.instagram.com/lovenity.online" className="icon-link">
               <img src="img/instagram.png" alt="" />
               <i className="fab fa-instagram"></i>
-            </a>
-            <a href="#" className="icon-link">
-              <img src="img/xtwitter.png" alt="" />
-              <i className="fab fa-twitter"></i>
             </a>
           </div>
         </div>
