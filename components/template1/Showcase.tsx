@@ -1,9 +1,6 @@
 
 "use client";
-import { TypewriterEffectSmooth } from "../ui/typewritter-effect";
 import { TextEffect } from '../ui/text-effect';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 const blurSlideVariants = {
    container: {
@@ -44,7 +41,11 @@ const blurSlideVariants = {
 export default function Showcase() { 
 
    return (
-      <div className="flex items-stretch justify-center h-screen text-neutral"> 
+      <div id="showcase" className="flex w-full justify-center h-screen text-neutral items-center bg-base-300" style={{
+         backgroundImage: `url('/template-img/template1/showcase.png')`,
+           backgroundPosition: 'center',
+         backgroundRepeat:'no-repeat', 
+       }}> 
          <div className="flex flex-col pb-10 text-center mt-10 w-96 mb-28">
             <div className="ml-3 font-alex text-2xl self-start h-16">
                <TextEffect
@@ -110,7 +111,7 @@ export default function Showcase() {
 
             <div className="font-alegreyaSans">
                <TextEffect per='word' preset='fade' delay={2}>
-               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unnnn
+               Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unnnn
                </TextEffect>
                <h1 className="font-bold">
                   <TextEffect per='char' preset='blur' delay={2.5}>

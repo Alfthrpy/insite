@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "brides and grooms" ALTER COLUMN "createdAt" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "deletedAt" DROP NOT NULL;

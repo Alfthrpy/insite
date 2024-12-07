@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import '../globals.css';
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import SessionWrapper from "@/components/SessionWrapper";
 import Image from 'next/image';
+import DashboardSkeleton from "@/components/DashboardSkeleton";
 
 export default function DashboardLayout({
    children,
@@ -41,8 +42,8 @@ export default function DashboardLayout({
       case "/dashboard":
         setPageTitle("Dashboard");
         break;
-      case "/dashboard/undangan":
-        setPageTitle("Undangan");
+      case "/dashboard/invitation":
+        setPageTitle("Invitation");
         break;
       case "/dashboard/customer-service":
         setPageTitle("Customer Service");
@@ -63,9 +64,10 @@ export default function DashboardLayout({
     }, 2000);
     
   };
+  
 
   if (!isClient || status === "loading") {
-    return <div>Loading...</div>;
+    return <DashboardSkeleton />
   }
   
   if (!session) {
@@ -74,7 +76,6 @@ export default function DashboardLayout({
 
   return (
     <SessionWrapper>
-      <Toaster/>
       <section className="bg-secondary-content" data-theme="light">
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -108,15 +109,14 @@ export default function DashboardLayout({
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full">
-                      <img
+                      <Image
                         alt={session?.user?.name || "Profile"}
                         src={
                           session?.user?.image ||
-                          "/images/profile_default.jpeg"
+                          "/img/profile-default.png"
                         }
-                        width={100}
-                        height={100}
-                        style={{ borderRadius: "50%" }}
+                        width={200}
+                        height={200}
                       />
                     </div>
                   </div>
@@ -144,6 +144,7 @@ export default function DashboardLayout({
                   </ul>
                 </div>
               </div>
+
             </div>
 
                  {children}
@@ -221,10 +222,10 @@ export default function DashboardLayout({
                      </li>
                      <li
                         className={`${
-                           location.pathname === "/dashboard/undangan" ? "bg-purpleDrawer rounded-md" : ""
+                           location.pathname === "/dashboard/invitation" ? "bg-purpleDrawer rounded-md" : ""
                         }`}
                      >
-                        <a href="/dashboard/undangan">Undangan</a>
+                        <a href="/dashboard/invitation/1">Undangan</a>
                      </li>
                      <li
                         className={`${

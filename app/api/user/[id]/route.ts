@@ -1,23 +1,15 @@
-
-import { UpdateUserSchema } from "@/lib/definitions";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 
-
-
-export async function PATCH( req: Request,
-  { params }: { params: { id: string } }) {
-  const body = await req.json();
-
-  // Validasi input menggunakan Zod
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { username, email } = UpdateUserSchema.parse(body);
+    const { username, email } = await req.json();
 
-    // Misalkan id pengguna diterima dari query parameter atau session
-    const userId = params.id; 
+    const userId = params.id;
 
-    // Cek apakah user ada di database
     const existingUser = await prisma.user.findUnique({
       where: { id: userId },
     });
@@ -28,6 +20,7 @@ export async function PATCH( req: Request,
     const existingUserEmail = await prisma.user.findUnique({
       where: { email: email },
     });
+
     if (existingUserEmail) {
       return NextResponse.json(
         { error: "Email already in use" },
@@ -46,18 +39,9 @@ export async function PATCH( req: Request,
 
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      // Format dan kirim Zod error sebagai respons
-      const formattedErrors = error.errors.map((err) => ({
-        field: err.path[0],
-        message: err.message,
-      }));
-      return NextResponse.json({ errors: formattedErrors }, { status: 400 });
-    }
-
     return NextResponse.json(
-      { error: "Internal server error", ror : error },
-      { status: 500}
+      { error: "Internal server error", ror: error },
+      { status: 500 }
     );
   }
 }
@@ -75,15 +59,6 @@ export async function DELETE(
     return NextResponse.json(response, { status: 200 });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      const formattedErrors = error.errors.map((err) => ({
-        field: err.path[0],
-        message: err.message,
-      }));
-
-      return NextResponse.json({ errors: formattedErrors }, { status: 400 });
-    }
-
     return NextResponse.json(
       { error: "Internal server error", ror: error },
       { status: 500 }

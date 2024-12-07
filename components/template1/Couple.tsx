@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Image from 'next/image';
+import { useEffect } from "react";
 
 const groomVariants = {
    initial: { opacity: 0, y: 50 }, // Muncul dari bawah dengan opacity 0
@@ -19,6 +20,8 @@ const brideVariants = {
    }
 }
 
+
+
 const textVariants = {
    initial: { opacity: 0 },
    animate: {
@@ -27,9 +30,24 @@ const textVariants = {
    },
  };
 
-export default function Couple() {
+export default function Couple({invitationId} : {invitationId : string}) {
+
+   useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`/api/bride-groom?invitationId=${invitationId}`);
+          const data = await response.json();
+          console.log(data); // Tangani data sesuai kebutuhan
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+    
+      fetchData();
+    }, []);
+
    return (
-      <div className="flex w-full relative items-stretch justify-center h-auto bg-secondary-content">
+      <div id="couple" className="flex w-full relative items-stretch justify-center h-auto ">
              <div className="flex flex-col min-w-96 w-full max-w-lg my-14">
                {/* Groom Section */}
                <motion.div
@@ -41,8 +59,9 @@ export default function Couple() {
                >
                <div className="font-alex text-4xl ml-2">The Groom</div>
                <Image
-                  src=""
+                  src="/template-img/template1/groom.png"
                   alt="groom"
+                  layout="intrinsic"
                   width={216}
                   height={280}
                   className="border-2 border-neutral ml-5 rounded-md"
@@ -90,7 +109,7 @@ export default function Couple() {
                >
                <div className="font-alex text-4xl text-end mr-3">The Bride</div>
                <Image
-                  src=""
+                  src="/template-img/template1/bride.png"
                   alt="bride"
                   width={216}
                   height={280}

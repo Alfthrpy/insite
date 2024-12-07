@@ -555,22 +555,24 @@ export const closingVariants = {
         }
     },
     wiggle: {
-        scale: [1, 1.2, 1.2, 1.2, 1.2, 1],
-        rotate: [0, 15, -15, 15, -15, 0],
-        transition: {
-          repeat: Infinity,
-          repeatType: 'loop',  // Correctly use one of the allowed string values
-          repeatDelay: 2
-        }
-      },
-    wiggle2: {
         animate: {
             scale: [1, 1.2, 1.2, 1.2, 1.2, 1],
             rotate: [0, 15, -15, 15, -15, 0],
             transition: {
                 repeat: Infinity,
                 repeatType: 'loop',
-                repeatDelay: 2.5
+                repeatDelay: 2
+            }
+        }
+    },
+    wiggle: {
+        animate: {
+            scale: [1, 1.2, 1.2, 1.2, 1.2, 1],
+            rotate: [0, 15, -15, 15, -15, 0],
+            transition: {
+                repeat: Infinity,
+                repeatType: 'loop', // Correct value for repeatType
+                repeatDelay: 2
             }
         }
     },

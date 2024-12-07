@@ -67,7 +67,14 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
 
    return (
     
-     <div className="flex items-stretch justify-center h-screen text-neutral"> 
+     <div className="flex items-stretch justify-center h-screen text-neutral"
+     style={{
+      backgroundImage: `url('/template-img/template1/cover1.png')`,
+        backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'contain',
+  }}
+     > 
        <div className="flex flex-col self-end pb-10 text-center mb-6 w-96">
          <div className="ml-3 font-alex text-2xl self-start h-16">
           <TextEffect
@@ -140,7 +147,7 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
              </TextEffect>
              <motion.div
                 onClick={openHandler}
-                className="btn mt-7 btn-ghost border-2 rounded-full border-base-300 hover:bg-base-200 items-center text-xl justify-end"
+                className="btn mt-7 btn-ghost border-2 rounded-full border-neutral hover:bg-base-200 items-center text-xl justify-end"
                 initial={{ opacity: 0, y: 40 }} // Mulai dengan opacity 0 dan sedikit ke bawah
                 animate={{ opacity: 1, y: 0 }}  // Muncul dengan opacity 1 dan posisi normal
                 transition={{ delay: 3.5, duration: 0.6, ease: 'easeOut' }}
