@@ -30,7 +30,7 @@ const textVariants = {
    },
  };
 
-export default function Couple(invitationId:string) {
+export default function Couple({invitationId} : {invitationId : string}) {
 
    useEffect(() => {
       const fetchData = async () => {

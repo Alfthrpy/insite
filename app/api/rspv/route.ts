@@ -41,7 +41,7 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: "invitationId is required" }, { status: 400 });
       }
   
-      const response = await prisma.rsvp.findFirst({
+      const response = await prisma.rsvp.findMany({
         where: { invitationId: invitationId },
       });
   

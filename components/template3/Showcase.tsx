@@ -3,9 +3,60 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { showcaseVariants, closingVariants } from '../../helper/variants'
+import { useEffect, useState } from 'react';
 // import PaperTexture from '../public/webp/paper1.webp'
 
-export default function Showcase() {
+const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('id-ID', options);
+  };
+
+export default function Showcase({invitationId} : {invitationId: string}) {
+    const [brideName,setBrideName] = useState<string>('')
+    const [groomName,setgroomName] = useState<string>('')
+    const [eventDate,setEventDate] = useState<string>('')
+    useEffect(() => {
+        const fetchBrideGroomData = async () => {
+          try {
+            const response = await fetch(
+              `/api/bride-groom?invitationId=${invitationId}`
+            );
+            if (!response.ok) throw new Error('Failed to fetch data');
+            const data = await response.json();
+            setBrideName(data.nameBride)
+            setgroomName(data.nameGroom)
+
+            
+          } catch (error) {
+            console.error('Error fetching bride and groom data:', error);
+          }
+        };
+    
+        fetchBrideGroomData();
+      }, [invitationId]);
+
+
+    useEffect(() => {
+        const fetchBrideGroomData = async () => {
+            try {
+                const response = await fetch(`/api/event?invitationId=${invitationId}`);
+                
+                if (!response.ok) {
+                  throw new Error(`Failed to fetch data, status: ${response.status}`);
+                }
+            
+                const data = await response.json();
+                setEventDate(formatDate(data[0].dateEvent));
+            
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              } catch (error : any) {
+                console.error('Error fetching bride and groom data:', error.message);
+              }
+        };
+    
+        fetchBrideGroomData();
+      }, [invitationId]);
     return (
         <section id='showcase' className='relative bg-neutral-300'>
             {/* <Image src={PaperTexture} alt="paper texture" layout='fill' placeholder='blur' objectFit='cover' /> */}
@@ -48,12 +99,12 @@ export default function Showcase() {
                             </motion.div>
                         </motion.div>
                         <div>
-                            <motion.h1 variants={showcaseVariants.invitedChildrenVariants} className='title mt-2'>Rizky & Aisyah</motion.h1>
+                            <motion.h1 variants={showcaseVariants.invitedChildrenVariants} className='title mt-2'>{groomName} & {brideName}</motion.h1>
                         </div>
                     </div>
                     <motion.div variants={showcaseVariants.invitedChildrenVariants} className="flex items-center justify-center space-x-3">
                         <motion.div variants={showcaseVariants.line} initial="initial" whileInView="animate" className='bg-dark h-0.25 w-12'></motion.div>
-                        <h3 className='font-alice text-xl text-dark'>Syawal 1443 H / Mei 2022</h3>
+                        <h3 className='font-alice text-xl text-dark'>{eventDate}</h3>
                         <motion.div variants={showcaseVariants.line} initial="initial" whileInView="animate" className='bg-dark h-0.25 w-12'></motion.div>
                     </motion.div>
                 </motion.div>

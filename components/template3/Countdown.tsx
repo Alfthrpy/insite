@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { ayatVariants } from '../../helper/variants'
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { ayatVariants } from '../../helper/variants';
 
 interface CountdownProps {
-    url: string;  // URL string untuk link
-    date: string; // Tanggal target sebagai string
+    url: string; // URL string untuk link
+    startTime: string; // Waktu mulai sebagai string (opsional)
+    endTime: string; // Waktu akhir sebagai string (target hitungan mundur)
 }
 
-export default function Countdown({ url, date }: CountdownProps) {
+export default function Countdown({ url, startTime, endTime }: CountdownProps) {
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -17,11 +18,26 @@ export default function Countdown({ url, date }: CountdownProps) {
     });
 
     useEffect(() => {
-        const targetDate = new Date(date);
+        const startDate = startTime ? new Date(startTime) : new Date();
+        const targetDate = new Date(endTime);
+
         const interval = setInterval(() => {
             const now = new Date();
-            const difference = targetDate.getTime() - now.getTime();
 
+            // Hitungan mundur sebelum startTime
+            if (now.getTime() < startDate.getTime()) {
+                const difference = startDate.getTime() - now.getTime();
+                setTimeLeft({
+                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+                    seconds: Math.floor((difference % (1000 * 60)) / 1000),
+                });
+                return;
+            }
+
+            // Hitungan mundur setelah startTime hingga endTime
+            const difference = targetDate.getTime() - now.getTime();
             if (difference <= 0) {
                 clearInterval(interval);
                 setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -37,7 +53,7 @@ export default function Countdown({ url, date }: CountdownProps) {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [date]);
+    }, [startTime, endTime]);
 
     const formatTime = (value: number) => (value < 10 ? `0${value}` : value);
 

@@ -1,51 +1,67 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { coverVariants } from '../../helper/variants';
-import NightTexture from '../../public/webp/night-texture.webp';
-import Window from '../../public/webp/cover2.webp';
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { coverVariants } from "../../helper/variants";
+import NightTexture from "../../public/webp/night-texture.webp";
+import Window from "../../public/webp/cover2.webp";
+import { Key, useEffect, useState } from "react";
 
 interface CoverProps {
   openHandler: () => void;
-  to?: string; // Optional query parameter
+  invitationId: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { to } = context.query; // Extract 'to' from query
-  return {
-    props: { to: to || 'Tamu Undangan' }, // Fallback to default
-  };
-};
 
-const Cover: React.FC<CoverProps> = ({ openHandler, to }) => {
-  // Default invite message
-  const invite = to || 'Tamu Undangan';
+const Cover: React.FC<CoverProps> = ({
+  openHandler,
+  invitationId,
+}) => {
+  const [brideInitial, setBrideInitial] = useState<string>('-');
+  const [groomInitial, setGroomInitial] = useState<string>('-');
+  const [brideName,setBrideName] = useState<string>('')
+  const [groomName,setgroomName] = useState<string>('')
 
-  // Split invitee's name into words and characters
-  const splitInvite = invite.split(' ').map((word, wordIndex) => {
-    const splitWord = word.split('');
-    splitWord.push('\u00A0'); // Add non-breaking space
-    return (
-      <span key={wordIndex} className="whitespace-nowrap">
-        {splitWord.map((char, charIndex) => (
-          <span
-            key={`char-${wordIndex}-${charIndex}`}
-            className="inline-block overflow-hidden"
+  useEffect(() => {
+    const fetchBrideGroomData = async () => {
+      try {
+        const response = await fetch(
+          `/api/bride-groom?invitationId=${invitationId}`
+        );
+        if (!response.ok) throw new Error('Failed to fetch data');
+        const data = await response.json();
+        setBrideName(data.nameBride)
+        setgroomName(data.groomName)
+        setBrideInitial(data.nameBride?.charAt(0) || '');
+        setGroomInitial(data.nameGroom?.charAt(0) || '');
+      } catch (error) {
+        console.error('Error fetching bride and groom data:', error);
+      }
+    };
+
+    fetchBrideGroomData();
+  }, [invitationId]);
+  const invite = "Tamu Undangan";
+
+  const splitInvite = invite.split(" ").map((word, wordIndex) => (
+    <span key={wordIndex} className="whitespace-nowrap">
+      {word.split("").map((char, charIndex) => (
+        <span
+          key={`char-${wordIndex}-${charIndex}`}
+          className="inline-block overflow-hidden"
+        >
+          <motion.span
+            className="inline-block"
+            variants={coverVariants.inviteChildrenVariants}
           >
-            <motion.span
-              className="inline-block"
-              variants={coverVariants.inviteChildrenVariants}
-            >
-              {char}
-            </motion.span>
-          </span>
-        ))}
-      </span>
-    );
-  });
+            {char}
+          </motion.span>
+        </span>
+      ))}
+      <span>&nbsp;</span>
+    </span>
+  ));
 
   return (
     <motion.section
@@ -55,10 +71,10 @@ const Cover: React.FC<CoverProps> = ({ openHandler, to }) => {
     >
       <Image
         src={NightTexture}
-        alt="paint texture"
+        alt="Paint texture background"
         placeholder="blur"
-        layout="fill"
-        objectFit="cover"
+        fill
+        className="object-cover"
       />
       <div className="relative z-10 max-w-screen-sm h-full mx-auto flex flex-col justify-end text-center">
         <div className="relative mx-auto w-fit h-fit mb-7">
@@ -66,12 +82,12 @@ const Cover: React.FC<CoverProps> = ({ openHandler, to }) => {
             variants={coverVariants.curvedVariants}
             initial="initial"
             animate="animate"
-            style={{ marginLeft: '-108.5px' }}
             className="absolute -top-10 left-1/2"
+            style={{ marginLeft: "-108.5px" }}
           >
             <Image
               src="/svg/curved2.svg"
-              alt="Rizky & Aisyah"
+              alt={`${brideName} & ${groomName}`}
               placeholder="blur"
               blurDataURL="/svg/curved2.svg"
               width={217}
@@ -82,34 +98,31 @@ const Cover: React.FC<CoverProps> = ({ openHandler, to }) => {
             variants={coverVariants.titleVariants}
             initial="initial"
             animate="animate"
-            style={{ top: '35px', left: '50%', marginLeft: '-57px' }}
             className="absolute z-10 flex items-center space-x-1"
+            style={{ top: "35px", left: "50%", marginLeft: "-57px" }}
           >
             <motion.h1
               variants={coverVariants.titleChildrenVariants}
-              style={{ fontSize: '132px' }}
-              className="font-lemon text-neutral"
+              className="font-lemon text-neutral text-[132px]"
             >
-              R
+              {groomInitial}
             </motion.h1>
             <motion.h1
               variants={coverVariants.titleChildrenVariants}
-              style={{ fontSize: '76px' }}
-              className="font-lemon text-neutral"
+              className="font-lemon text-neutral text-[76px]"
             >
               &
             </motion.h1>
             <motion.h1
               variants={coverVariants.titleChildrenVariants}
-              style={{ fontSize: '132px' }}
-              className="font-lemon text-neutral"
+              className="font-lemon text-neutral text-[132px]"
             >
-              A
+              {brideInitial}
             </motion.h1>
           </motion.div>
           <Image
             src={Window}
-            alt="flower on window"
+            alt="Flower on window"
             placeholder="blur"
             width={213}
             height={308}
@@ -122,9 +135,9 @@ const Cover: React.FC<CoverProps> = ({ openHandler, to }) => {
           animate="animate"
           className="text-body text-neutral mb-3"
         >
-          {'Yth.'.split('').map((singleText, index) => (
+          {"Yth.".split("").map((char, index) => (
             <motion.span variants={coverVariants.letter} key={index}>
-              {singleText}
+              {char}
             </motion.span>
           ))}
         </motion.p>

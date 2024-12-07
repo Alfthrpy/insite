@@ -198,3 +198,22 @@ export async function updateEvent(id: string, formData: any) {
   }
 }
 
+// services/invitationService.ts
+export async function validateInvitation(invitationId: string): Promise<boolean> {
+  try {
+    // Replace with your actual API call to validate invitation
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/invitation/${invitationId}`);
+   
+    if (!response.ok) {
+      return false;
+    }
+
+   
+    
+    // Explicitly return a boolean value
+    return true
+  } catch (error) {
+    console.error('Validation error:', error);
+    return false;
+  }
+}

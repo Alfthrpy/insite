@@ -62,14 +62,14 @@ export default function Couple({invitationId} : {invitationId: string}) {
                 <div className="max-w-screen-sm relative text-center mx-auto flex justify-center items-center">
                      <motion.div variants={coupleVariants.fade} initial="initial" whileInView="animate" viewport={{ once: true }}>
                         <Parallax inView={[0.2, 0.5]} position={[0, -50]}>
-                            <Image className='drop-shadow-md' src='/webp/photo-frame.webp' alt='photo' width={198.69} height={232} placeholder="blur" blurDataURL='/webp/photo-frame.webp' />
+                            <Image className='drop-shadow-md' src={brideGroomData?.imageGroom} alt='photo' width={198.69} height={232} placeholder="blur" blurDataURL='/webp/photo-frame.webp' />
                         </Parallax>
                     </motion.div>
                 </div>
                 </div>
                 <motion.div variants={coupleVariants.fade} initial="initial" whileInView="animate" viewport={{ once: true }}>
                     <h3 className='subheadline-small mb-2' data-scroll data-scroll-speed="3">{brideGroomData?.nameGroom}</h3>
-                    <p className="body">Putra dari {brideGroomData?.parentGroom} & Ibu Fitriani kocak ga ada aowako</p>
+                    <p className="body">Putra dari {brideGroomData?.parentGroom}</p>
                 </motion.div>
                 {/* <motion.div whileInView={{ rotate: 45 }} transition={{ duration: 0.5, delay: 0.5, repeat: Infinity, repeatDelay: 2, repeatType: 'reverse' }} style={{ top: '630px' }} className='absolute right-10 sm:right-32 z-10'>
                     <Image className='drop-shadow-md' src='/webp/camera.webp' alt='camera' width={105} height={105} />
@@ -91,7 +91,7 @@ export default function Couple({invitationId} : {invitationId: string}) {
                 <div className="max-w-screen-sm relative text-center mx-auto flex justify-center items-center">
                   <motion.div variants={coupleVariants.fade} initial="initial" whileInView="animate" viewport={{ once: true }}>
                         <Parallax inView={[0.3, 0.6]} position={[0, -50]}>
-                            <Image className='drop-shadow-md' src='/webp/photo-frame2.webp' alt='photo' width={198.69} height={232} placeholder="blur" blurDataURL='/webp/photo-frame2.webp' />
+                            <Image className='drop-shadow-md' src={brideGroomData?.imageBride} alt='photo' width={198.69} height={232} placeholder="blur" blurDataURL='/webp/photo-frame2.webp' />
                         </Parallax>
                     </motion.div>
                 </div>
@@ -99,7 +99,7 @@ export default function Couple({invitationId} : {invitationId: string}) {
                 </div>
                 <motion.div variants={coupleVariants.fade} initial="initial" whileInView="animate" viewport={{ once: true }}>
                     <h3 className='subheadline-small'>{brideGroomData?.nameBride}</h3>
-                    <p className="body">Putri dari {brideGroomData?.parentBride} & Ibu Mulyani</p>
+                    <p className="body">Putri dari {brideGroomData?.parentBride}</p>
                 </motion.div>
                 {/* <motion.div whileInView={{ rotate: 30 }} transition={{ duration: 0.5, delay: 0.5, repeat: Infinity, repeatDelay: 2, repeatType: 'reverse' }} className="relative -left-36 sm:-left-52 -top-4">
                     <Parallax inView={[0.4, 0.7]} position={[30, -30]}>

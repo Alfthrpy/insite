@@ -1,3 +1,4 @@
+
 import { InvitationSchema } from "@/lib/definitions";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
@@ -9,7 +10,11 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   
       // Ambil hanya ID dari invitation dan ID dari relasi terkait
       const invitation = await prisma.invitation.findUnique({
-        where: { id }
+        where: { id },
+        include:{
+            Quote : true,
+            Music : true
+        }
       });
   
       // Pastikan data ditemukan
