@@ -69,7 +69,7 @@ const RsvpSchema = z.object({
 // Validation schema for Invitation
 const InvitationSchema = z.object({
   userId: z.string().uuid({ message: "User ID harus berupa UUID yang valid" }),
-  designId: z.string().uuid().optional(),
+  designId: z.string().uuid(),
   qouteId: z.string().uuid().optional(),
   musicId: z.string().uuid().optional(),
   link: z.string().url({ message: "URL undangan tidak valid" }),

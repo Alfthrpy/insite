@@ -41,8 +41,9 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "invitationId is required" }, { status: 400 });
     }
 
-    const response = await prisma.event.findFirst({
+    const response = await prisma.event.findMany({
       where: { invitationId: invitationId },
+      take: 2, // Batas maksimum hasil
     });
 
     if (!response) {

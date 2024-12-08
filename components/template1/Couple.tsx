@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Image from 'next/image';
+import { useEffect } from "react";
 
 const groomVariants = {
    initial: { opacity: 0, y: 50 }, // Muncul dari bawah dengan opacity 0
@@ -19,6 +20,8 @@ const brideVariants = {
    }
 }
 
+
+
 const textVariants = {
    initial: { opacity: 0 },
    animate: {
@@ -27,7 +30,22 @@ const textVariants = {
    },
  };
 
-export default function Couple() {
+export default function Couple({invitationId} : {invitationId : string}) {
+
+   useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`/api/bride-groom?invitationId=${invitationId}`);
+          const data = await response.json();
+          console.log(data); // Tangani data sesuai kebutuhan
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+    
+      fetchData();
+    }, []);
+
    return (
       <div id="couple" className="flex w-full relative items-stretch justify-center h-auto ">
              <div className="flex flex-col min-w-96 w-full max-w-lg my-14">

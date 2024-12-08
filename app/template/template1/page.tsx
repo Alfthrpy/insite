@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import Cover from '@/components/template1/Cover';
-import '../globals.css'
+import '../../globals.css'
 import Couple from '@/components/template1/Couple';
 import Story from '@/components/template1/Story';
 import Event from '@/components/template1/Event';
@@ -38,7 +38,7 @@ const Home: React.FC = () => {
           <div key="cover">
             <SoundButton isPlaying={isPlaying} playPauseHandler={playPauseHandler} />
             <Showcase/>
-            <Couple/>
+            <Couple invitationId = {"11bd6492-aae7-4276-8e77-93142770468f"}/>
             <Story/>
             <Event />
             <Gallery />
