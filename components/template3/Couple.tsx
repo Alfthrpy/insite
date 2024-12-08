@@ -41,6 +41,11 @@ export default function Couple({invitationId} : {invitationId: string}) {
       
         fetchData();
       }, []);
+
+      if(!brideGroomData){
+        return <div>gak ada datanya</div>
+      }
+
     return (
         <section id='couple' className="w-full relative text-dark bg-lightGrey">
             {/* <Image src={PaperTexture} alt="paper texture" layout='fill' placeholder='blur' objectFit='cover' /> */}

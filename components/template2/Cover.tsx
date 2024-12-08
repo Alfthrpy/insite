@@ -1,32 +1,28 @@
 "use client";
-import { TextEffect } from '../ui/text-effect';
-import { useState, useEffect } from 'react';
+import { BrideGroomData, EventData, GalleryData } from '@/lib/interface';
 import { motion } from 'framer-motion';
 
 interface CoverProps {
   openHandler: () => void;
+  BrideGroomData : BrideGroomData;
+  EventData : EventData[];
+  GalleryData : GalleryData[]
 }
 
-const Cover: React.FC<CoverProps> = ({ openHandler }) => {
-  const blurSlideVariants = {
-    container: {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.05 },
-      },
-    },
-    item: {
-      hidden: { opacity: 0, filter: 'blur(10px)', y: 30 },
-      visible: { opacity: 1, filter: 'blur(0px)', y: 0, transition: { duration: 0.6 } },
-    },
+export default function Cover({ openHandler,BrideGroomData,EventData,GalleryData }:CoverProps){
+  const formatDate = (isoDate: string) => {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
   };
 
   return (
     <div
       className="flex items-center justify-center h-screen text-neutral bg-cover bg-center"
       style={{
-        backgroundImage: "url('https://weddingmarket.com/storage/images/artikelidea/e278499151fd0f3de8909a850783eb2d4fe19d3f.webp')",
+        backgroundImage: `url(${GalleryData[5].imageUrl})`,
         backgroundColor: '#F6F1EB', // Warna krem sebagai fallback
       }}
     >
@@ -48,7 +44,7 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 1 }}
         >
-          Pengantin 1 & Pengantin 2
+          {BrideGroomData.nameGroom} & {BrideGroomData.nameBride}
         </motion.div>
 
         {/* Garis */}
@@ -67,7 +63,7 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1 }}
         >
-          02.04.2025
+          {formatDate(EventData[0].dateEvent)}
         </motion.div>
 
         {/* Tombol */}
@@ -89,4 +85,3 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
   );
 };
 
-export default Cover;

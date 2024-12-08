@@ -1,16 +1,23 @@
 
 "use client";
-import { TypewriterEffectSmooth } from "../ui/typewritter-effect";
 import { TextEffect } from '../ui/text-effect';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface CoverProps {
   openHandler: () => void;
+  dataCouple: {
+    nameGroom: string;
+    nameBride: string;
+  };
+  dataRsvp: {
+    name: string;
+  };
 }
 
-const Cover: React.FC<CoverProps> = ({ openHandler }) => {
+export default function Cover({ openHandler, dataCouple, dataRsvp }: CoverProps){
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [trigger, setTrigger] = useState(true);
 
   useEffect(() => {
@@ -56,14 +63,7 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
     },
   };
 
-   const words = [
-      {
-        text: "Tamu",
-      },
-      {
-        text: "Undangan",
-      },
-    ];
+
 
    return (
     
@@ -120,7 +120,7 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
               },
             }}
           >
-            Pengantin 1 
+            {dataCouple.nameGroom}
            </TextEffect>
            <TextEffect per='char' delay={1.5}>
               & 
@@ -130,7 +130,7 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
             delay={2}
             preset='blur'
           >
-            Pengantin 2
+            {dataCouple.nameBride}
           </TextEffect>
          </div>
          <div className="h-40"></div>
@@ -143,7 +143,7 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
           </div>
           <div className="font-semibold lg:h-40 text-3xl">
             <TextEffect per='char' preset='fade' delay={3.5}>
-                  Tamu Undangan
+                  {dataRsvp.name}
              </TextEffect>
              <motion.div
                 onClick={openHandler}
@@ -160,6 +160,5 @@ const Cover: React.FC<CoverProps> = ({ openHandler }) => {
    );
  };
  
-export default Cover;
- 
 
+ 

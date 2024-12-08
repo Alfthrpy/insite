@@ -1,5 +1,6 @@
 
 "use client";
+import { GalleryData, QuoteData } from '@/lib/interface';
 import { TextEffect } from '../ui/text-effect';
 
 const blurSlideVariants = {
@@ -36,15 +37,32 @@ const blurSlideVariants = {
        },
      },
    },
- };
+};
+ 
 
-export default function Showcase() { 
 
+interface ShowcaseProps {
+   dataCouple: {
+     nameGroom: string;
+     nameBride: string;
+   };
+   QuoteData? : QuoteData
+   GalleryData : GalleryData[]
+ }
+
+export default function Showcase({dataCouple,QuoteData,GalleryData} : ShowcaseProps) { 
+   if(!QuoteData){
+      return <div>Gak ada QuoteData nya</div>
+   }
    return (
-      <div id="showcase" className="flex w-full justify-center h-screen text-neutral items-center bg-base-300" style={{
-         backgroundImage: `url('/template-img/template1/showcase.png')`,
-           backgroundPosition: 'center',
-         backgroundRepeat:'no-repeat', 
+      <div
+         id="showcase"
+         className="flex w-full justify-center h-screen text-neutral items-center bg-sky bg-cover md:bg-auto bg-center"
+         style={{
+         backgroundImage: `url(${GalleryData[4].imageUrl})`,
+         backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+         
        }}> 
          <div className="flex flex-col pb-10 text-center mt-10 w-96 mb-28">
             <div className="ml-3 font-alex text-2xl self-start h-16">
@@ -91,7 +109,7 @@ export default function Showcase() {
                   },
                }}
                >
-               Pengantin 1 
+               {dataCouple.nameGroom} 
                </TextEffect>
                <TextEffect per='char' delay={1}>
                   & 
@@ -101,7 +119,7 @@ export default function Showcase() {
                delay={1.4}
                preset='blur'
                >
-               Pengantin 2
+               {dataCouple.nameBride}
                </TextEffect>
             </div>
             <div className="h-24"></div>
@@ -111,11 +129,11 @@ export default function Showcase() {
 
             <div className="font-alegreyaSans">
                <TextEffect per='word' preset='fade' delay={2}>
-               Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unnnn
+               {QuoteData?.content}
                </TextEffect>
                <h1 className="font-bold">
                   <TextEffect per='char' preset='blur' delay={2.5}>
-                     21 Februari 2025
+                     {QuoteData?.author}
                   </TextEffect>        
                </h1>
             </div>

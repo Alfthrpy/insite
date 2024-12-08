@@ -66,13 +66,8 @@ export default function Gift({invitationId} : {invitationId : string}) {
         ) : (
           <div>Loading...</div>
         )}
+      
 
-        <div className="font-alegreyaSans self-center mt-4 w-96">
-          <div className="text-Center font-bold mb-2">Kirim Kado Ke Alamat</div>
-          <div className="card text-center border-2 border-dashed border-black py-10">
-            jl. ABCD no 2 Bandung
-          </div>
-        </div>
       </motion.div>
     </div>
   );

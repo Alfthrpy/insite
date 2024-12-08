@@ -4,17 +4,17 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { GalleryData } from '@/lib/interface';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-const ITEMS = [
-  { id: 1, image: '/template-img/template1/gallery1.png' },
-  { id: 2, image: '/template-img/template1/gallery3.png' },
-  { id: 3, image: '/template-img/template1/gallery3.png' },
-  { id: 4, image: '/template-img/template1/gallery3.png' },
-];
 
-export default function CarouselWithThumbnails() {
+
+interface GalleryProps {
+   GalleryData : GalleryData[]
+}
+
+export default function CarouselWithThumbnails({GalleryData}: GalleryProps) {
   const [index, setIndex] = useState(0);
 
   return (
@@ -32,11 +32,11 @@ export default function CarouselWithThumbnails() {
                <div className='relative w-full max-w-lg py-6'>
                   <Carousel index={index} onIndexChange={setIndex}>
                   <CarouselContent className='relative'>
-                     {ITEMS.map((item, i) => (
+                     {GalleryData.map((item, i) => (
                         <CarouselItem key={item.id} className='p-4'>
                         <div className='flex aspect-square items-center justify-center border border-zinc-200 dark:border-zinc-800'>
                            <img
-                              src={item.image}
+                              src={item.imageUrl}
                               alt={`Slide ${i + 1}`}
                               className='object-contain w-full h-full'
                            />
@@ -46,7 +46,7 @@ export default function CarouselWithThumbnails() {
                   </CarouselContent>
                   </Carousel>
                   <div className='flex w-full justify-center space-x-3 px-4 mt-4'>
-                  {ITEMS.map((item, i) => (
+                  {GalleryData.map((item, i) => (
                      <button
                         key={item.id}
                         type='button'
@@ -59,7 +59,7 @@ export default function CarouselWithThumbnails() {
                         }`}
                      >
                         <img
-                        src={item.image}
+                        src={item.imageUrl}
                         alt={`Thumbnail ${i + 1}`}
                         className={`h-12 w-12 object-cover ${
                            index === i ? 'opacity-100' : 'opacity-50'

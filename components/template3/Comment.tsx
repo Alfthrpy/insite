@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { GalleryData } from "@/lib/interface";
 
 interface CommentData {
-   name: string;
-   text: string;
-   createdAt: Date;
+  name: string;
+  text: string;
+  createdAt: Date;
 }
 
-export default function Comment({invitationId} : {invitationId: string}) {
+export default function Comment({ invitationId }: { invitationId: string }) {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [comments, setComments] = useState<CommentData[]>([]);
+  const [gallery, setGallery] = useState<GalleryData[]>([]);
+  const [isGalleryLoading, setGalleryLoading] = useState(true); // Tambahkan state untuk loading galeri
 
   useEffect(() => {
     async function fetchComments() {
@@ -22,9 +25,24 @@ export default function Comment({invitationId} : {invitationId: string}) {
         console.error("Error fetching comments:", error);
       }
     }
-
     fetchComments();
-  }, []);
+  }, [invitationId]);
+
+  useEffect(() => {
+    async function getGallery() {
+      setGalleryLoading(true); // Set loading saat fetch dimulai
+      try {
+        const response = await fetch(`/api/gallery?invitationId=${invitationId}`);
+        const data = await response.json();
+        setGallery(data);
+      } catch (error) {
+        console.error("Error fetching gallery:", error);
+      } finally {
+        setGalleryLoading(false); // Set selesai loading setelah fetch
+      }
+    }
+    getGallery();
+  }, [invitationId]);
 
   async function handleSubmit() {
     if (!name || !text) {
@@ -59,14 +77,20 @@ export default function Comment({invitationId} : {invitationId: string}) {
             Pesan untuk Pengantin
           </h2>
           
-          <Image
-            src="/template-img/template1/gallery3.png"
-            alt="Wedding decoration"
-            className="rounded-2xl shadow-lg mx-auto mb-8"
-            width={300}
-            height={220}
-            objectFit="cover"
-          />
+          {isGalleryLoading ? ( // Tampilkan loading jika galeri sedang di-fetch
+            <p className="text-gray-500 italic">Memuat gambar...</p>
+          ) : gallery.length > 0 ? (
+            <Image
+              src={gallery[0].imageUrl}
+              alt="Wedding decoration"
+              className="rounded-2xl shadow-lg mx-auto mb-8"
+              width={300}
+              height={220}
+              objectFit="cover"
+            />
+          ) : (
+            <p className="text-gray-500 italic">Tidak ada gambar tersedia.</p>
+          )}
         </div>
 
         {/* Input Section */}

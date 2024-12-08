@@ -19,6 +19,7 @@ import Closing from '@/components/template3/Closing';
 import { useParams } from "next/navigation";
 import NotFound from './not-found';
 import { validateInvitation } from '@/lib/actions';
+import { InvitationData } from '@/lib/interface';
 config.autoAddCss = false
 
 export default function Home() {
@@ -29,10 +30,20 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isValidInvitation, setIsValidInvitation] = useState<boolean | null>(null);
+  const [invitationData, setInvitationData] = useState<InvitationData>();
 
   // Validate invitation when component mounts
   useEffect(() => {
+
+    
+
     async function checkInvitation() {
+
+      const [invitationRes ] = await Promise.all([
+        fetch(`/api/invitation/${invitationId}`)
+      ]);
+      setInvitationData(await invitationRes.json());
+
       try {
         // Assumes you have a service method to validate invitation
         const isValid = await validateInvitation(invitationId);
@@ -83,12 +94,12 @@ export default function Home() {
             <Cover key="cover" invitationId={invitationId} openHandler={openInvitation} />
           ) : (
             <div key="content">
-              <SoundButton isPlaying={isPlaying} playPauseHandler={playPauseHandler} />
+              <SoundButton isPlaying={isPlaying} playPauseHandler={playPauseHandler} MusicData={invitationData?.Music}  />
               <Navbar />
               <Showcase invitationId={invitationId} />
               <Ayat invitationId={invitationId} />
               <Couple invitationId={invitationId} />
-              <Story />
+              <Story invitationId={invitationId}/>
               <Gallery invitationId={invitationId} />
               <Event invitationId={invitationId} />
               <Gift invitationId={invitationId} />

@@ -1,4 +1,13 @@
-export default function Gift() {
+import { GiftData } from "@/lib/interface";
+import Image from "next/image";
+interface GiftProps {
+  GiftData: GiftData[];
+}
+
+export default function Gift({GiftData}:GiftProps) {
+
+  
+
   return (
     <div
       className="bg-[#F6F1EB] flex flex-col items-center py-14"
@@ -20,29 +29,32 @@ export default function Gift() {
           <p className="text-lg text-center text-[#5A4636] mb-4">
             Transfer directly to the account below:
           </p>
+          
           <ul className="space-y-8 text-center">
-            <li>
+          {GiftData.map((gift)=>(
+            <li key={gift.invitationId}>
               <p className="text-base text-[#5A4636]">
-                <span className="font-bold">Bank Mandiri</span>
+                <span className="font-bold">{gift.nameAccount}</span>
               </p>
-              <p className="text-xl font-mono font-bold text-[#C1A15A]">18181818718</p>
-              <p className="text-[#5A4636]">A/N Our Wedding Link</p>
+              <p className="text-xl font-mono font-bold text-[#C1A15A]">{gift.noAccount}</p>
+              {gift.imgAccount && (
+                 <>
+                   <div className="font-thin text-gray-500 text-sm mt-3">
+                     Transfer pakai QRIS
+                   </div>
+                   <Image
+                     src={gift.imgAccount}
+                     alt={`QRIS ${gift.nameAccount}`}
+                     className="border-2 border-neutral mt-2"
+                     width={320}
+                     height={271}
+                   />
+                 </>
+               )}
             </li>
-            <li>
-              <p className="text-base text-[#5A4636]">
-                <span className="font-bold">Bank Central Asia (BCA)</span>
-              </p>
-              <p className="text-xl font-mono font-bold text-[#C1A15A]">28031280318</p>
-              <p className="text-[#5A4636]">A/N Our Wedding Link</p>
-            </li>
-            <li>
-              <p className="text-base text-[#5A4636]">
-                <span className="font-bold">Bank Central Asia (BCA)</span>
-              </p>
-              <p className="text-xl font-mono font-bold text-[#C1A15A]">1234567812</p>
-              <p className="text-[#5A4636]">A/N Our Wedding</p>
-            </li>
+          ))}
           </ul>
+
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
+import { BrideGroomData } from "@/lib/interface";
 import { motion } from "framer-motion";
 import Image from 'next/image';
-import { useEffect } from "react";
 
 const groomVariants = {
    initial: { opacity: 0, y: 50 }, // Muncul dari bawah dengan opacity 0
@@ -20,8 +20,6 @@ const brideVariants = {
    }
 }
 
-
-
 const textVariants = {
    initial: { opacity: 0 },
    animate: {
@@ -30,22 +28,12 @@ const textVariants = {
    },
  };
 
-export default function Couple({invitationId} : {invitationId : string}) {
+interface CoupleProps {
+   BrideGroomData : BrideGroomData;
 
-   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(`/api/bride-groom?invitationId=${invitationId}`);
-          const data = await response.json();
-          console.log(data); // Tangani data sesuai kebutuhan
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-    
-      fetchData();
-    }, []);
+}
 
+export default function Couple({BrideGroomData} : CoupleProps) {
    return (
       <div id="couple" className="flex w-full relative items-stretch justify-center h-auto ">
              <div className="flex flex-col min-w-96 w-full max-w-lg my-14">
@@ -59,7 +47,7 @@ export default function Couple({invitationId} : {invitationId : string}) {
                >
                <div className="font-alex text-4xl ml-2">The Groom</div>
                <Image
-                  src="/template-img/template1/groom.png"
+                  src={BrideGroomData.imageGroom}
                   alt="groom"
                   layout="intrinsic"
                   width={216}
@@ -73,9 +61,9 @@ export default function Couple({invitationId} : {invitationId : string}) {
                         whileInView="animate"
                         viewport={{ once: true }}
                      >
-                        <h1 className="font-semibold italic text-xl mb-2">Nama Pengantin</h1>
+                        <h1 className="font-semibold italic text-xl mb-2">{BrideGroomData.nameGroom}</h1>
                         <h3 className="text-sm font-thin">Putra dari :</h3>
-                        <h4 className="font-thin italic mb-3">Nama ibu & bapak</h4>
+                        <h4 className="font-thin italic mb-3">{BrideGroomData.parentGroom}</h4>
                         <div className="flex ">
                            <Image
                               src="/img/instagram.png"
@@ -84,7 +72,7 @@ export default function Couple({invitationId} : {invitationId : string}) {
                               width={18}
                               height={20}
                            />
-                           <h1 className="ml-2">@username</h1>
+                           <h1 className="ml-2">{BrideGroomData.linkInstagramGroom}</h1>
                         </div>
                         <div className="flex">
                            <Image
@@ -94,7 +82,7 @@ export default function Couple({invitationId} : {invitationId : string}) {
                               width={18}
                               height={20}
                            />
-                           <h1 className="ml-2">@username</h1>
+                           <h1 className="ml-2">{BrideGroomData.linkTwitterGroom}</h1>
                         </div>
                   </motion.div>
                </motion.div>
@@ -109,7 +97,7 @@ export default function Couple({invitationId} : {invitationId : string}) {
                >
                <div className="font-alex text-4xl text-end mr-3">The Bride</div>
                <Image
-                  src="/template-img/template1/bride.png"
+                  src={BrideGroomData.imageBride}
                   alt="bride"
                   width={216}
                   height={280}
@@ -122,9 +110,9 @@ export default function Couple({invitationId} : {invitationId : string}) {
                      whileInView="animate"
                      viewport={{ once: true }}
                   >
-                  <h1 className="font-semibold italic text-xl mb-2">Nama Pengantin</h1>
+                  <h1 className="font-semibold italic text-xl mb-2">{BrideGroomData.nameBride}</h1>
                   <h3 className="text-sm font-thin">Putri dari :</h3>
-                  <h4 className="font-thin italic mb-3">Nama ibu & bapak</h4>
+                  <h4 className="font-thin italic mb-3">{BrideGroomData.parentBride}</h4>
                   <div className="flex justify-end">
                      <Image
                         src="/img/instagram.png"
@@ -133,7 +121,7 @@ export default function Couple({invitationId} : {invitationId : string}) {
                         width={18}
                         height={20}
                      />
-                     <h1 className="ml-2">@username</h1>
+                     <h1 className="ml-2">{BrideGroomData.linkInstagramBride}</h1>
                   </div>
                   <div className="flex justify-end">
                      <Image
@@ -143,7 +131,7 @@ export default function Couple({invitationId} : {invitationId : string}) {
                         width={18}
                         height={20}
                      />
-                     <h1 className="ml-2">@username</h1>
+                     <h1 className="ml-2">{BrideGroomData.linkTwitterBride}</h1>
                   </div>
                   </motion.div>
                </motion.div>

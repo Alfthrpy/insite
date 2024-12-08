@@ -1,3 +1,4 @@
+import { BrideGroomData } from "@/lib/interface";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -6,7 +7,11 @@ const textVariants = {
   animate: { opacity: 1, transition: { duration: 1.5, ease: "easeOut" } },
 };
 
-export default function Couple() {
+interface CoupleProps{
+  BrideGroomData : BrideGroomData
+}
+
+export default function Couple({BrideGroomData}: CoupleProps) {
   return (
     <div className="flex flex-col items-center justify-center bg-white bg-opacity-80 py-14 h-screen">
       {/* Section Content */}
@@ -20,16 +25,16 @@ export default function Couple() {
           viewport={{ once: true }}
         >
           <Image
-            src="/img/groom.jpg" // Ganti dengan URL gambar pengantin pria
+            src={BrideGroomData.imageGroom} // Ganti dengan URL gambar pengantin pria
             alt="groom"
             width={150}
             height={150}
             className="rounded-full border-4 border-[#C1A15A]" // Border warna gold
           />
           <div>
-            <h1 className="font-poppins text-2xl font-bold text-[#333333]">Nofariza</h1> {/* Warna dark gray */}
+            <h1 className="font-poppins text-2xl font-bold text-[#333333]">{BrideGroomData.nameGroom}</h1> {/* Warna dark gray */}
             <p className="font-playfair text-base text-[#757575]">
-              Putra dari Bpk. Lorem dan Ibu Ipsum
+              {BrideGroomData.parentGroom}
             </p>
           </div>
         </motion.div>
@@ -43,16 +48,16 @@ export default function Couple() {
           viewport={{ once: true }}
         >
           <Image
-            src="/img/bride.jpg" // Ganti dengan URL gambar pengantin wanita
+            src={BrideGroomData.imageBride} // Ganti dengan URL gambar pengantin wanita
             alt="bride"
             width={150}
             height={150}
             className="rounded-full border-4 border-[#C1A15A]" // Border warna gold
           />
           <div>
-            <h1 className="font-poppins text-2xl font-bold text-[#333333]">Nofariza</h1> {/* Warna dark gray */}
+            <h1 className="font-poppins text-2xl font-bold text-[#333333]">{BrideGroomData.nameBride}</h1> {/* Warna dark gray */}
             <p className="font-playfair text-base text-[#757575]">
-              Putri dari Bpk. Lorem dan Ibu Ipsum
+              {BrideGroomData.parentBride}
             </p>
           </div>
         </motion.div>
