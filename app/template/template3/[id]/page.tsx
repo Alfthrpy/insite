@@ -10,6 +10,7 @@ import Showcase from '@/components/template3/Showcase';
 import Comment from '@/components/template3/Comment';
 import SoundButton from '@/components/Soundbutton';
 import Gift from '@/components/template3/Gift';
+import RSVP from '@/components/template3/RSVP';
 import './styles/globals.css'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -99,10 +100,11 @@ export default function Home() {
               <Showcase invitationId={invitationId} />
               <Ayat invitationId={invitationId} />
               <Couple invitationId={invitationId} />
-              <Story invitationId={invitationId}/>
-              <Gallery invitationId={invitationId} />
+                <Gallery invitationId={invitationId} />
+                <Story invitationId={invitationId}/>
               <Event invitationId={invitationId} />
-              <Gift invitationId={invitationId} />
+                <Gift invitationId={invitationId} />
+                <RSVP />
               <Comment invitationId={invitationId} />
               <Closing />
             </div>

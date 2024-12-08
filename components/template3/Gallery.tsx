@@ -93,9 +93,7 @@ export default function CarouselWithThumbnails({ invitationId }: { invitationId:
           </div>
         </div>
       </motion.div>
-      <div className="w-full z-10 h-48 absolute -bottom-24 left-0 transform rotate-180">
-        <Image src="/svg/paper-rip.svg" alt="Paper Rip Decoration" fill />
-      </div>
+     
     </div>
   );
 }
