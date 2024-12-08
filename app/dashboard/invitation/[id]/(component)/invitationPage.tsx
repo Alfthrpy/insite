@@ -138,16 +138,22 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
       endpoint: "love-story",
     },
     {
-      icon: "../../img/fiturLightMode/fitur7.png",
-      title: "Buat Siaran Undangan",
+      icon: "../../img/fiturLightMode/calendar.png",
+      title: "Event",
       dynamicLink: true, // Misalnya dinamis
       endpoint: "event",
     },
     {
+      icon: "../../img/fiturLightMode/quotes2.png",
+      title: "Quote",
+      dynamicLink: true, // Misalnya dinamis
+      endpoint: "quote",
+    },
+    {
       icon: "../../img/fiturLightMode/send.png",
-      title: "Kirim",
-      dynamicLink: true,
-      special: true,
+      title: "kirim",
+      dynamicLink: true, // Misalnya dinamis
+      endpoint: "",
     },
   ];
   
@@ -169,13 +175,13 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
   };
 
   return (
-    <div className="container mx-auto w-full sm:w-4/5 lg:w-3/5 p-4">
+    
       <div className="bg-white rounded-lg shadow-lg p-6">
         <HeaderCard isActive={isActive} setIsActive={setIsActive} />
 
         <div className="divider"></div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {features.map((feature, index) => (
             <div
               key={`feature-${index}`}
@@ -191,7 +197,7 @@ const InvitationPage: React.FC<InvitationPageProps> = ({ data }) => {
           ))}
         </div>
       </div>
-    </div>
+
   );
 };
 

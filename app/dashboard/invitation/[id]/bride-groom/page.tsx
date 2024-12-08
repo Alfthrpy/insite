@@ -24,7 +24,7 @@ export default async function BrideGroomPage({ params }: { params: { id: string 
    return <div>Not Found</div>
   }
   return (
-    <div className="container w-full flex-col sm:w-4/5 m-4 p-5 rounded-box bg-white justify-items-center">
+    <div className="flex justify-center w-full">
       <BrideGroomForm
       defaultValues={initialData}
       id = {initialData.id}

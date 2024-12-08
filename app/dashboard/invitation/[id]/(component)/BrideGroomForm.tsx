@@ -11,6 +11,8 @@ import { updateBrideGroom } from "@/lib/actions";
 import { AlertCircle, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 import { CldUploadButton } from "next-cloudinary";
+import folderIcon from '../../../../../public/webp/photo.png';
+
 
 // Social media configuration
 const SOCIAL_MEDIA_FIELDS = [
@@ -98,9 +100,12 @@ const ImageUploadField = ({
       <div className="flex items-center gap-4">
         {currentImage && (
           <img 
-            src={currentImage} 
+            src={typeof currentImage === 'string' ? currentImage : folderIcon.src}  
             alt="Current upload" 
-            className="w-20 h-20 object-cover rounded-md" 
+            className="w-20 h-20 object-cover rounded-md"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = folderIcon.src;
+            }}
           />
         )}
         <CldUploadButton
@@ -111,9 +116,9 @@ const ImageUploadField = ({
               onUploadSuccess(secureUrl);
             }
           }}
-          className="flex items-center btn btn-outline btn-primary"
+          className="flex items-center bg-black hover:bg-gray-600 btn text-base-100"
         >
-          <Upload className="mr-2" /> Upload Image
+          <Upload className="mr-2 text-base-100" /> Upload Image
         </CldUploadButton>
       </div>
     </div>
@@ -197,11 +202,11 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
     const title = isGroom ? "Mempelai Pria" : "Mempelai Wanita";
 
     return (
-      <div className="card bg-purpleHover rounded-md grid h-auto w-full lg:w-96 place-items-center py-7">
+      <div className="card bg-purpleHover rounded-md grid h-auto w-full place-items-center py-7 px-2">
         <div className="text-center self-start font-bold text-xl mb-4 text-base-100">
           {title}
         </div>
-        <div className="w-full max-w-72">
+        <div className="w-full max-w-96">
           <FormField
             label="Nama Lengkap"
             name={nameField}
@@ -244,7 +249,7 @@ export default function BrideGroomForm({ id, defaultValues }: BrideGroomProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="container w-full flex-col sm:w-4/5 m-4 p-5 rounded-box bg-white justify-items-center"
+      className="container w-full flex-col sm:w-4/5 m-4 lg:px-12 rounded-box bg-white justify-items-center"
     >
       <h2 className="font-bold text-3xl my-7">Bride & Groom</h2>
       <input type="hidden" {...register("invitationId")} />

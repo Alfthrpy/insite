@@ -23,7 +23,7 @@ export default async function Page({
   const data = await response.json();
 
   return (
-    <div>
+    <div className=" w-full lg:w-3/5 m-4">
       {/* Pass fetched data to Client Component */}
       <InvitationPage data={data} />
     </div>

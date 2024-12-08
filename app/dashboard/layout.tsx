@@ -146,9 +146,9 @@ export default function DashboardLayout({
               </div>
 
             </div>
-
+                        
                  {children}
-                 <footer className="footer bg-base-100 text-neutral items-center p-4">
+                 <footer className="footer bg-base-100 text-neutral items-center p-4 relative mt-auto">
                   <aside className="grid-flow-col items-center">
                      <svg
                         width="36"
