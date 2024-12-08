@@ -42,8 +42,12 @@ export async function GET(req: Request) {
 
     const whereCondition = invitationId ? { invitationId } : undefined;
 
+    // Tambahkan orderBy untuk mengurutkan berdasarkan createdAt
     const response = await prisma.loveStory.findMany({
       where: whereCondition,
+      orderBy: {
+        createdAt: 'asc', // atau 'desc' untuk urutan menurun
+      },
     });
 
     return NextResponse.json(response, { status: 200 });
@@ -52,3 +56,4 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+

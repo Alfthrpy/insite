@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { useEffect, useState } from "react";
 import {
@@ -9,33 +10,43 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { MusicData, InvitationData } from "@/lib/interface";
+import { useParams } from "next/navigation";
 
-interface Music {
-  id: string;
-  musicUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
 export default function Music() {
-  const [data, setData] = useState<Music[] | null>(null);
+  const { id } = useParams(); // Assuming the invitation ID is in the URL
+  const [data, setData] = useState<MusicData[] | null>(null);
+  const [currentInvitation, setCurrentInvitation] = useState<InvitationData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null); // State untuk melacak status play/stop
+  const [currentlyPlaying, setCurrentlyPlaying] = useState<number | null>(null);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [selectedMusicId, setSelectedMusicId] = useState<string | null>(null);
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
-  
 
+  // Fetch invitation data and music list
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/music`); // Pastikan endpoint ini mengembalikan seluruh data musik
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
+        // Fetch music list
+        const musicResponse = await fetch(`/api/music`);
+        if (!musicResponse.ok) {
+          throw new Error("Failed to fetch music data");
         }
-        const result = await response.json();
-        setData(result);
+        const musicResult = await musicResponse.json();
+        setData(musicResult);
+
+        // Fetch current invitation data
+        if (id) {
+          const invitationResponse = await fetch(`/api/invitation?invitationId=${id}`);
+          if (!invitationResponse.ok) {
+            throw new Error("Failed to fetch invitation data");
+          }
+          const invitationResult = await invitationResponse.json();
+          setCurrentInvitation(invitationResult[0]);
+        }
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -44,15 +55,54 @@ export default function Music() {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
-  const handlePlayStopClick = (index: number) => {
+  const handlePlayStopClick = (index: number, url: string) => {
     if (currentlyPlaying === index) {
-      // If the same music is clicked, stop it
+      audio?.pause();
       setCurrentlyPlaying(null);
     } else {
-      // If different music is clicked, stop the currently playing and play the new one
+      audio?.pause();
+      const newAudio = new Audio(url);
+      newAudio.play();
+      setAudio(newAudio);
       setCurrentlyPlaying(index);
+    }
+  };
+
+  // Handle music selection
+  const handleMusicSelect = async (musicId: string) => {
+    try {
+      // Update the selected music ID
+      setSelectedMusicId(musicId);
+
+      // Patch the invitation with new music ID
+      const response = await fetch(`/api/invitation/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...currentInvitation,
+          musicId: musicId
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update music');
+      }
+
+      // Close the modal
+      (document.getElementById("my_modal_5") as HTMLDialogElement)?.close();
+
+      // Optionally, update local state
+      setCurrentInvitation(prev => prev ? {...prev, musicId: musicId} : null);
+
+      // Show success message
+      alert('Musik berhasil diperbarui!');
+    } catch (error: any) {
+      console.error('Error updating music:', error);
+      alert('Gagal memperbarui musik');
     }
   };
 
@@ -84,23 +134,25 @@ export default function Music() {
               <button
                 key={music.id}
                 className="btn rounded-full bg-base-100 py-2 flex flex-row justify-between px-5 items-center w-full h-auto my-2"
-                onClick={() => (document.getElementById("my_modal_5") as HTMLDialogElement)?.showModal()}
+                onClick={() => {
+                  setSelectedMusicId(music.id);
+                  (document.getElementById("my_modal_5") as HTMLDialogElement)?.showModal();
+                }}
               >
                 <div>{`${index + 1}. ${music.musicUrl}`}</div>
                 <span
                   className="btn btn-base-200 rounded-full bg-purpleHover hover:bg-purple"
                   onClick={(e) => {
-                    e.stopPropagation(); // Cegah event bubbling
-                    handlePlayStopClick(index); // Memanggil handlePlayStopClick saat span diklik
+                    e.stopPropagation();
+                    handlePlayStopClick(index, music.musicUrl);
                   }}
                   role="button"
                   tabIndex={0}
                 >
-                  {/* Conditional rendering of Play/Pause icons */}
                   {currentlyPlaying === index ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 "
+                      className="h-6 w-6"
                       viewBox="0 0 24 24"
                       fill="#ffffff"
                       stroke="#ffffff"
@@ -140,10 +192,10 @@ export default function Music() {
                   </PaginationItem>
                 ))}
                 <PaginationItem>
-                  <PaginationEllipsis/>
+                  <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationNext onClick={() => handlePageChange(currentPage + 1)} href="#"/>
+                  <PaginationNext onClick={() => handlePageChange(currentPage + 1)} href="#" />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
@@ -152,26 +204,28 @@ export default function Music() {
             <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">Tambahkan Musik</h3>
-                <p className="py-4">Tambahkan musik ini ke Undangan</p>
+                <p className="py-4">Apakah Anda yakin ingin mengganti musik ini ke Undangan?</p>
                 <div className="modal-action">
                   <form method="dialog">
-                    <button className="btn">Ya</button>
-                  </form>
-                  <form method="dialog">
-                    <button className="btn">Tidak</button>
+                    <button 
+                      type="button" 
+                      className="btn btn-primary mr-2"
+                      onClick={() => selectedMusicId && handleMusicSelect(selectedMusicId)}
+                    >
+                      Ya
+                    </button>
+                    <button 
+                      type="button" 
+                      className="btn btn-ghost"
+                      onClick={() => (document.getElementById("my_modal_5") as HTMLDialogElement)?.close()}
+                    >
+                      Tidak
+                    </button>
                   </form>
                 </div>
               </div>
             </dialog>
           </div>
-          {/* {data ? (
-            <div>
-              <h2>Music List</h2>
-              <pre>{JSON.stringify(data, null, 2)}</pre>
-            </div>
-          ) : (
-            <p>No music data found</p>
-          )} */}
         </div>
       </div>
     </div>

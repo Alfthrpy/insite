@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import '../globals.css';
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import SessionWrapper from "@/components/SessionWrapper";
 import Image from 'next/image';
 import DashboardSkeleton from "@/components/DashboardSkeleton";
@@ -76,6 +76,7 @@ export default function DashboardLayout({
 
   return (
     <SessionWrapper>
+      <Toaster />
       <section className="bg-secondary-content" data-theme="light">
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />

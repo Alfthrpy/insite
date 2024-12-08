@@ -35,7 +35,9 @@ interface BrideGroomData {
   }
 
   interface GiftData {
+    id : string
     invitationId: string; // UUID valid
+    nameUserAccount: string; 
     nameAccount: string; // Nama akun (tidak boleh kosong)
     noAccount: string; // Nomor akun (tidak boleh kosong)
     imgAccount?: string; // URL gambar akun (opsional)

@@ -36,6 +36,8 @@ export async function PATCH(req : Request,{ params }: { params: { id: string } }
         const id = params.id
         const {...data} = await req.json()
 
+        console.log(data)
+
         // Validasi data menggunakan zod
         const parsedData = InvitationSchema.safeParse(data);
 
@@ -56,7 +58,7 @@ export async function PATCH(req : Request,{ params }: { params: { id: string } }
             where : {id},
             data : parsedData.data,
         })
-
+        console.log(response)
         return NextResponse.json(response,{status:200})
     } catch (error) {
         return NextResponse.json(error,{status: 500});

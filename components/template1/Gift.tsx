@@ -30,6 +30,10 @@ export default function Gift({ GiftData }: GiftProps) {
                className="self-center font-bold mx-3 mb-10"
              >
                <div className="text-sm font-thin">
+                 Nama Pengguna
+                 <div className="text-lg">{gift.nameUserAccount}</div>
+               </div>
+               <div className="text-sm font-thin">
                  Nama Rekening
                  <div className="text-lg">{gift.nameAccount}</div>
                </div>

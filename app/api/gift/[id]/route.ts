@@ -25,6 +25,7 @@ export async function PATCH(
   try {
     const id = params.id;
     const { ...data } = await req.json();
+    console.log(data)
 
     // Validasi data menggunakan zod
     const parsedData = GiftSchema.safeParse(data);
@@ -32,7 +33,7 @@ export async function PATCH(
     if (!parsedData.success) {
       // Ambil pesan error dari zod dan kirimkan sebagai respons
       const errorMessages = parsedData.error.errors.map((err) => err.message);
-
+      console.log(errorMessages)
       return NextResponse.json(
         {
           error: "Validation failed",
@@ -49,6 +50,7 @@ export async function PATCH(
 
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(error, { status: 500 });
   }
 }

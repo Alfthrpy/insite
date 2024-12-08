@@ -67,7 +67,6 @@ export default function Event({ invitationId }: { invitationId: string }) {
     return <div className="text-center">No events available.</div>;
   }
 
-  const primaryEvent = events[0]; // Mengambil event pertama
 
   return (
     <section id='event' className="relative text-neutral">

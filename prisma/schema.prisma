@@ -106,6 +106,7 @@ model Rsvp {
   guestName          String
   numberOfPeople     Int       @default(1)
   confirmationStatus String    @default("belum konfirmasi")
+  customLink String            @default("www.com") 
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   deletedAt          DateTime?
@@ -177,7 +178,8 @@ model Design {
 model Gift {
   id           String    @id @default(uuid())
   invitationId String
-  nameAccount  String
+  nameUserAccount  String @default("budi geming")
+  nameAccount String      @default("dana")
   noAccount    String
   imgAccount   String?
   createdAt    DateTime  @default(now())

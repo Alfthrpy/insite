@@ -34,6 +34,7 @@ export default function Gift({GiftData}:GiftProps) {
           {GiftData.map((gift)=>(
             <li key={gift.invitationId}>
               <p className="text-base text-[#5A4636]">
+                <span className="font-bold">{gift.nameUserAccount}</span>
                 <span className="font-bold">{gift.nameAccount}</span>
               </p>
               <p className="text-xl font-mono font-bold text-[#C1A15A]">{gift.noAccount}</p>

@@ -42,13 +42,14 @@ export async function PATCH(
   }
 }
 
-export async function DELETE({ params }: { params: { id: string } }){
+export async function DELETE(req:Request,{ params }: { params: { id: string } }){
     try {
-        const id = params.id
+      console.log(params)
+      const id = params.id
         const response = await prisma.loveStory.delete({
             where: { id },
         })
-        return NextResponse.json(response,{status:500})
+        return NextResponse.json(response,{status:200})
     } catch (error) {
         console.log(error)
         return NextResponse.json({error : "Internal Server Error"},{status:500})

@@ -1,4 +1,5 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 import { useEffect, useState } from "react";
 import {
   Pagination,
@@ -9,33 +10,87 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useParams } from 'next/navigation';
+import { InvitationData, QuoteData } from "@/lib/interface";
+import toast from "react-hot-toast";
 
-export interface Quote {
-  id: string;
-  content: string;
-  author: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
 export default function Quote() {
-  const [data, setData] = useState<Quote[] | null>(null);
+  const { id } = useParams(); // Assuming the invitation ID is in the URL
+  const [quotes, setQuotes] = useState<QuoteData[] | null>(null);
+  const [invitation, setInvitation] = useState<InvitationData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedQuote, setSelectedQuote] = useState<QuoteData | null>(null);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
+  const fetchQuotes = async () => {
+    try {
+      const response = await fetch(`/api/quote`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch quotes");
+      }
+      const result = await response.json();
+      setQuotes(result);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const fetchInvitation = async () => {
+    try {
+      const response = await fetch(`/api/invitation/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch invitation");
+      }
+      const result = await response.json();
+      setInvitation(result);
+    } catch (error: any) {
+      setError(error.message);
+    }
+  };
+
+  const saveQuoteToInvitation = async () => {
+    if (!invitation || !selectedQuote) {
+      setError("No invitation or quote selected");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/invitation/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId : invitation.userId,
+          designId : invitation.designId,
+          qouteId : selectedQuote.id,
+          musicId : invitation.musicId,
+          link : invitation.link
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update invitation");
+      }
+
+      toast.success("Quote berhasil di perbaharui");
+      (document.getElementById("my_modal_5") as HTMLDialogElement)?.close();
+      await fetchInvitation(); 
+    } catch (error: any) {
+      setError(error.message);
+      setFeedback("Gagal memperbarui quote.");
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
+    const initializeData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const response = await fetch(`/api/quote`); // Pastikan endpoint ini mengembalikan seluruh data musik
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const result = await response.json();
-        setData(result);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await Promise.all([fetchQuotes(), fetchInvitation()]);
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -43,17 +98,22 @@ export default function Quote() {
       }
     };
 
-    fetchData();
+    initializeData();
   }, []);
 
   if (loading) return <div className="flex justify-center items-center w-full h-screen">Loading...</div>;
   if (error) return <p>Error: {error}</p>;
 
-  const totalPages = data ? Math.ceil(data.length / itemsPerPage) : 0;
-  const currentItems = data ? data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) : [];
+  const totalPages = quotes ? Math.ceil(quotes.length / itemsPerPage) : 0;
+  const currentItems = quotes ? quotes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) : [];
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const handleQuoteSelect = (quote: QuoteData) => {
+    setSelectedQuote(quote);
+    (document.getElementById("my_modal_5") as HTMLDialogElement)?.showModal();
   };
 
   return (
@@ -61,17 +121,18 @@ export default function Quote() {
       <div className="flex justify-center w-full">
         <div className="bg-white rounded-lg shadow-lg p-6 pb-9 w-full">
           <h1 className="text-center text-2xl font-bold my-5">Quote</h1>
+          {feedback && <p className="text-center text-green-500 mb-4">{feedback}</p>}
           <div className="bg-purpleHover w-full px-4 rounded-2xl py-4">
-            <p className="font-bold m-5 text-base-100">Tambahkan musik</p>
+            <p className="font-bold m-5 text-base-100">Tambahkan Quote</p>
 
             {currentItems.map((quote, index) => (
               <button
-                key={index}
-                className="btn rounded-full bg-base-100 py-2 flex flex-row justify-between px-5 items-center w-full h-auto my-2"
-                onClick={() => (document.getElementById("my_modal_5") as HTMLDialogElement)?.showModal()}
+                key={quote.id}
+                className={`btn rounded-full py-2 flex flex-row justify-between px-5 items-center w-full h-auto my-2 ${invitation?.qouteId === quote.id ? 'bg-green-200' : 'bg-base-100'}`}
+                onClick={() => handleQuoteSelect(quote)}
               >
-                <div>{`${index + 1}. ${quote.content}`}</div>
-
+                <div>{`${(currentPage - 1) * itemsPerPage + index + 1}. ${quote.content}`}</div>
+                {invitation?.qouteId === quote.id && <span className="text-green-500">(Dipilih)</span>}
               </button>
             ))}
 
@@ -92,10 +153,10 @@ export default function Quote() {
                   </PaginationItem>
                 ))}
                 <PaginationItem>
-                  <PaginationEllipsis/>
+                  <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationNext onClick={() => handlePageChange(currentPage + 1)} href="#"/>
+                  <PaginationNext onClick={() => handlePageChange(currentPage + 1)} href="#" />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
@@ -106,8 +167,11 @@ export default function Quote() {
                 <h3 className="font-bold text-lg">Tambahkan Quote</h3>
                 <p className="py-4">Tambahkan Quote ini ke Undangan?</p>
                 <div className="modal-action">
-                  <form method="dialog">
-                    <button className="btn">Ya</button>
+                  <form method="dialog" onSubmit={(e) => {
+                    e.preventDefault();
+                    saveQuoteToInvitation();
+                  }}>
+                    <button type="submit" className="btn">Ya</button>
                   </form>
                   <form method="dialog">
                     <button className="btn">Tidak</button>
@@ -116,22 +180,7 @@ export default function Quote() {
               </div>
             </dialog>
           </div>
-          <div className="btn bg-black text-base-100 flex justify-self-center mt-7 text-xl">simpan</div>
-            {/* <div className="mt-4">
-              Tambahkan Quote Menyentuh dan Menarik
-            <textarea placeholder='"Di antara tanda-tanda (kebesaran)-Nya ialah bahwa Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri agar kamu merasa tenteram kepadanya." QS. Ar-rum : 21' className="textarea textarea-bordered textarea-lg w-full h-96"></textarea>
-          
-            </div>
-        <h1>Bride Groom Data</h1>
-        {data ? (
-          <div>
-            <h2>Quotes List</h2>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
-          </div>
-        ) : (
-          <p>No music data found</p>
-        )} */}
-          </div>
+        </div>
       </div>
     </div>
   );

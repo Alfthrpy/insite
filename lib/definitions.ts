@@ -92,8 +92,8 @@ const DesignSchema = z.object({
 
 // Validation schema for Gift
 const GiftSchema = z.object({
-  invitationId: z.string().uuid({ message: "Invitation ID harus berupa UUID yang valid" }),
-  nameAccount: z.string().min(1, { message: "Nama akun tidak boleh kosong" }),
+  nameAccount: z.string().min(1, { message: "nama provider tidak boleh kosong" }),
+  nameUserAccount: z.string().min(1, { message: "Nama akun tidak boleh kosong" }),
   noAccount: z.string().min(1, { message: "Nomor akun tidak boleh kosong" }),
   imgAccount: z.string().url().optional(),
 });

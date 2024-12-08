@@ -1,13 +1,9 @@
 import Image from "next/image";
 import { motion } from 'framer-motion';
 import { useEffect, useState } from "react";
+import { GiftData } from "@/lib/interface";
 
-interface GiftData {
-   id: string;
-   nameAccount: string;
-   noAccount: string;
-   imgAccount: string;
- }
+
 export default function Gift({invitationId} : {invitationId : string}) {
   const [gifts, setGifts] = useState<GiftData[]>([]); // State untuk menyimpan data dari API
 
@@ -44,7 +40,7 @@ export default function Gift({invitationId} : {invitationId : string}) {
               className="flex flex-col justify-center self-center w-auto font-alegreyaSans mt-5 mb-1"
             >
               <div className="self-center font-bold mx-3 mb-10">
-                {gift.nameAccount}
+                {gift.nameUserAccount}
                 <div className="text-sm font-thin">Nama Rekening
                   <div className="text-lg">{gift.nameAccount}</div>
                 </div>
@@ -55,7 +51,7 @@ export default function Gift({invitationId} : {invitationId : string}) {
 
               <div className="font-thin text-gray-500 text-sm">Transfer pakai QRIS</div>
               <Image
-                src={gift.imgAccount} // Menggunakan URL dari API
+                src={gift.imgAccount || ""} // Menggunakan URL dari API
                 alt={gift.nameAccount}
                 className="border-2 border-neutral"
                 width={320}
