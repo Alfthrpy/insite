@@ -13,7 +13,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         where: { id },
         include:{
             Quote : true,
-            Music : true
+            Music : true,
+            Design : true,
         }
       });
   

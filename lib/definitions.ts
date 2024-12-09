@@ -63,7 +63,8 @@ const RsvpSchema = z.object({
   numberOfPeople: z.number().nonnegative({ message: "Jumlah orang tidak boleh negatif" }),
   confirmationStatus: z.enum(["pending", "confirmed", "declined"], {
     message: "Status konfirmasi harus salah satu dari: pending, confirmed, declined"
-  }).default("pending"),
+  }).default("pending").optional(),
+  customLink : z.string().optional()
 });
 
 // Validation schema for Invitation

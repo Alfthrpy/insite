@@ -34,11 +34,25 @@ export async function POST(req: Request){
     }
 }
 
-export async function GET(){
-    try {
-        const response = await prisma.invitation.findMany()
+export async function GET(req:Request){
 
-        return NextResponse.json(response,{status:200})
+    const url = new URL(req.url);
+    const userId = url.searchParams.get("userId");
+
+    try {
+
+        if(userId){
+            const response = await prisma.invitation.findFirst({
+                where: {
+                    userId: userId
+                },
+            })
+            return NextResponse.json(response,{status:200})
+        } else {
+            const response = await prisma.invitation.findMany()
+            return NextResponse.json(response,{status:200})
+        }
+
     } catch (error) {
         console.log(error)
         return NextResponse.json(error,{status:500})

@@ -12,6 +12,7 @@ export async function POST(req: Request) {
         if (!parsedData.success) {
         // Ambil pesan error dari zod dan kirimkan sebagai respons
         const errorMessages = parsedData.error.errors.map((err) => err.message);
+        console.log(errorMessages)
 
         return NextResponse.json(
             {

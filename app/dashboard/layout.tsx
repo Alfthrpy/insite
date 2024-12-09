@@ -1,7 +1,6 @@
 'use client';
 import React from "react";
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import '../globals.css';
@@ -18,7 +17,6 @@ export default function DashboardLayout({
   const [isClient, setIsClient] = useState(false);
   const [pageTitle, setPageTitle] = useState("Dashboard");
   const { data: session, status } = useSession();
-  const router = useRouter();
   const pathname = usePathname();
   
 
@@ -26,14 +24,7 @@ export default function DashboardLayout({
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      // After login, trigger a refresh to ensure all session data is updated.
-      router.replace(pathname); // Force reloading the current page
-    } else if (status === "unauthenticated") {
-      router.push("/login"); // Redirect to login if unauthenticated
-    }
-  }, [status, router]);
+
 
   
 
@@ -147,7 +138,7 @@ export default function DashboardLayout({
               </div>
 
             </div>
-                        
+                
                  {children}
                  <footer className="footer bg-base-100 text-neutral items-center p-4 relative mt-auto">
                   <aside className="grid-flow-col items-center">
@@ -220,13 +211,6 @@ export default function DashboardLayout({
                         }`}
                      >
                         <a href="/dashboard">Home</a>
-                     </li>
-                     <li
-                        className={`${
-                           location.pathname === "/dashboard/invitation" ? "bg-purpleDrawer rounded-md" : ""
-                        }`}
-                     >
-                        <a href="/dashboard/invitation/1">Undangan</a>
                      </li>
                      <li
                         className={`${

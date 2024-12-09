@@ -51,14 +51,24 @@ interface BrideGroomData {
     imageUrl: string; // URL gambar (opsional)
   }
 
+  interface DesignData {
+    name: string;
+    price: number;
+    imageUrl: string;
+    templateName: string;
+    category: string;
+  }
+
   interface InvitationData {
     id: string; // ID unik menggunakan UUID
+    name : string;
     userId: string; // ID pengguna terkait
     designId: string; // ID desain unik
     qouteId?: string; // ID kutipan opsional
     musicId?: string; // ID musik opsional
     Quote: QuoteData; 
     Music: MusicData; //
+    Design: DesignData;
     link: string; // URL/link undangan
     createdAt: Date; // Tanggal dan waktu pembuatan
     updatedAt: Date; // Tanggal dan waktu pembaruan terakhir
@@ -82,7 +92,16 @@ interface QuoteData {
     updatedAt: string;
     deletedAt: string | null;
   }
+
+  interface RsvpData {
+    id? : string;
+    invitationId : string;
+    guestName : string;
+    numberOfPeople : number;
+    confirmationStatus : string;
+    customLink : string;
+  }
   
 
 
-export type {BrideGroomData,EventData,GalleryData,GiftData,LoveStoryData,InvitationData,QuoteData,MusicData}
+export type {BrideGroomData,EventData,GalleryData,GiftData,LoveStoryData,InvitationData,QuoteData,MusicData,RsvpData,DesignData}

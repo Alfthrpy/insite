@@ -105,8 +105,8 @@ model Rsvp {
   invitationId       String
   guestName          String
   numberOfPeople     Int       @default(1)
-  confirmationStatus String    @default("belum konfirmasi")
-  customLink String            @default("www.com") 
+  confirmationStatus String?    @default("belum konfirmasi")
+  customLink String?            @default("www.com") 
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   deletedAt          DateTime?
@@ -119,6 +119,7 @@ model Rsvp {
 
 model Invitation {
   id                 String               @id @default(uuid())
+  name               String               @default("Pernikahan Kirito dan Asuna")
   userId             String
   designId           String               @unique
   qouteId            String?

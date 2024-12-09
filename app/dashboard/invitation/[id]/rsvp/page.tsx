@@ -1,29 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import {  RsvpData } from "@/lib/interface";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface RsvpData {
-  guestName: string;
-  numberOfPeople: number;
-  confirmationStatus: string;
-}
 export default function Rspv() {
   const { id } = useParams(); // Ambil 'id' dari URL path
   const [data, setData] = useState<RsvpData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [guestName, setGuestName] = useState("");
+  const [numberOfPeople, setNumberOfPeople] = useState(1);
+
   useEffect(() => {
     if (id) {
-      const fetchData = async () => {
+
+      const fetchRsvpData = async () => {
         try {
           setLoading(true);
-          const response = await fetch(`/api/rspv?invitationId=${id}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
+          const rsvpResponse = await fetch(`/api/rspv?invitationId=${id}`);
+          if (!rsvpResponse.ok) {
+            throw new Error("Failed to fetch RSVP data");
           }
-          const result = await response.json();
-          setData(result);
+          const rsvpData = await rsvpResponse.json();
+          setData(rsvpData);
         } catch (error: any) {
           setError(error.message);
         } finally {
@@ -31,9 +32,52 @@ export default function Rspv() {
         }
       };
 
-      fetchData();
+      fetchRsvpData();
     }
   }, [id]);
+
+  const handleSaveGuest = async () => {
+    if (!guestName.trim() || !id) {
+      alert("Please provide a valid guest name and ensure the invitation ID is available.");
+      return;
+    }
+
+    const customLink = `?name=${encodeURIComponent(guestName)}`;
+
+    const newGuest = {
+      invitationId: id,
+      guestName,
+      numberOfPeople,
+      customLink,
+    };
+
+    try {
+      const response = await fetch("/api/rspv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newGuest),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save guest data");
+      }
+
+      const result = await response.json();
+
+      // Update state with new data
+      setData((prevData) => (prevData ? [...prevData, result] : [result]));
+      setGuestName("");
+      setNumberOfPeople(1);
+
+      // Close modal
+      const modal = document.getElementById("my_modal_5") as HTMLDialogElement;
+      modal?.close();
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
   if (loading)
     return (
@@ -72,7 +116,7 @@ export default function Rspv() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="text-center">
+                    <td colSpan={5} className="text-center">
                       No data available
                     </td>
                   </tr>
@@ -101,22 +145,29 @@ export default function Rspv() {
                     <input
                       type="text"
                       placeholder="Type here"
+                      value={guestName}
+                      onChange={(e) => setGuestName(e.target.value)}
                       className="input input-bordered w-full"
                     />
                   </div>
                   <div className="mt-4">
                     Jumlah Orang
                     <input
-                      type="text"
+                      type="number"
+                      min="1"
+                      value={numberOfPeople}
+                      onChange={(e) => setNumberOfPeople(parseInt(e.target.value))}
                       placeholder="Type here"
                       className="input input-bordered w-full"
                     />
                   </div>
                 </div>
                 <div className="modal-action">
+                  <button className="btn" onClick={handleSaveGuest}>
+                    Simpan
+                  </button>
                   <form method="dialog">
-                    {/* if there is a button in form, it will close the modal */}
-                    <button className="btn">simpan</button>
+                    <button className="btn">Batal</button>
                   </form>
                 </div>
               </div>
