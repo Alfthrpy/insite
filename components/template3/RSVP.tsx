@@ -1,14 +1,12 @@
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-
 const RSVP = () => {
    const params = useSearchParams();
    const validate = params.get('name');
-   console.log(validate)
    return (
-      <div id="rsvp" className="flex w-full relative items-stretch justify-center h-auto">
+      <div id="rsvp" className="flex w-full relative items-stretch justify-center h-auto bg-pink">
          <div className="flex flex-col self-end pb-10 text-center min-w-96 max-w-lg my-20 mb-32">
-            <div className="font-alex text-4xl self-end text-end mx-4">
+            <div className="title mb-5 text-4xl text-center mx-4">
                Konfirmasi Kehadiran
             </div>
             <Image

@@ -21,20 +21,22 @@ export default function Story({ invitationId }: { invitationId: string }) {
   }, [invitationId]);
 
   return (
-    <div id="story" className="flex flex-col items-center justify-center w-full bg-base-300 py-10">
-      <h2 className="font-alex text-4xl mb-6">Our Story</h2>
+    <div id="story" className="flex w-full relative items-stretch justify-center h-auto bg-lightGrey">
 
       {storyData.length > 0 ? (
         <div className="space-y-10 max-w-3xl">
           {storyData.map((story) => (
             <motion.div
               key={story.id}
-              className="flex flex-col items-center text-center bg-white shadow-lg rounded-xl p-6 border border-gray-300"
+              className="flex flex-col self-end pb-28 text-center mb-10 min-w-96 w-full max-w-lg mt-10"
               initial={{ opacity: 0, y: 50 }} // Animasi awal
               whileInView={{ opacity: 1, y: 0 }} // Animasi ketika terlihat
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
+              <div className="font-alex text-4xl m-3">
+               Our Story
+               </div>
               <h3 className="font-alegreyaSans font-bold text-xl text-gray-800 mb-3">{story.title}</h3>
 
               {story.imageUrl && (
@@ -56,6 +58,9 @@ export default function Story({ invitationId }: { invitationId: string }) {
       ) : (
         <p className="font-alegreyaSans text-gray-500 italic">Cerita cinta belum tersedia.</p>
       )}
+       <div className="w-full z-10 h-48 absolute -bottom-24 left-0 transform rotate-180">
+        <Image src="/svg/paper-rip.svg" alt="Paper Rip Decoration" fill />
+      </div>
     </div>
   );
 }
