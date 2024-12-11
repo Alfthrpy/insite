@@ -7,7 +7,6 @@ import '../globals.css';
 import toast, { Toaster } from "react-hot-toast";
 import SessionWrapper from "@/components/SessionWrapper";
 import Image from 'next/image';
-import DashboardSkeleton from "@/components/DashboardSkeleton";
 
 export default function DashboardLayout({
    children,
@@ -58,7 +57,7 @@ export default function DashboardLayout({
   
 
   if (!isClient || status === "loading") {
-    return <DashboardSkeleton />
+    
   }
   
   if (!session) {

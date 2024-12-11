@@ -12,8 +12,6 @@ import SoundButton from "@/components/Soundbutton";
 import Gift from "@/components/template1/Gift";
 import Comment from '@/components/template3/Comment';
 import { useParams } from "next/navigation";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import { BrideGroomData, EventData, GalleryData, GiftData, InvitationData, LoveStoryData } from "@/lib/interface";
 
 

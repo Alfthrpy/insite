@@ -42,14 +42,14 @@ export async function getMidtransToken({
   name,
   category,
   price,
-  user_name,
+  username,
   email,
 }: {
   paymentId: string;
   name: string;
   category: string;
   price: number;
-  user_name: string;
+  username: string;
   email: string;
 }) {
   const response = await fetch(
@@ -65,7 +65,7 @@ export async function getMidtransToken({
         name,
         category,
         price,
-        user_name,
+        username,
         email,
       }),
     }
@@ -77,10 +77,12 @@ export async function getMidtransToken({
 export async function updatePaymentStatus(
   paymentId: string,
   status: string,
-  method: string
+  method: string,
+  invitationId : string,
+  designId : string,
 ) {
   await fetch(
-    `${process.env.NEXTAUTH_URL}/api/payment-transaction/${paymentId}`,
+    `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/payment-transaction/${paymentId}`,
     {
       method: "PATCH",
       headers: {
@@ -93,7 +95,33 @@ export async function updatePaymentStatus(
       }),
     }
   );
+  if(!(status === 'gagal')){
+    await updateInvitationData(invitationId,designId)
+  }
 }
+export async function updateInvitationData(
+  invitationId: string,
+  designId: string,
+) {
+  const invitationResponse = await fetch(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/invitation/${invitationId}`);
+  const invitationData = await invitationResponse.json();
+
+
+  // PATCH invitation to update designId
+  const updatedInvitation = {
+    ...invitationData,
+    designId: designId,  // Update the designId with the current design
+  };
+
+  await fetch(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/invitation/${invitationId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedInvitation),
+  });
+}
+
 
 export type UpdateBrideGroomFormState = {
   message: string;

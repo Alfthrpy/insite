@@ -1,6 +1,9 @@
-'use client'
+"use client";
+import CheckoutButton from "@/components/checkoutButon";
+import { InvitationData, UserData } from "@/lib/interface";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Image from 'next/image'
 
 interface Design {
   id: string;
@@ -13,91 +16,130 @@ interface Design {
   updatedAt: string;
   deletedAt: string | null;
 }
-export default function Quote() {
-  const [data, setData] = useState<Design[] | null>(null); 
+
+export default function DesignPage() {
+  const [designs, setDesigns] = useState<Design[] | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [invitationData, setInvitationData] = useState<InvitationData | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const { data: session, status } = useSession();
+  const { id: invitationId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/design`); // Pastikan endpoint ini mengembalikan seluruh data musik
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
+        setError(null);
+
+        // Fetch designs
+        const designsResponse = await fetch("/api/design");
+        if (!designsResponse.ok) {
+          throw new Error("Failed to fetch designs");
         }
-        const result = await response.json();
-        setData(result);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        setError(error.message);
+        const designsData = await designsResponse.json();
+        setDesigns(designsData);
+
+        // Fetch user data if session exists
+        if (session?.user?.id) {
+          const userResponse = await fetch(`/api/user/${session.user.id}`);
+          if (!userResponse.ok) {
+            throw new Error("Failed to fetch user data");
+          }
+          const userData = await userResponse.json();
+          setUserData(userData);
+        }
+
+        // Fetch invitation data
+        const invitationResponse = await fetch(
+          `/api/invitation/${invitationId}`
+        );
+        const invitationData = await invitationResponse.json();
+        setInvitationData(invitationData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    // Only run the fetch if the session status is not loading
+    if (status !== "loading") {
+      fetchData();
+    }
+  }, [session?.user?.id, status, invitationId]);
 
-  if (loading) return <div className="flex justify-center items-center w-full h-screen">Loading...</div>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className=" w-full xl:w-4/5 m-4 min-h-screen">
-      <div className="flex justify-center w-full">
-        <div className="bg-white rounded-lg shadow-lg p-6 pb-9">
-        <h1 className="text-center text-3xl font-bold mb-4 h-14 mt-5">Design List</h1>
-          
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+        <h1 className="text-center text-2xl sm:text-3xl font-bold mb-8">
+          Design List
+        </h1>
 
-          {data ? (
-            <div>
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 ">
-                {data.map((item: any) => (
-                  <div key={item.id} className="card bg-base-100 w-auto shadow-xl">
-                    <figure className="px-3 pt-4 text-sm">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      width={180}
-                      height={270}
-                      className="rounded-xl"
-                    />
-                    </figure>
-                    <div className="card-body items-center text-center text-sm">
-                      <h2 className="card-title ">{item.name}</h2>
-                      <p className="text-sm font-semibold">
-                        Rp {item.price.toLocaleString("id-ID")}
-                      </p>
-                      <div className="flex flex-col lg:flex-row gap-3 w-full text-xs">
-                        <div className="card-actions w-full">
-                          <button className="btn bg-purpleHover hover:bg-purple w-full text-base-100">See</button>
-                        </div>
-                        <div className="card-actions w-full">
-                          <button className="btn bg-purpleHover hover:bg-purple w-full text-base-100">Buy Now</button>
-                        </div>
-                      </div>
-                    </div>
+        {designs && designs.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+            {designs.map((design) => (
+              <div
+                key={design.id}
+                className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="relative pt-[100%]">
+                  <img
+                    src={design.imageUrl}
+                    alt={design.name}
+                    className="absolute top-0 left-0 w-full h-full object-cover rounded-t-lg"
+                  />
+                </div>
+
+                <div className="p-4 flex flex-col gap-3 flex-grow">
+                  <h2 className="font-semibold text-base text-center mb-2 line-clamp-2 min-h-[3rem]">
+                    {design.name}
+                  </h2>
+
+                  <p className="text-center font-semibold text-purple text-lg mb-4">
+                    Rp {design.price.toLocaleString("id-ID")}
+                  </p>
+
+                  <div className="flex flex-col gap-2 mt-auto">
+                    <button className="w-full px-4 py-2 bg-purpleHover hover:bg-purple text-white rounded-md transition-colors duration-300 text-sm">
+                      See Details
+                    </button>
+                    {userData && invitationData ? (
+                      invitationData.designId !== design.id ? (
+                        <CheckoutButton data={design} user={userData} invitationId={invitationId as string} />
+                      ) : (
+                        <button disabled>Sudah Dipakai</button>
+                      )
+                    ) : null}
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-      ) : (
-        <p>Design belum tersedia</p> // Menampilkan pesan jika data kosong
-      )}
-
-          {/* {data ? (
-          <div>
-            
-          
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+            ))}
           </div>
         ) : (
-          <p>design belum tersedia</p>
-        )} */}
-        </div>
-
+          <p className="text-center text-gray-500 text-lg">
+            Desain belum tersedia
+          </p>
+        )}
       </div>
- 
     </div>
   );
 }

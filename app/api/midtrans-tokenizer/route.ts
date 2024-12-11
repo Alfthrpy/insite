@@ -14,9 +14,9 @@ export async function POST(req : Request){
         clientKey : process.env.NEXT_PUBLIC_CLIENT
     })
     try {
-        const {paymentId, name, category, price,user_name,email, } = await req.json()
-        const {first_name, last_name} = splitName(user_name)
-        console.log(user_name)
+        const {paymentId, name, category, price,username,email, } = await req.json()
+        console.log(username)
+        const {first_name, last_name} = splitName(username)
         const parameter = {
             item_details:{
                 name : name ,

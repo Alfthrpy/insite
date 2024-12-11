@@ -52,6 +52,7 @@ interface BrideGroomData {
   }
 
   interface DesignData {
+    id:string;
     name: string;
     price: number;
     imageUrl: string;
@@ -101,7 +102,15 @@ interface QuoteData {
     confirmationStatus : string;
     customLink : string;
   }
+
+  interface UserData {
+    id : string;
+    name: string;
+    email: string;
+    password: string;
+    role?: string;
+  }
   
 
 
-export type {BrideGroomData,EventData,GalleryData,GiftData,LoveStoryData,InvitationData,QuoteData,MusicData,RsvpData,DesignData}
+export type {BrideGroomData,EventData,GalleryData,GiftData,LoveStoryData,InvitationData,QuoteData,MusicData,RsvpData,DesignData,UserData}

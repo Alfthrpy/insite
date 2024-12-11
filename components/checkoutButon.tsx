@@ -1,27 +1,20 @@
 'use client'
 
 import { createTransaction, getMidtransToken, updatePaymentStatus } from '@/lib/actions';
+import { DesignData, UserData } from '@/lib/interface';
 import { useEffect } from 'react';
 
-
 interface CheckoutButtonProps {
-  data: {
-    designId: string;
-    name: string;
-    category: string;
-    price: number;
-  };
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
+  data: DesignData;
+  user: UserData;
+  invitationId: string;  // ID untuk invitation yang akan di-update
 }
 
-export default function CheckoutButton({ data, user }: CheckoutButtonProps) {
+export default function CheckoutButton({ data, user, invitationId }: CheckoutButtonProps) {
   useEffect(() => {
     const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
     const clientKey = process.env.NEXT_PUBLIC_CLIENT || "";
+
     const script = document.createElement("script");
     script.src = snapScript;
     script.setAttribute("data-client-key", clientKey);
@@ -38,11 +31,10 @@ export default function CheckoutButton({ data, user }: CheckoutButtonProps) {
     try {
       // Create transaction
       const transaction = await createTransaction({
-        designId: data.designId,
+        designId: data.id,
         amount: data.price,
         userId: user.id,
       });
-      
 
       // Get Midtrans token
       const midtransData = await getMidtransToken({
@@ -50,7 +42,7 @@ export default function CheckoutButton({ data, user }: CheckoutButtonProps) {
         name: data.name,
         category: data.category,
         price: data.price,
-        user_name: user.name,
+        username: user.name,
         email: user.email,
       });
 
@@ -68,10 +60,11 @@ export default function CheckoutButton({ data, user }: CheckoutButtonProps) {
             method = result?.payment_type || null;
           }
 
-          await updatePaymentStatus(transaction.id, status, method);
+          await updatePaymentStatus(transaction.id, status, method,invitationId,data.id);
+         
         },
         onClose: async () => {
-          await updatePaymentStatus(transaction.id, "gagal", "error");
+          await updatePaymentStatus(transaction.id, "gagal", "error",invitationId,data.id);
         },
         onError: () => {
           alert("error");
@@ -84,11 +77,8 @@ export default function CheckoutButton({ data, user }: CheckoutButtonProps) {
   };
 
   return (
-    <button 
-      onClick={handleCheckout}
-      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-    >
-      Coba Midtrans
+    <button onClick={handleCheckout}>
+      Beli
     </button>
   );
 }
