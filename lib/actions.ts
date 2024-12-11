@@ -3,6 +3,8 @@
 import { z } from "zod";
 import { BrideGroomSchema, EventSchema } from "./definitions";
 import { revalidatePath } from "next/cache";
+import { prisma } from "./prisma";
+import { RsvpData } from "./interface";
 
 interface CreateTransactionParams {
   designId: string;
@@ -244,4 +246,18 @@ export async function validateInvitation(invitationId: string): Promise<boolean>
     console.error('Validation error:', error);
     return false;
   }
+}
+
+
+export async function confirmRsvp(name:string){
+  await prisma.rsvp.update({
+    where : {guestName : name},
+    data : {confirmationStatus : 'confirmed'}
+  })
+}
+
+export async function createRsvp({...data}:RsvpData){
+  await prisma.rsvp.create({
+    data : data
+  })
 }
