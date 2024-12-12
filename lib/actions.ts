@@ -261,3 +261,64 @@ export async function createRsvp({...data}:RsvpData){
     data : data
   })
 }
+
+
+export async function updateLink(invitationId:string,designId:string){
+  try {
+    const response = await prisma.design.findFirst({where:{id:designId}})
+  
+    await prisma.invitation.update({
+      where : {id:invitationId},
+      data : {link : `${process.env.NEXT_PUBLIC_CLIENT_URL}/template/${response?.templateName}/${invitationId}`}
+    })
+    
+  } catch (error) {
+    console.log(error)
+  }
+
+
+}
+
+export async function createDummy(invitationId: string){
+  await prisma.gift.create({
+    data: {
+      invitationId: invitationId,
+      nameAccount: "Budi",
+      noAccount: "1234567890",
+      imgAccount: "https://example.com/account.jpg",
+    },
+  });
+
+  await prisma.event.create({
+    data: {
+      invitationId: invitationId,
+      nameEvent: "Akad Nikah",
+      location: "Gedung Serbaguna",
+      address: "Jl. Contoh No. 1",
+      dateEvent: new Date("2023-12-25T10:00:00Z"),
+      startTime: new Date("2023-12-25T10:00:00Z"),
+      endTime: new Date("2023-12-25T12:00:00Z"),
+      linkNavigationMap: "https://maps.example.com/location",
+    },
+  });
+
+  await prisma.brideGroom.create({
+    data: {
+      invitationId: invitationId,
+      nameGroom: "Budi",
+      imageGroom: "https://example.com/imageGroom.jpg",
+      parentGroom: "Orang Tua Budi",
+      nameBride: "Ani",
+      imageBride: "https://example.com/imageBride.jpg",
+      parentBride: "Orang Tua Ani",
+      linkInstagramGroom: "https://instagram.com/budi",
+      linkFbGroom: "https://facebook.com/budi",
+      linkTwitterGroom: "https://twitter.com/budi",
+      linkYtbGroom: "https://youtube.com/budi",
+      linkInstagramBride: "https://instagram.com/ani",
+      linkFbBride: "https://facebook.com/ani",
+      linkTwitterBride: "https://twitter.com/ani",
+      linkYtbBride: "https://youtube.com/ani",
+    },
+  });
+}

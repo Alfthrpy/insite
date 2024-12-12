@@ -65,6 +65,7 @@ export default function Quote() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          name: invitation.name,
           userId : invitation.userId,
           designId : invitation.designId,
           qouteId : selectedQuote.id,

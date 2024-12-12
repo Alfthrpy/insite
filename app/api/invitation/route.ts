@@ -1,3 +1,4 @@
+import { createDummy, updateLink } from "@/lib/actions";
 import { InvitationSchema } from "@/lib/definitions";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
@@ -6,6 +7,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request){
     try {
         const {...data} = await req.json()
+        console.log(data)
 
         // Validasi data menggunakan zod
         const parsedData = InvitationSchema.safeParse(data);
@@ -13,7 +15,7 @@ export async function POST(req: Request){
         if (!parsedData.success) {
         // Ambil pesan error dari zod dan kirimkan sebagai respons
         const errorMessages = parsedData.error.errors.map((err) => err.message);
-
+        console.log(errorMessages)
         return NextResponse.json(
             {
             error: "Validation failed",
@@ -27,9 +29,13 @@ export async function POST(req: Request){
             data: parsedData.data
         })
 
+        updateLink(response.id,'daf665f1-d9fb-4204-822c-0a696b237c0e')
+        createDummy(response.id)
+
         return NextResponse.json(response,{status: 201})
 
     } catch (error) {
+        console.log(error)
         return NextResponse.json(error,{status:500});
     }
 }

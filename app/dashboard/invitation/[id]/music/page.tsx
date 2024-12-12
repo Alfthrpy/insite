@@ -40,12 +40,12 @@ export default function Music() {
 
         // Fetch current invitation data
         if (id) {
-          const invitationResponse = await fetch(`/api/invitation?invitationId=${id}`);
+          const invitationResponse = await fetch(`/api/invitation/${id}`);
           if (!invitationResponse.ok) {
             throw new Error("Failed to fetch invitation data");
           }
           const invitationResult = await invitationResponse.json();
-          setCurrentInvitation(invitationResult[0]);
+          setCurrentInvitation(invitationResult);
         }
       } catch (error: any) {
         setError(error.message);

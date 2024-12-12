@@ -45,6 +45,7 @@ export async function PATCH(req : Request,{ params }: { params: { id: string } }
         if (!parsedData.success) {
         // Ambil pesan error dari zod dan kirimkan sebagai respons
         const errorMessages = parsedData.error.errors.map((err) => err.message);
+        console.error(errorMessages)
 
         return NextResponse.json(
             {

@@ -70,10 +70,10 @@ const RsvpSchema = z.object({
 // Validation schema for Invitation
 const InvitationSchema = z.object({
   userId: z.string().uuid({ message: "User ID harus berupa UUID yang valid" }),
-  designId: z.string().uuid(),
-  qouteId: z.string().uuid().optional(),
-  musicId: z.string().uuid().optional(),
-  link: z.string().url({ message: "URL undangan tidak valid" }),
+  name: z.string().min(3,{message:"Nama undangan harus lebih dari 3 kata"}),
+  qouteId: z.string().uuid().nullable().optional(),
+  musicId: z.string().uuid().nullable().optional(),
+  link: z.string().url({ message: "URL undangan tidak valid" }).optional(),
 });
 
 // Validation schema for Quote

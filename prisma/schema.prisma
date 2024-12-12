@@ -121,10 +121,10 @@ model Invitation {
   id                 String               @id @default(uuid())
   name               String               @default("Pernikahan Kirito dan Asuna")
   userId             String
-  designId           String               @unique
+  designId           String               @default("daf665f1-d9fb-4204-822c-0a696b237c0e")
   qouteId            String?
   musicId            String?
-  link               String
+  link               String?
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   deletedAt          DateTime?
