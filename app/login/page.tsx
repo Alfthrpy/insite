@@ -2,6 +2,7 @@
 
 'use client'
 
+import '../globals.css'
 import './auth.css'
 import React, { useEffect, useState } from 'react';
 import FormLogin from './loginForm';
@@ -20,6 +21,16 @@ const AuthPage = () => {
     }, 2000);
   
     return () => clearTimeout(timeout); // Cleanup
+  }, []);
+
+  useEffect(() => {
+    // Memaksakan tema putih hanya untuk halaman AuthPage
+    document.documentElement.setAttribute('data-theme', 'light'); // Memaksakan tema terang
+
+    // Cleanup - reset tema ketika keluar dari halaman ini
+    return () => {
+      document.documentElement.removeAttribute('data-theme');
+    };
   }, []);
 
   return (
@@ -47,7 +58,7 @@ const AuthPage = () => {
             <div className="text-slider">
               <div className="text-wrap">
                 <div className="text-group">
-                  <h2>Create your own invitation</h2>
+                  <h2 className='text-white'> Create your own invitation</h2>
                 </div>
               </div>
             </div>

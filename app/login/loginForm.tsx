@@ -3,7 +3,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-
+import '../globals.css';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
@@ -12,12 +12,13 @@ import { LoginFormSchema } from "@/lib/definitions";
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 
-const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
 
+const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
+  
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(LoginFormSchema),
   });
@@ -26,6 +27,7 @@ const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function onSubmit(data: any) {
+
     try {
       const response = await signIn("credentials", {
         email: data.email,
@@ -54,6 +56,7 @@ const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
   }
 
   return (
+    
     <form onSubmit={handleSubmit(onSubmit)} className="sign-in-form">
       <div className="logo">
         <img src="./img/image.png" alt="InSite Logo" />
@@ -63,37 +66,38 @@ const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
       <div className="heading">
         <h2>Welcome Back</h2>
         <h6>Not registered yet?</h6>
-        <a onClick={onToggleMode} className='toggle'>SignUp</a>
+        <a onClick={onToggleMode} className='bg-white text-purple'> SignUp</a>
       </div>
 
       <div className="actual-form">
         <div className="input-wrap">
-         <input {...register("email")} placeholder="Email" className='input-field' />
-         {errors.email && (
+        {errors.email && (
             <p className="text-red-500 text-sm mt-1">
               {errors.email.message as string}
             </p>
           )}
+         <input {...register("email")} placeholder="Email" className='input-field ' />
         </div>
 
         <div className="input-wrap">
+        {errors.password && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message as string}
+            </p>
+          )}
         <input
               type="password"
               {...register("password")}
               placeholder="Password"
               className='input-field'
             />
-            {errors.password && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.password.message as string}
-            </p>
-          )}
+
         </div>
         <div className='mb-4'>
           <Link href="/forgot-password">Forgot Password?</Link>
         </div>
         <button type="submit" className="sign-btn">
-          Sign In
+          {isSubmitting ? (<span className="loading loading-spinner loading-xs"></span>) : ("Sign In")}
         </button>
 
         <div className="social-media">

@@ -14,7 +14,7 @@ const FormSignUp = ({ onToggleMode }: { onToggleMode: () => void }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(RegisterFormSchema),
   });
@@ -60,39 +60,45 @@ const FormSignUp = ({ onToggleMode }: { onToggleMode: () => void }) => {
       <div className="heading">
         <h2>Get Started</h2>
         <h6>Already have an account?</h6>
-        <a onClick={onToggleMode} className="toggle">
-          Sign In
+        <a onClick={onToggleMode} className="text-purple">  Sign In
         </a>
       </div>
 
       <div className="actual-form">
         <div className="input-wrap">
+        {errors.name && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.name.message as string}
+          </p>
+        )}
           <input
             {...register("name")}
             placeholder="Name"
             className="input-field"
           />
         </div>
-        {errors.name && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.name.message as string}
-          </p>
-        )}
+
 
         <div className="input-wrap">
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.email.message as string}
+            </p>
+          )}
           <input
             {...register("email")}
             placeholder="Email"
             className="input-field"
           />
         </div>
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.email.message as string}
-          </p>
-        )}
+
 
         <div className="input-wrap">
+        {errors.password && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.password.message as string}
+          </p>
+        )}
           <input
             type="password"
             {...register("password")}
@@ -100,13 +106,12 @@ const FormSignUp = ({ onToggleMode }: { onToggleMode: () => void }) => {
             className="input-field"
           />
         </div>
-        {errors.password && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.password.message as string}
-          </p>
-        )}
+
 
         <div className="input-wrap">
+        {errors.confirmPassword && (
+          <p className="error">{errors.confirmPassword.message as string}</p>
+        )}
           <input
             type="password"
             {...register("confirmPassword")}
@@ -114,12 +119,10 @@ const FormSignUp = ({ onToggleMode }: { onToggleMode: () => void }) => {
             className="input-field"
           />
         </div>
-        {errors.confirmPassword && (
-          <p className="error">{errors.confirmPassword.message as string}</p>
-        )}
+
 
         <button type="submit" className="sign-btn">
-          Sign Up
+          {isSubmitting ? (<span className="loading loading-spinner loading-xs"></span>) : ("Sign Up")}
         </button>
 
         <div className="social-media">

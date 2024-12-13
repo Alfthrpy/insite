@@ -52,7 +52,7 @@ const TemplateForm = () => {
 
   return (
     <div className="h-screen w-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center">
-      <div className="max-w-lg w-full bg-white shadow-2xl rounded-2xl p-8">
+      <div className="max-w-lg w-96 bg-white shadow-2xl rounded-2xl p-8">
         <h1 className="text-3xl font-extrabold text-gray-800 text-center mb-4">
           Hi {session.data?.user.name}
         </h1>
