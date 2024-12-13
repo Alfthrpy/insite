@@ -7,7 +7,7 @@ import './auth.css'
 import React, { useEffect, useState } from 'react';
 import FormLogin from './loginForm';
 import FormSignUp from './registerForm';
-import { BackButton } from '@/components/button';
+
 
 const AuthPage = () => {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
@@ -36,7 +36,6 @@ const AuthPage = () => {
 
   return (
     <div className='login-page'>
-            <BackButton/>
       <main className={isSignUpMode ? 'sign-up-mode' : ''}>
 
       <div className="box">
