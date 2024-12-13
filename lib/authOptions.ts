@@ -82,7 +82,7 @@ export const authOptions: AuthOptions = {
     sessionToken: {
       name: `next-auth.session-token`,
       options: {
-        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : 'localhost',
+        domain:'.vercel.app',
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax", // atau "strict" tergantung pada kebutuhan Anda
