@@ -4,6 +4,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { Toaster } from 'react-hot-toast';
 import "@fortawesome/fontawesome-svg-core/styles.css"; // Import CSS
+import { Suspense } from "react";
 config.autoAddCss = false; // Nonaktifkan auto-adding CSS
 
 
@@ -41,7 +42,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <Suspense>
           {children}
+          </Suspense>
       <Toaster/>
       </body>
     </html> 
