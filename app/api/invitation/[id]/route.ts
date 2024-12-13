@@ -67,7 +67,7 @@ export async function PATCH(req : Request,{ params }: { params: { id: string } }
     }
 }
 
-export async function DELETE({ params }: { params: { id: string } }){
+export async function DELETE(req:Request,{ params }: { params: { id: string } }){
     try {
         await prisma.invitation.delete({
             where : {

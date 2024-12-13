@@ -8,6 +8,7 @@ export async function PATCH(
 ) {
   try {
     const id = params.id;
+
     const { ...data } = await req.json();
 
     // Validasi data menggunakan zod
@@ -27,7 +28,7 @@ export async function PATCH(
     }
 
     const response = await prisma.rsvp.update({
-      where: { id },
+      where: { id : parseInt(id) },
       data: parsedData.data,
     });
 
@@ -45,7 +46,7 @@ export async function DELETE(
     const id = params.id;
 
     await prisma.rsvp.delete({
-      where: { id },
+      where: { id : parseInt(id) },
     });
 
     return NextResponse.json(
@@ -64,7 +65,7 @@ export async function GET(
   try {
     const id = params.id;
     const response = await prisma.rsvp.findUnique({
-      where: { id },
+      where: { id :parseInt(id) },
     });
 
     return NextResponse.json(response, { status: 200 });

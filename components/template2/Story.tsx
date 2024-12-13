@@ -37,9 +37,6 @@ export default function Story({ LoveStoryData }: StoryProps) {
                       <h3 className="text-xl font-bold text-[#333333] font-poppins">
                         {story.title}
                       </h3>
-                      <p className="text-sm text-[#757575] font-poppins">
-                        {story.fullStory}
-                      </p>
                       <p className="text-[#757575] font-poppins mt-2">
                         {story.story}
                       </p>
@@ -82,9 +79,6 @@ export default function Story({ LoveStoryData }: StoryProps) {
                       <h3 className="text-xl font-bold text-[#333333] font-poppins">
                         {story.title}
                       </h3>
-                      <p className="text-sm text-[#757575] font-poppins">
-                        {story.fullStory}
-                      </p>
                       <p className="text-[#757575] font-poppins mt-2">
                         {story.story}
                       </p>
