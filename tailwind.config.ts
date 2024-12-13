@@ -31,7 +31,7 @@ const config: Config = {
   	fontFamily: {
   		alex: ["Alex Brush", 'cursive'],
   		alegreya: ['Alegreya', 'serif'],
-  		alegreyaSans: ['Alegreya Sans"', 'sans-serif'],
+  		alegreyaSans: ['Alegreya Sans', 'sans-serif'],
   		lora: ["Lora", "serif"],
   		alice: ["Alice", "serif"],
   		lemon: ["Lemon Melon", "sans-serif"],
@@ -41,6 +41,7 @@ const config: Config = {
   	}
   },
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     daisyui, require('tailwindcss-motion'), require("tailwindcss-animate")],
   daisyui: {
     themes: ["light", "dark", "valentine"],
