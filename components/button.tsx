@@ -2,7 +2,7 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signOut } from 'next-auth/react';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import toast from 'react-hot-toast';
 
@@ -45,6 +45,8 @@ export const LogoutButton = () => {
 };
 
 export const BackButton = () => {
+  const router = useRouter();
+
   return (
     <button onClick={() => router.back()} className="btn btn-link">
       <FontAwesomeIcon icon={faArrowLeft} />
