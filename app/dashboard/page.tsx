@@ -48,7 +48,7 @@ export default function Dashboard() {
     };
 
     fetchData();
-  }, []); // Trigger effect when userId changes
+  }, [userId]); // Trigger effect when userId changes
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
