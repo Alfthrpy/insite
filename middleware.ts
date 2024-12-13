@@ -5,10 +5,13 @@ import { getToken } from 'next-auth/jwt';
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const cookie = request.cookies.get("next-auth.session-token");
-  console.log(cookie); // Lihat apakah cookie ini ada
   // Mengambil token JWT dari cookies
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-  console.log(token);
+
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('Full Cookies:', cookie);
+  console.log('token :',token)
+  console.log('NEXTAUTH_SECRET exists:', !!process.env.NEXTAUTH_SECRET);
 
   const url = request.nextUrl.pathname;
 
