@@ -4,7 +4,7 @@ import { getToken } from 'next-auth/jwt';
 
 
 export async function middleware(request: NextRequest){
-  const cookie = request.cookies.get("next-auth.session-token");
+  const cookie = request.cookies.get("__Host-next-auth.session-token");
   // Mengambil token JWT dari cookies
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
 
@@ -12,7 +12,6 @@ export async function middleware(request: NextRequest){
   console.log('Full Cookies:', cookie);
   console.log('token :',token)
   console.log('NEXTAUTH_SECRET exists:', !!process.env.NEXTAUTH_SECRET);
-
   const url = request.nextUrl.pathname;
 
   // Mengecualikan API dan halaman login dari pemeriksaan
