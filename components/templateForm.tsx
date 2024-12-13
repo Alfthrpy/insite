@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { SubmitFormButton, LogoutButton } from "./button";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const TemplateForm = () => {
   const session = useSession();
@@ -12,7 +14,7 @@ const TemplateForm = () => {
   });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const router = useRouter()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -41,7 +43,8 @@ const TemplateForm = () => {
         throw new Error("Failed to submit invitation");
       }
 
-      alert("Invitation successfully submitted!");
+      toast.success('Invitation Berhasil Dibuat!')
+      router.push(`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard`)
       setFormData({ name: "" });  // reset hanya name
     } catch (err: any) {
       setError(err.message);
