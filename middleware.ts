@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 
-export async function middleware(request: NextRequest): Promise<NextResponse> {
+export async function middleware(request: NextRequest){
   const cookie = request.cookies.get("next-auth.session-token");
   // Mengambil token JWT dari cookies
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
@@ -28,7 +28,6 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   // Jika user mencoba mengakses dashboard atau subpathnya, periksa apakah dia memiliki invitation_id
   if (url.startsWith('/dashboard')) {
     const userId = token.id;
-
     // Query ke tabel invitation untuk memeriksa apakah user sudah memiliki invitation_id
     console.log(userId)
     const response = await fetch(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/invitation?userId=${userId}`)

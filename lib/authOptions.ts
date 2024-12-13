@@ -80,13 +80,14 @@ export const authOptions: AuthOptions = {
   },
   cookies: {
     sessionToken: {
-      name: `__Secure-next-auth.session-token`,
+      name: `next-auth.session-token`,
       options: {
+        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : 'localhost',
         httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: true
-      }
+        secure: process.env.NODE_ENV === "production",
+        sameSite: false, // atau "strict" tergantung pada kebutuhan Anda
+        path : '/'
+      },
     },
   },
 };
