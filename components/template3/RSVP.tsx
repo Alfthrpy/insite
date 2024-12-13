@@ -13,15 +13,16 @@ const RSVP = () => {
   const invitationId = params2?.id as string;
 
   const rspvIdStr = params.get("id");
-  const rspvId = rspvIdStr ? Number(rspvIdStr) : NaN; // Atau bisa menggunakan parseInt(rspvIdStr)
+  const rspvId = rspvIdStr ? Number(rspvIdStr) : null;
 
-  const [statusRsvp, setStatusRsvp] = useState<boolean | null>(null); // State untuk menyimpan status RSVP
+  console.log(rspvId)
+  const [statusRsvp, setStatusRsvp] = useState<boolean | null>(false);
 
   // Fungsi untuk memeriksa RSVP status
   useEffect(() => {
     const fetchRsvpStatus = async () => {
-      if (!isNaN(rspvId)) {
-        const status = await checkRsvp(rspvId);
+      if (rspvId) {
+        const status = await checkRsvp(rspvId as number);
         setStatusRsvp(status);
       } else {
         console.error("Invalid rspvId: not a number");
@@ -35,7 +36,7 @@ const RSVP = () => {
 
   const handleClick = () => {
     try {
-      confirmRsvp(rspvId)
+      confirmRsvp(rspvId as number)
       toast.success("Berhasil Konfirmasi")
     } catch (error) {
       console.log(error)
@@ -59,17 +60,17 @@ const RSVP = () => {
           width={260}
           height={192}
         />
-        {!rspvId && statusRsvp ? (
-          <RsvpForm invitationId={invitationId} />
-        ) : (
+        {statusRsvp ? (
           <div className="flex flex-col">
-            <button
-              className="btn bg-gray-500 self-start w-full text-base-100"
-              onClick={handleClick}
-            >
-              Konfirmasi Kehadiran
-            </button>
-          </div>
+          <button
+            className="btn bg-gray-500 self-start w-full text-base-100"
+            onClick={handleClick}
+          >
+            Konfirmasi Kehadiran
+          </button>
+        </div>
+        ) : (
+          <RsvpForm invitationId={invitationId} />
         )}
       </div>
     </div>

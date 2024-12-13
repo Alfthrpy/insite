@@ -145,6 +145,7 @@ export default function Gift() {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            invitationId : id,
             nameAccount:nameProvider,
             nameUserAccount:nameAccount,
             noAccount,

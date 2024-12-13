@@ -13,13 +13,14 @@ const RSVP = () => {
   const invitationId = params2?.id as string;
 
   const rspvIdStr = params.get("id");
-  const rspvId = rspvIdStr ? Number(rspvIdStr) : NaN; // Atau bisa menggunakan parseInt(rspvIdStr)
+  const rspvId = rspvIdStr ? Number(rspvIdStr) : null;
 
-  const [statusRsvp, setStatusRsvp] = useState<boolean | null>(null); // State untuk menyimpan status RSVP
+  console.log(rspvId)
+  const [statusRsvp, setStatusRsvp] = useState<boolean | null>(false);
     useEffect(() => {
       const fetchRsvpStatus = async () => {
-        if (!isNaN(rspvId)) {
-          const status = await checkRsvp(rspvId);
+        if (rspvId) {
+          const status = await checkRsvp(rspvId as number);
           setStatusRsvp(status);
         } else {
           console.error("Invalid rspvId: not a number");
@@ -32,7 +33,7 @@ const RSVP = () => {
 
     const handleClick = () => {
       try {
-        confirmRsvp(rspvId)
+        confirmRsvp(rspvId as number)
         toast.success("Berhasil Konfirmasi")
       } catch (error) {
         console.log(error)
@@ -58,17 +59,17 @@ const RSVP = () => {
           Konfirmasi Kehadiran
         </h1>
 
-        {!rspvId && statusRsvp ? (
-          <RsvpForm invitationId={invitationId}/>
-        ) : (
+        { statusRsvp ? (
           <div className="space-y-4">
-            {/* Tombol Submit */}
-            <button
-              className="w-full py-3 bg-[#C1A15A] text-white font-bold text-lg uppercase rounded-md hover:bg-[#A5643E] transition" onClick={handleClick}
-            >
-              Kirim Respon
-            </button>
-          </div>
+          {/* Tombol Submit */}
+          <button
+            className="w-full py-3 bg-[#C1A15A] text-white font-bold text-lg uppercase rounded-md hover:bg-[#A5643E] transition" onClick={handleClick}
+          >
+            Kirim Respon
+          </button>
+        </div>
+        ) : (
+          <RsvpForm invitationId={invitationId}/>
         )}
       </div>
     </section>

@@ -32,8 +32,8 @@ export default function Home() {
           </h1>
           <p>Pilih tema sesuai keinginan</p>
           <div className="hero-buttons">
-            <a href="#" className="button-create">Buat Sekarang</a>
-            <a href="#" className="button-demo">Lihat Demo</a>
+            <a href="/login" className="button-create">Buat Sekarang</a>
+            <a href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/template/godwyn/bb44074b-691b-458a-a709-f61fa299645e`} className="button-demo">Lihat Demo</a>
           </div>
         </div>
         <div className="hero-image">

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { checkRsvp, confirmRsvp } from "@/lib/actions";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
@@ -13,31 +13,36 @@ const RSVP = () => {
   const invitationId = params2?.id as string;
 
   const rspvIdStr = params.get("id");
-  const rspvId = rspvIdStr ? Number(rspvIdStr) : NaN; // Atau bisa menggunakan parseInt(rspvIdStr)
+  const rspvId = rspvIdStr ? Number(rspvIdStr) : null;
 
-  const [statusRsvp, setStatusRsvp] = useState<boolean | null>(null); // State untuk menyimpan status RSVP
-    useEffect(() => {
-      const fetchRsvpStatus = async () => {
-        if (!isNaN(rspvId)) {
-          const status = await checkRsvp(rspvId);
+  const [statusRsvp, setStatusRsvp] = useState<boolean | null>(false);
+
+  useEffect(() => {
+    const fetchRsvpStatus = async () => {
+      if (rspvId) {
+        try {
+          console.log("Fetching RSVP status...");
+          const status = await checkRsvp(rspvId as number);
           setStatusRsvp(status);
-        } else {
-          console.error("Invalid rspvId: not a number");
-          // Bisa lakukan handling error seperti redirect atau pesan kesalahan
+        } catch (error) {
+          console.error("Error checking RSVP status:", error);
         }
-      };
-  
-      fetchRsvpStatus();
-    }, [rspvId]); // Menggunakan rspvId sebagai dependensi
-
-    const handleClick = () => {
-      try {
-        confirmRsvp(rspvId)
-        toast.success("Berhasil Konfirmasi")
-      } catch (error) {
-        console.log(error)
       }
+    };
+
+    fetchRsvpStatus();
+  }, [rspvId]);
+
+  const handleClick = async () => {
+    try {
+      await confirmRsvp(rspvId as number);
+      toast.success("Berhasil Konfirmasi Kehadiran");
+    } catch (error) {
+      console.error("Error confirming RSVP:", error);
+      toast.error("Gagal Konfirmasi Kehadiran");
     }
+  };
+
   return (
     <div
       id="rsvp"
@@ -54,9 +59,9 @@ const RSVP = () => {
           width={260}
           height={192}
         />
-        {!rspvId && statusRsvp ? (
-          <RsvpForm invitationId={invitationId } />
-        ) : (
+        {/* Logika kondisi: */}
+        {statusRsvp ? (
+          // Jika terdapat parameter ?id=, tampilkan tombol konfirmasi
           <div className="flex flex-col">
             <button
               className="btn bg-gray-500 self-start w-full text-base-100"
@@ -65,6 +70,9 @@ const RSVP = () => {
               Konfirmasi Kehadiran
             </button>
           </div>
+        ) : (
+          // Jika tidak ada parameter ?id=, tampilkan form RSVP
+          <RsvpForm invitationId={invitationId} />
         )}
       </div>
     </div>
