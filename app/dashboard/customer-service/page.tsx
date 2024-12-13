@@ -1,9 +1,11 @@
+import { BackButton } from "@/components/button"
 
 export default function service() {
    return (
       <div className="h-full w-full xl:w-11/12">
          <div className="container m-4 p-5 rounded-box bg-white">
             <div className="flex w-full flex-col">
+               <BackButton/>
                <div className="card bg-base-100 rounded-box grid h-32 place-items-center"><p className="text-5xl font-bold">Hubungi Kami </p><br />
                Jangan ragu untuk menghubungi kami terkait kebutuhan Anda. Tim kami siap membantu dengan senang hati!</div>
                <div className="divider"></div>

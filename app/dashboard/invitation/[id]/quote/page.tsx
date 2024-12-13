@@ -13,6 +13,7 @@ import {
 import { useParams } from 'next/navigation';
 import { InvitationData, QuoteData } from "@/lib/interface";
 import toast from "react-hot-toast";
+import { BackButton } from "@/components/button";
 
 export default function Quote() {
   const { id } = useParams(); // Assuming the invitation ID is in the URL
@@ -119,6 +120,7 @@ export default function Quote() {
 
   return (
     <div className="w-full xl:w-4/5 m-4 min-h-screen">
+      <BackButton/>
       <div className="flex justify-center w-full">
         <div className="bg-white rounded-lg shadow-lg p-6 pb-9 w-full">
           <h1 className="text-center text-2xl font-bold my-5">Quote</h1>

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { BackButton } from "@/components/button";
 import {  RsvpData } from "@/lib/interface";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -89,6 +90,7 @@ export default function Rspv() {
 
   return (
     <div className="w-full xl:w-4/5 m-4 min-h-screen">
+      <BackButton/>
       <div className="flex justify-center w-full">
         <div className="bg-white rounded-lg shadow-lg p-6 pb-9 w-full">
           <h1 className="text-center text-2xl font-bold my-5">RSVP</h1>

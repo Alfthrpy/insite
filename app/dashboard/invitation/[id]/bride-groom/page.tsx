@@ -1,6 +1,7 @@
 // app/bride-groom/[id]/page.tsx
 
 
+import { BackButton } from "@/components/button";
 import BrideGroomForm from "../(component)/BrideGroomForm";
 async function getBrideGroom(id: string) {
   try {
@@ -25,6 +26,7 @@ export default async function BrideGroomPage({ params }: { params: { id: string 
   }
   return (
     <div className="flex justify-center w-full">
+      <BackButton/>
       <BrideGroomForm
       defaultValues={initialData}
       id = {initialData.id}

@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CldUploadButton } from "next-cloudinary";
 import { GiftData } from "@/lib/interface";
+import { BackButton } from "@/components/button";
 
 export default function Gift() {
   const { id } = useParams();
@@ -181,6 +182,7 @@ export default function Gift() {
 
   return (
     <div className="w-full xl:w-4/5 m-4 min-h-screen">
+      <BackButton/>
       <div className="flex justify-center w-full">
         <div className="bg-white rounded-lg shadow-lg p-6 pb-9 w-full">
           <h1 className="text-center text-3xl font-bold mb-4 h-14 mt-5">

@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { CldUploadButton } from "next-cloudinary";
+import { BackButton } from "@/components/button";
 
 interface GalleryImage {
   id: string;
@@ -123,6 +124,7 @@ const handleUpload = async (result: any) => {
   return (
     <div className="flex justify-center w-full h-auto mb-4">
       <div className="container w-full h-full flex-col sm:w-4/5 m-4 px-12 rounded-box bg-white justify-items-center items-center mb-3">
+        <BackButton/>
         <h1 className="text-3xl font-bold mb-4 h-14 mt-10">Gallery</h1>
 
           {galleryImages.length > 0 ? (

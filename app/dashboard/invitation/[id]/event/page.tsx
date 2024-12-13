@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { BackButton } from "@/components/button";
 import { EventData } from "@/lib/interface";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -96,6 +97,7 @@ export default function Event() {
 
   return (
     <div className="w-full xl:w-4/5 m-4 min-h-screen">
+      <BackButton/>
       {data.map((event, index) => (
         <div 
           key={event.id || index} 

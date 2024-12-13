@@ -1,4 +1,5 @@
 "use client";
+import { BackButton } from "@/components/button";
 import CheckoutButton from "@/components/checkoutButon";
 import { InvitationData, UserData } from "@/lib/interface";
 import { useSession } from "next-auth/react";
@@ -89,6 +90,7 @@ export default function DesignPage() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <BackButton/>
       <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
         <h1 className="text-center text-2xl sm:text-3xl font-bold mb-8">
           Design List

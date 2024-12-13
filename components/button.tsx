@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signOut } from 'next-auth/react';
+import router from 'next/router';
 import React from 'react';
 import toast from 'react-hot-toast';
 
@@ -40,3 +43,12 @@ export const LogoutButton = () => {
     </button>
   );
 };
+
+export const BackButton = () => {
+  return (
+    <button onClick={() => router.back()} className="btn btn-link">
+      <FontAwesomeIcon icon={faArrowLeft} />
+      Kembali
+    </button>
+  )
+}
