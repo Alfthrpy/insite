@@ -44,6 +44,6 @@ export async function middleware(request: NextRequest){
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: ['/dashboard/bjir'],
    // Menangani semua route yang dimulai dengan /dashboard, termasuk subpath seperti /dashboard/invitation
 };
