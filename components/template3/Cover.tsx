@@ -6,7 +6,7 @@ import Image from "next/image";
 import { coverVariants } from "../../helper/variants";
 import NightTexture from "../../public/webp/night-texture.webp";
 import Window from "../../public/webp/cover2.webp";
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CoverProps {
   openHandler: () => void;
