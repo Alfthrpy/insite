@@ -13,6 +13,8 @@ export default function Dashboard() {
   const router = useRouter()
   const userId = session?.data?.user?.id;
 
+  console.log(userId)
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
