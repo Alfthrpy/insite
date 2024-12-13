@@ -29,8 +29,8 @@ export async function POST(req: Request){
             data: parsedData.data
         })
 
-        updateLink(response.id,'daf665f1-d9fb-4204-822c-0a696b237c0e')
-        createDummy(response.id)
+        await updateLink(response.id,'daf665f1-d9fb-4204-822c-0a696b237c0e')
+        await createDummy(response.id)
 
         return NextResponse.json(response,{status: 201})
 

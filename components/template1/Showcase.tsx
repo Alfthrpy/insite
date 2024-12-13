@@ -52,7 +52,7 @@ interface ShowcaseProps {
 
 export default function Showcase({dataCouple,QuoteData,GalleryData} : ShowcaseProps) { 
    if(!QuoteData){
-      return <div>Gak ada QuoteData nya</div>
+      return <div className='min-h-screen'>Quote belum Diisi!</div>
    }
    return (
       <div

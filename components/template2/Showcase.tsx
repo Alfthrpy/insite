@@ -12,7 +12,7 @@ interface ShowcaseProps {
 export default function Showcase({BrideGroomData, EventData,GalleryData,QuoteData}: ShowcaseProps) {
 
   if(!QuoteData){
-    return <div>No quote available</div>
+    return <div className="min-h-screen flex flex-col justify-center items-center">Quote Belum Diisi!</div>
   }
 
   const formatLongDate = (isoDate: string) => {
