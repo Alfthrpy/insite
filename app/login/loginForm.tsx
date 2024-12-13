@@ -10,6 +10,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoginFormSchema } from "@/lib/definitions";
 import toast from 'react-hot-toast';
+import Link from 'next/link';
 
 const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
 
@@ -88,7 +89,9 @@ const FormLogin = ({ onToggleMode }: { onToggleMode: () => void }) => {
             </p>
           )}
         </div>
-
+        <div className='mb-4'>
+          <Link href="/forgot-password">Forgot Password?</Link>
+        </div>
         <button type="submit" className="sign-btn">
           Sign In
         </button>
