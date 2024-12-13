@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['lh3.googleusercontent.com'], // Domain gambar profil Google
-        domains: ['res.cloudinary.com'],
+  images: {
+    domains: ['lh3.googleusercontent.com', 'res.cloudinary.com', 'placehold.co'],
   },
   webpack(config) {
     config.module.rules.push({

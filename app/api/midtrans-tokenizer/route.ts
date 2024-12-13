@@ -15,7 +15,6 @@ export async function POST(req : Request){
     })
     try {
         const {paymentId, name, category, price,username,email, } = await req.json()
-        console.log(username)
         const {first_name, last_name} = splitName(username)
         const parameter = {
             item_details:{
@@ -36,7 +35,6 @@ export async function POST(req : Request){
         }
 
         const token = await snap.createTransactionToken(parameter)
-        console.log(token)
         return NextResponse.json({token})
 
     } catch (error) {

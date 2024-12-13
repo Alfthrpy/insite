@@ -2,7 +2,7 @@
 "use client";
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { showcaseVariants, closingVariants } from '../../helper/variants'
+import { showcaseVariants } from '../../helper/variants'
 import { useEffect, useState } from 'react';
 // import PaperTexture from '../public/webp/paper1.webp'
 
@@ -62,7 +62,7 @@ export default function Showcase({invitationId} : {invitationId: string}) {
             {/* <Image src={PaperTexture} alt="paper texture" layout='fill' placeholder='blur' objectFit='cover' /> */}
             <div className="max-w-screen-sm mx-auto relative h-28">
                 <motion.div variants={showcaseVariants.fade} initial="initial" whileInView="animate" className="absolute top-14 left-28">
-                    <motion.div variants={closingVariants.wiggle}>
+                    <motion.div >
                         <Image className='drop-shadow-md' src="/webp/bird.webp" alt="bird" width={56} height={56} />
                     </motion.div>
                 </motion.div>
@@ -94,7 +94,7 @@ export default function Showcase({invitationId} : {invitationId: string}) {
                     <motion.p variants={showcaseVariants.invitedChildrenVariants} className='small tracking-6'>The wedding of</motion.p>
                     <div className="relative w-fit mx-auto">
                         <motion.div variants={showcaseVariants.fade} initial="initial" whileInView="animate" className="z-10 absolute -top-7 -left-4">
-                            <motion.div variants={closingVariants.wiggle2}>
+                            <motion.div >
                                 <Image className='drop-shadow-md' src="/webp/bird3.webp" alt="bird" width={50} height={50} />
                             </motion.div>
                         </motion.div>
@@ -114,7 +114,7 @@ export default function Showcase({invitationId} : {invitationId: string}) {
                     <Image className='drop-shadow-md' src="/webp/cloud3.webp" alt="cloud" width={97} height={97} />
                 </motion.div>
                 <motion.div variants={showcaseVariants.fade} initial="initial" whileInView="animate" className="absolute z-10 bottom-12 right-28">
-                    <motion.div variants={closingVariants.wiggle3}>
+                    <motion.div >
                         <Image className='drop-shadow-md' src="/webp/bird2.webp" alt="bird" width={56} height={56} />
                     </motion.div>
                 </motion.div>

@@ -95,7 +95,7 @@ interface QuoteData {
   }
 
   interface RsvpData {
-    id? : string;
+    id? : number;
     invitationId : string;
     guestName : string;
     numberOfPeople : number;

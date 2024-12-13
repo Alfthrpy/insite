@@ -68,7 +68,7 @@ export default function Showcase({BrideGroomData, EventData,GalleryData,QuoteDat
         <div
         className="relative bg-cover bg-center h-screen p-10 flex flex-col justify-center"
         style={{
-          backgroundImage: `url(${GalleryData[5].imageUrl})`,
+          backgroundImage: `url(${GalleryData[0].imageUrl})`,
         }}
       ></div>
 

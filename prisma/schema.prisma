@@ -101,9 +101,9 @@ model PaymentTransaction {
 }
 
 model Rsvp {
-  id                 String    @id @default(uuid())
+  id                 Int    @id @default(autoincrement())
   invitationId       String
-  guestName          String    @unique
+  guestName          String    
   numberOfPeople     Int       @default(1)
   confirmationStatus String?    @default("belum konfirmasi")
   customLink String?            @default("www.com") 

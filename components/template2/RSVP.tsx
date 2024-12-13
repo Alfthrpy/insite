@@ -1,11 +1,43 @@
+
+'use client'
 import { useParams, useSearchParams } from "next/navigation";
 import RsvpForm from "../createRsvp";
+import { checkRsvp, confirmRsvp } from "@/lib/actions";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const RSVP = () => {
-  const params2 = useParams()
-  const invitationId = params2?.id as string
   const params = useSearchParams();
-  const validate = params.get("name");
+  const params2 = useParams();
+
+  const invitationId = params2?.id as string;
+
+  const rspvIdStr = params.get("id");
+  const rspvId = rspvIdStr ? Number(rspvIdStr) : NaN; // Atau bisa menggunakan parseInt(rspvIdStr)
+
+  const [statusRsvp, setStatusRsvp] = useState<boolean | null>(null); // State untuk menyimpan status RSVP
+    useEffect(() => {
+      const fetchRsvpStatus = async () => {
+        if (!isNaN(rspvId)) {
+          const status = await checkRsvp(rspvId);
+          setStatusRsvp(status);
+        } else {
+          console.error("Invalid rspvId: not a number");
+          // Bisa lakukan handling error seperti redirect atau pesan kesalahan
+        }
+      };
+  
+      fetchRsvpStatus();
+    }, [rspvId]); // Menggunakan rspvId sebagai dependensi
+
+    const handleClick = () => {
+      try {
+        confirmRsvp(rspvId)
+        toast.success("Berhasil Konfirmasi")
+      } catch (error) {
+        console.log(error)
+      }
+    }
   return (
     <section
       id="rsvp"
@@ -26,18 +58,17 @@ const RSVP = () => {
           Konfirmasi Kehadiran
         </h1>
 
-        {!validate ? (
+        {!rspvId && statusRsvp ? (
           <RsvpForm invitationId={invitationId}/>
         ) : (
-          <form className="space-y-4">
+          <div className="space-y-4">
             {/* Tombol Submit */}
             <button
-              type="submit"
-              className="w-full py-3 bg-[#C1A15A] text-white font-bold text-lg uppercase rounded-md hover:bg-[#A5643E] transition"
+              className="w-full py-3 bg-[#C1A15A] text-white font-bold text-lg uppercase rounded-md hover:bg-[#A5643E] transition" onClick={handleClick}
             >
               Kirim Respon
             </button>
-          </form>
+          </div>
         )}
       </div>
     </section>

@@ -3,6 +3,7 @@
 import { createTransaction, getMidtransToken, updatePaymentStatus } from '@/lib/actions';
 import { DesignData, UserData } from '@/lib/interface';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 interface CheckoutButtonProps {
   data: DesignData;
@@ -19,6 +20,8 @@ export default function CheckoutButton({ data, user, invitationId }: CheckoutBut
     script.src = snapScript;
     script.setAttribute("data-client-key", clientKey);
     script.async = true;
+    script.onload = () => console.log("Midtrans Snap Script Loaded");
+    script.onerror = () => console.error("Midtrans Snap Script Failed to Load");
 
     document.body.appendChild(script);
 
@@ -28,6 +31,7 @@ export default function CheckoutButton({ data, user, invitationId }: CheckoutBut
   }, []);
 
   const handleCheckout = async () => {
+    toast.success('test')
     try {
       // Create transaction
       const transaction = await createTransaction({
@@ -35,7 +39,7 @@ export default function CheckoutButton({ data, user, invitationId }: CheckoutBut
         amount: data.price,
         userId: user.id,
       });
-
+  
       // Get Midtrans token
       const midtransData = await getMidtransToken({
         paymentId: transaction.id,
@@ -45,26 +49,36 @@ export default function CheckoutButton({ data, user, invitationId }: CheckoutBut
         username: user.name,
         email: user.email,
       });
-
+  
       // Initialize Midtrans payment
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).snap.pay(midtransData.token, {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onSuccess: async (result: any) => {
-          let status = result?.transaction_status || null;
-          let method = result?.payment_type || null;
-
-          while (!status || !method) {
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            status = result?.transaction_status || null;
-            method = result?.payment_type || null;
+          try {
+            console.log("onSuccess result:", result);
+            
+            const status = result?.transaction_status || null;
+            const method = result?.payment_type || null;
+            
+            console.log("Payment Status:", status, "Payment Method:", method);
+            
+            await updatePaymentStatus(transaction.id, status, method, invitationId, data.id);
+            
+            // Show success toast before page refresh
+  
+            // Set delay before page refresh to allow the toast to be shown
+            setTimeout(() => {
+              toast.success("Pembayaran Berhasil!");
+              window.location.reload();
+            }, 5000); // Delay for 1.5 seconds (adjust as needed)
+            
+          } catch (error) {
+            console.error("Error during onSuccess:", error);
           }
-
-          await updatePaymentStatus(transaction.id, status, method,invitationId,data.id);
-         
         },
         onClose: async () => {
-          await updatePaymentStatus(transaction.id, "gagal", "error",invitationId,data.id);
+          await updatePaymentStatus(transaction.id, "gagal", "error", invitationId, data.id);
         },
         onError: () => {
           alert("error");
@@ -75,6 +89,7 @@ export default function CheckoutButton({ data, user, invitationId }: CheckoutBut
       alert("An error occurred during checkout");
     }
   };
+  
 
   return (
     <button onClick={handleCheckout}>

@@ -22,7 +22,7 @@ export default function Cover({ openHandler,BrideGroomData,EventData,GalleryData
     <div
       className="flex items-center justify-center h-screen text-neutral bg-cover bg-center"
       style={{
-        backgroundImage: `url(${GalleryData[5].imageUrl})`,
+        backgroundImage: `url(${GalleryData[0].imageUrl})`,
         backgroundColor: '#F6F1EB', // Warna krem sebagai fallback
       }}
     >

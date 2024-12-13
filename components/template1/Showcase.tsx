@@ -59,7 +59,7 @@ export default function Showcase({dataCouple,QuoteData,GalleryData} : ShowcasePr
          id="showcase"
          className="flex w-full justify-center h-screen text-neutral items-center bg-sky bg-cover md:bg-auto bg-center"
          style={{
-         backgroundImage: `url(${GalleryData[4].imageUrl})`,
+         backgroundImage: `url(${GalleryData[0].imageUrl})`,
          backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
          

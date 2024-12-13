@@ -2,9 +2,16 @@ import { CommentSchema } from "@/lib/definitions";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req:Request) {
+  const url = new URL(req.url);
+  const invitationId = url.searchParams.get("invitationId");
+
   try {
-    const reponse = await prisma.comment.findMany();
+    const reponse = await prisma.comment.findMany(
+      {where: {
+        invitationId:invitationId as string
+      }}
+    );
     return NextResponse.json(reponse, { status: 200 });
   } catch (error) {
     return NextResponse.json(error, { status: 500 });

@@ -1,6 +1,7 @@
 // Server Component: Page.tsx
 import React from "react";
 import InvitationPage from "./(component)/invitationPage";
+import { Toaster } from "react-hot-toast";
 
 
 export default async function Page({
@@ -24,6 +25,7 @@ export default async function Page({
 
   return (
     <div className=" w-full lg:w-3/5 m-4">
+      <Toaster/>
       {/* Pass fetched data to Client Component */}
       <InvitationPage data={data} />
     </div>

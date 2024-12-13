@@ -80,49 +80,60 @@ export async function updatePaymentStatus(
   paymentId: string,
   status: string,
   method: string,
-  invitationId : string,
-  designId : string,
-) {
-  await fetch(
-    `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/payment-transaction/${paymentId}`,
-    {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        paymentStatus: status,
-        paymentMethod: method,
-      }),
-    }
-  );
-  if(!(status === 'gagal')){
-    await updateInvitationData(invitationId,designId)
-  }
-}
-export async function updateInvitationData(
   invitationId: string,
   designId: string,
 ) {
-  const invitationResponse = await fetch(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/invitation/${invitationId}`);
-  const invitationData = await invitationResponse.json();
+  console.log("Enter updatePaymentStatus");
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_CLIENT_URL}/api/payment-transaction/${paymentId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paymentStatus: status,
+          paymentMethod: method,
+        }),
+      }
+    );
+    console.log("PATCH response:", response.status);
+    if (!response.ok) {
+      throw new Error(`Failed to update payment transaction. Status: ${response.status}`);
+    }
 
+    // Hanya panggil jika status bukan 'gagal'
+    if (status !== "gagal") {
+      console.log("Calling updateInvitationData");
+      await updateInvitationData(invitationId, designId);
+    }
 
-  // PATCH invitation to update designId
-  const updatedInvitation = {
-    ...invitationData,
-    designId: designId,  // Update the designId with the current design
-  };
-
-  await fetch(`${process.env.NEXT_PUBLIC_CLIENT_URL}/api/invitation/${invitationId}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(updatedInvitation),
-  });
+    console.log("Finished updatePaymentStatus");
+  } catch (error) {
+    console.error("Error in updatePaymentStatus:", error);
+    throw error; // Re-throw error for higher-level handling
+  }
 }
+
+
+export async function updateInvitationData(invitationId: string, designId: string) {
+  console.log("Enter updateInvitationData");
+  try {
+    const updatedInvitation = await prisma.invitation.update({
+      where: { id: invitationId },
+      data: { designId: designId },
+    });
+    console.log("Updated Invitation:", updatedInvitation);
+
+    console.log("Calling updateLink");
+    await updateLink(invitationId, designId);
+  } catch (error) {
+    console.error("Error in updateInvitationData:", error);
+    throw error; // Propagate error to caller
+  }
+}
+
 
 
 export type UpdateBrideGroomFormState = {
@@ -249,9 +260,9 @@ export async function validateInvitation(invitationId: string): Promise<boolean>
 }
 
 
-export async function confirmRsvp(name:string){
+export async function confirmRsvp(rspvId:number){
   await prisma.rsvp.update({
-    where : {guestName : name},
+    where : {id:rspvId},
     data : {confirmationStatus : 'confirmed'}
   })
 }
@@ -275,8 +286,6 @@ export async function updateLink(invitationId:string,designId:string){
   } catch (error) {
     console.log(error)
   }
-
-
 }
 
 export async function createDummy(invitationId: string){
@@ -285,7 +294,7 @@ export async function createDummy(invitationId: string){
       invitationId: invitationId,
       nameAccount: "Budi",
       noAccount: "1234567890",
-      imgAccount: "https://example.com/account.jpg",
+      imgAccount: "https://placehold.co/600x400",
     },
   });
 
@@ -306,10 +315,10 @@ export async function createDummy(invitationId: string){
     data: {
       invitationId: invitationId,
       nameGroom: "Budi",
-      imageGroom: "https://example.com/imageGroom.jpg",
+      imageGroom: "https://placehold.co/600x400",
       parentGroom: "Orang Tua Budi",
       nameBride: "Ani",
-      imageBride: "https://example.com/imageBride.jpg",
+      imageBride: "https://placehold.co/600x400",
       parentBride: "Orang Tua Ani",
       linkInstagramGroom: "https://instagram.com/budi",
       linkFbGroom: "https://facebook.com/budi",
@@ -321,4 +330,57 @@ export async function createDummy(invitationId: string){
       linkYtbBride: "https://youtube.com/ani",
     },
   });
+
+  await prisma.event.create({
+    data: {
+      invitationId: invitationId,
+      nameEvent: "Akad Nikah",
+      location: "Gedung Serbaguna",
+      address: "Jl. Contoh No. 1",
+      dateEvent: new Date("2023-12-25T10:00:00Z"),
+      startTime: new Date("2023-12-25T10:00:00Z"),
+      endTime: new Date("2023-12-25T12:00:00Z"),
+      linkNavigationMap: "https://maps.example.com/location",
+    },
+  });
+
+  await prisma.gift.create({
+    data: {
+      invitationId: invitationId,
+      nameAccount: "Budi",
+      noAccount: "1234567890",
+      imgAccount: "https://placehold.co/600x400",
+    },
+  });
+
+  await prisma.loveStory.create({
+    data: {
+      invitationId: invitationId,
+      title: "Pertemuan Pertama",
+      story: "Kami bertemu di suatu acara dan jatuh cinta.",
+      imageUrl: "https://placehold.co/600x400",
+    },
+  });
+
+  await prisma.gallery.create({
+    data: {
+      invitationId: invitationId,
+      imageUrl: "https://placehold.co/600x400",
+    },
+  });
+
+
+}
+
+
+export async function checkRsvp(rspvId:number) {
+  const data = await prisma.rsvp.findFirst({
+    where : {id: rspvId},
+  })
+
+  if(data){
+    return true
+  } else {
+    return false
+  }
 }
