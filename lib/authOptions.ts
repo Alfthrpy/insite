@@ -78,4 +78,14 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax", // atau "strict" tergantung pada kebutuhan Anda
+      },
+    },
+  },
 };
