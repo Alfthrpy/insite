@@ -78,15 +78,4 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
-  cookies: {
-    sessionToken: {
-      name: "__Host-next-auth.session-token",
-      options: {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax", // atau 'none' jika Anda membutuhkan lintas situs
-        path: "/dashboard", // Cookie hanya berlaku untuk subpath /dashboard
-      },
-    }
-  },
 };
